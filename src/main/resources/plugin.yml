@@ -1,0 +1,4 @@
+name: Challenge
+version: '${project.version}'
+main: de.leon_lp9.challengePlugin.Main
+api-version: '1.20'
