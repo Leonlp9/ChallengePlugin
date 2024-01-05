@@ -77,4 +77,23 @@ public class ChallengeManager {
             });
         }
     }
+
+    public Challenge getActiveChallengeByClass(Class<? extends Challenge> challenge){
+        for (Challenge activeChallenge : activeChallenges) {
+            if (activeChallenge.getClass().equals(challenge)){
+                return activeChallenge;
+            }
+        }
+        return null;
+    }
+
+    public Challenge getLoadedChallengeByClass(Class<? extends Challenge> challenge){
+        for (Challenge activeChallenge : activeChallenges) {
+            if (activeChallenge.getClass().equals(challenge)){
+                return activeChallenge;
+            }
+        }
+        return null;
+    }
+
 }

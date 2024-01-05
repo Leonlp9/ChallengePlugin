@@ -7,6 +7,7 @@ import de.leon_lp9.challengePlugin.challenges.config.ConfigurationReader;
 import de.leon_lp9.challengePlugin.command.CommandManager;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.reflections.Reflections;
 
 import java.util.HashMap;
 import java.util.List;
@@ -46,17 +47,12 @@ public final class Main extends JavaPlugin {
         }else{
             challengeManager = new ChallengeManager();
         }
+        addChallenges();
         challengeManager.getTimer().startTask();
         challengeManager.getTimer().setResumed(false);
-
-        addChallenges();
-        challengeManager.activateChallenge(TheFloorIsLava.class);
-
         challengeManager.registerAllAktiveChallenges();
 
-
         CommandManager commandManager = new CommandManager();
-
         commandManager.init();
     }
 
@@ -72,13 +68,25 @@ public final class Main extends JavaPlugin {
         }
 
         data.put("activeChallenges", activeChallenges);
-
         fileUtils.writeToJsonFile("ChallengeManager", data);
     }
 
     public void addChallenges(){
-        challengeManager.loadChallenge(new RandomBlockDrops(true));
-        challengeManager.loadChallenge(new TheFloorIsLava());
+
+        //Alle Challenges werden hier hinzugefügt und geladen die ein @LoadChallenge haben
+
+        Reflections reflections = new Reflections("de.leon_lp9.challengePlugin.challenges");
+
+        reflections.getTypesAnnotatedWith(LoadChallenge.class).forEach(aClass -> {
+            try {
+                Challenge challenge = (Challenge) aClass.newInstance();
+                challengeManager.loadChallenge(challenge);
+                configurationReader.readConfigurableFields(challenge);
+            } catch (InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 
 }

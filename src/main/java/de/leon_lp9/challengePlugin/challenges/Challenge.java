@@ -1,6 +1,7 @@
 package de.leon_lp9.challengePlugin.challenges;
 
 import de.leon_lp9.challengePlugin.Main;
+import de.leon_lp9.challengePlugin.Timer;
 import de.leon_lp9.challengePlugin.challenges.config.ConfigurableField;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,9 +13,9 @@ import java.util.Collection;
 
 @Getter
 public class Challenge implements Listener {
-    private final String name;
-    private final String description;
-    private final Material icon;
+    private transient final String name;
+    private transient final String description;
+    private transient final Material icon;
 
     @Setter
     @Getter
@@ -35,4 +36,14 @@ public class Challenge implements Listener {
     public void unregister() {
         HandlerList.unregisterAll(this);
     }
+
+    public boolean isRunning() {
+        return Main.getInstance().getChallengeManager().getTimer().isResumed();
+    }
+
+    public Timer getTimer() {
+        return Main.getInstance().getChallengeManager().getTimer();
+    }
+
+    public void update(){}
 }

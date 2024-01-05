@@ -40,7 +40,7 @@ public class ConfigurationReader implements Listener {
 
         int size = (int) Math.max(1, Math.ceil(configurableFields.size() / 9f)) * 9;
 
-        Inventory inventory = Bukkit.createInventory(null, Math.min(6*9, size), "§6" + challenge.getName() + " §7- §6Konfiguration");
+        Inventory inventory = Bukkit.createInventory(null, Math.min(6*9, size), "§6§l" + challenge.getName() + " §7- §6Konfiguration");
 
         for (ConfigurableField configurableField : configurableFields) {
             ItemBuilder itemBuilder = new ItemBuilder(configurableField.getMetadata().icon())
@@ -51,7 +51,8 @@ public class ConfigurationReader implements Listener {
                             "§7Wert: §6" + getDisplayValue(configurableField, challenge),
                             "§7Typ: §6" + getDisplayType(configurableField),
                             "",
-                            getDisplayAction(configurableField, challenge)
+                            getDisplayLeftAction(configurableField, challenge),
+                            getDisplayRightAction(configurableField, challenge)
                     )
                     .addPersistentDataContainer("cField", PersistentDataType.STRING, configurableField.getId().toString())
                     .addPersistentDataContainer("cId", PersistentDataType.STRING, challenge.getClass().getName());
@@ -93,7 +94,7 @@ public class ConfigurationReader implements Listener {
     }
 
     @SneakyThrows
-    private String getDisplayAction(ConfigurableField field, Object instance) {
+    private String getDisplayLeftAction(ConfigurableField field, Object instance) {
         Class<?> type = field.getType();
         Object object = field.getField().get(instance);
 
@@ -101,18 +102,37 @@ public class ConfigurationReader implements Listener {
         if (type.equals(Boolean.class)) {
             action = !((boolean) object) ? "§aAktivieren" : "§cDeaktivieren";
         } else if (type.isEnum()) {
-            action = "§6Auswählen";
+            action = "§6Vorheriger Wert";
+        } else if (type.equals(Integer.class) || type.equals(int.class)) {
+            action = "§aErhöhen";
         } else {
-            action = "§6Ändern";
+            action = "§6Unbekannt";
         }
-
         return "§7Linksklick zum " + action + "§7.";
+    }
+
+    @SneakyThrows
+    private String getDisplayRightAction(ConfigurableField field, Object instance) {
+        Class<?> type = field.getType();
+        Object object = field.getField().get(instance);
+
+        String action;
+        if (type.equals(Boolean.class)) {
+            action = ((boolean) object) ? "§aAktivieren" : "§cDeaktivieren";
+        } else if (type.isEnum()) {
+            action = "§6Nächster Wert";
+        } else if (type.equals(Integer.class) || type.equals(int.class)) {
+            action = "§cVerringern";
+        } else {
+            action = "§6Unbekannt";
+        }
+        return "§7Rechtsklick zum " + action + "§7.";
     }
 
     @SneakyThrows
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-        if (event.getView().getTitle().matches("§6.* §7- §6Konfiguration")) {
+        if (event.getView().getTitle().matches("§6§l.* §7- §6Konfiguration")) {
             event.setCancelled(true);
             if (event.getCurrentItem() == null) return;
             if (!event.getCurrentItem().hasItemMeta()) return;
@@ -123,7 +143,7 @@ public class ConfigurationReader implements Listener {
             String id = event.getCurrentItem().getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Main.getInstance(), "cId"), PersistentDataType.STRING);
             Class<? extends Challenge> challengeClass = (Class<? extends Challenge>) Class.forName(id);
 
-            Challenge challenge = Main.getInstance().getChallengeManager().getAllChallenges().get(challengeClass);
+            Challenge challenge = Main.getInstance().getChallengeManager().getActiveChallengeByClass(challengeClass);
 
             ConfigurableField configurableField = challenge.getConfigurableFields().stream().filter(field -> field.getId().toString().equals(fieldId)).findFirst().orElse(null);
             if (configurableField == null) return;
@@ -132,8 +152,46 @@ public class ConfigurationReader implements Listener {
                 boolean object = (boolean) configurableField.getField().get(challenge);
                 configurableField.getField().set(challenge, !object);
 
-                event.getWhoClicked().sendMessage("Ja update halt!");
+                challenge.update();
+                Inventory itemStacks = openConfigurator(challenge);
+                event.getWhoClicked().openInventory(itemStacks);
+            }
 
+            if (configurableField.getType().isEnum()) {
+                Enum<?>[] enumConstants = (Enum<?>[]) configurableField.getType().getEnumConstants();
+                int ordinal = ((Enum<?>) configurableField.getField().get(challenge)).ordinal();
+
+                int nextOrdinal = ordinal;
+                if (event.isLeftClick()) {
+                    nextOrdinal = ordinal - 1;
+                } else if (event.isRightClick()) {
+                    nextOrdinal = ordinal + 1;
+                }
+
+                if (nextOrdinal < 0) {
+                    nextOrdinal = enumConstants.length - 1;
+                } else if (nextOrdinal >= enumConstants.length) {
+                    nextOrdinal = 0;
+                }
+
+                configurableField.getField().set(challenge, enumConstants[nextOrdinal]);
+
+
+                challenge.update();
+                Inventory itemStacks = openConfigurator(challenge);
+                event.getWhoClicked().openInventory(itemStacks);
+            }
+
+            if (configurableField.getType().equals(Integer.class) || configurableField.getType().equals(int.class)) {
+                int object = (int) configurableField.getField().get(challenge);
+
+                if (event.isLeftClick()) {
+                    configurableField.getField().set(challenge, object + 1);
+                } else if (event.isRightClick()) {
+                    configurableField.getField().set(challenge, object - 1);
+                }
+
+                challenge.update();
                 Inventory itemStacks = openConfigurator(challenge);
                 event.getWhoClicked().openInventory(itemStacks);
             }

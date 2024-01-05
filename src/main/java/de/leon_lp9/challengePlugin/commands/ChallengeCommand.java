@@ -88,15 +88,17 @@ public class ChallengeCommand implements Listener {
                     if (event.getClick().isLeftClick()) {
                         if (!Main.getInstance().getChallengeManager().isChallengeActive(challengeClass)) {
                             Main.getInstance().getChallengeManager().activateChallenge(challengeClass);
-                            Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage("§6" + Main.getInstance().getChallengeManager().getAllChallenges().get(challengeClass).getName() + " §7wurde aktiviert!"));
+                            Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage("§6" + Main.getInstance().getChallengeManager().getLoadedChallengeByClass(challengeClass).getName() + " §7wurde aktiviert!"));
                         } else {
+                            Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage("§6" + Main.getInstance().getChallengeManager().getLoadedChallengeByClass(challengeClass).getName() + " §7wurde deaktiviert!"));
                             Main.getInstance().getChallengeManager().deactivateChallenge(challengeClass);
-                            Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage("§6" + Main.getInstance().getChallengeManager().getAllChallenges().get(challengeClass).getName() + " §7wurde deaktiviert!"));
                         }
                         openInventory(((Player) event.getWhoClicked()));
-                    } else if (event.getClick().isRightClick()) {
-                        Inventory itemStacks = Main.getInstance().getConfigurationReader().openConfigurator(Main.getInstance().getChallengeManager().getAllChallenges().get(challengeClass));
+                    } else if (event.getClick().isRightClick() && Main.getInstance().getChallengeManager().isChallengeActive(challengeClass)) {
+                        Inventory itemStacks = Main.getInstance().getConfigurationReader().openConfigurator(Main.getInstance().getChallengeManager().getActiveChallengeByClass(challengeClass));
                         event.getWhoClicked().openInventory(itemStacks);
+                    }else if (event.getClick().isRightClick() && !Main.getInstance().getChallengeManager().isChallengeActive(challengeClass)){
+                        event.getWhoClicked().sendMessage("§cDiese Challenge ist nicht aktiviert!");
                     }
                 }
             }

@@ -2,3 +2,6 @@ name: Challenge
 version: '${project.version}'
 main: de.leon_lp9.challengePlugin.Main
 api-version: '1.20'
+author: Leon_lp9, EinOskar
+description: Challenge Plugin
+website: https://www.spigotmc.org/members/leon_lp9.1064233/
