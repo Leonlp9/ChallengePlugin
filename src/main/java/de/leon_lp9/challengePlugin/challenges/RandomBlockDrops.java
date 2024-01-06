@@ -1,6 +1,7 @@
 package de.leon_lp9.challengePlugin.challenges;
 
 import de.leon_lp9.challengePlugin.challenges.config.ConfigurationValue;
+import de.leon_lp9.challengePlugin.challenges.config.LoadChallenge;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;

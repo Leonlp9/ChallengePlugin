@@ -2,6 +2,7 @@ package de.leon_lp9.challengePlugin.challenges;
 
 import de.leon_lp9.challengePlugin.Main;
 import de.leon_lp9.challengePlugin.challenges.config.ConfigurationValue;
+import de.leon_lp9.challengePlugin.challenges.config.LoadChallenge;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
@@ -9,7 +10,7 @@ import org.bukkit.Material;
 public class ChunkBautSichAb extends Challenge {
     private transient int taskID = 0;
 
-    @ConfigurationValue(title = "Sekunden bis Abbau", description = "Sekunden bis der Chunk abgebaut wird", icon = Material.CLOCK)
+    @ConfigurationValue(title = "Sekunden bis Abbau", description = "Sekunden bis der Chunk abgebaut wird", icon = Material.CLOCK, min = 1)
     private int sekundenBisAbbau = 10;
 
     public ChunkBautSichAb() {

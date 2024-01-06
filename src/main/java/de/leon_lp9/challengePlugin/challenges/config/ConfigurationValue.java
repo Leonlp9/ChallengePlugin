@@ -15,4 +15,7 @@ public @interface ConfigurationValue {
     String description();
     Material icon();
 
+    int min() default 0;
+    int max() default 60;
+
 }

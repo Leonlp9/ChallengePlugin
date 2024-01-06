@@ -1,4 +1,4 @@
-package de.leon_lp9.challengePlugin.challenges;
+package de.leon_lp9.challengePlugin.challenges.config;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

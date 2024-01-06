@@ -1,6 +1,7 @@
 package de.leon_lp9.challengePlugin.challenges;
 
 import de.leon_lp9.challengePlugin.challenges.config.ConfigurationValue;
+import de.leon_lp9.challengePlugin.challenges.config.LoadChallenge;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -17,7 +18,7 @@ public class YCoordinateNurInEineRichtung extends Challenge{
     private Direction direction = Direction.DOWN;
 
     public YCoordinateNurInEineRichtung() {
-        super("Y Coordinate Nur In Eine Richtung", "Du darfst dich nur entweder nach oben oder nach unten bewegen", Material.BEDROCK);
+        super("Y Coordinate Nur In Eine Richtung", "Du darfst dich nur entweder nach oben oder nach unten bewegen", Material.ARROW);
         System.out.println("YCoordinateNurInEineRichtung");
     }
 

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import de.leon_lp9.challengePlugin.challenges.*;
 import de.leon_lp9.challengePlugin.challenges.config.ConfigurationReader;
+import de.leon_lp9.challengePlugin.challenges.config.LoadChallenge;
 import de.leon_lp9.challengePlugin.command.CommandManager;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;

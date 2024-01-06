@@ -2,6 +2,7 @@ package de.leon_lp9.challengePlugin.challenges;
 
 import de.leon_lp9.challengePlugin.Main;
 import de.leon_lp9.challengePlugin.challenges.config.ConfigurationValue;
+import de.leon_lp9.challengePlugin.challenges.config.LoadChallenge;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,10 +17,10 @@ public class TheFloorIsLava extends Challenge {
 
     transient Set<Integer> blocks = new HashSet<>();
 
-    @ConfigurationValue(title = "Sekunden bis Magma", description = "Sekunden bis der Block zu Magma wird", icon = Material.MAGMA_BLOCK)
+    @ConfigurationValue(title = "Sekunden bis Magma", description = "Sekunden bis der Block zu Magma wird", icon = Material.MAGMA_BLOCK, min = 1)
     @SuppressWarnings("FieldMayBeFinal")
     private int sekundenBisMagma = 3;
-    @ConfigurationValue(title = "Sekunden bis Lava", description = "Sekunden bis der Block zu Lava wird", icon = Material.LAVA_BUCKET)
+    @ConfigurationValue(title = "Sekunden bis Lava", description = "Sekunden bis der Block zu Lava wird", icon = Material.LAVA_BUCKET, min = 1)
     @SuppressWarnings("FieldMayBeFinal")
     private int sekundenBisLava = 6;
 

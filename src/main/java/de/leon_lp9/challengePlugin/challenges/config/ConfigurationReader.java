@@ -185,9 +185,12 @@ public class ConfigurationReader implements Listener {
             if (configurableField.getType().equals(Integer.class) || configurableField.getType().equals(int.class)) {
                 int object = (int) configurableField.getField().get(challenge);
 
-                if (event.isLeftClick()) {
+                int min = configurableField.getMetadata().min();
+                int max = configurableField.getMetadata().max();
+
+                if (event.isLeftClick() && object < max) {
                     configurableField.getField().set(challenge, object + 1);
-                } else if (event.isRightClick()) {
+                } else if (event.isRightClick() && object > min) {
                     configurableField.getField().set(challenge, object - 1);
                 }
 
