@@ -19,7 +19,7 @@ public class InternalCommandExecutor implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (!commandSender.hasPermission(info.getPermission()) && !info.getPermission().isEmpty()) {
-            commandSender.sendMessage("Du hast keine Rechte für diesen Command!");
+            commandSender.sendMessage("§8| §aServer §8» §6Du§7 hast keine §6Rechte§7 für diesen §6Command§7!");
             return true;
         }
 

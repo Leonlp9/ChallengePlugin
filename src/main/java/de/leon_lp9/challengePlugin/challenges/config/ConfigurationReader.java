@@ -3,9 +3,12 @@ package de.leon_lp9.challengePlugin.challenges.config;
 import de.leon_lp9.challengePlugin.Main;
 import de.leon_lp9.challengePlugin.builder.ItemBuilder;
 import de.leon_lp9.challengePlugin.challenges.Challenge;
+import de.leon_lp9.challengePlugin.commands.gui.ChallengeMenu;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -38,7 +41,7 @@ public class ConfigurationReader implements Listener {
     public Inventory openConfigurator(Challenge challenge) {
         Collection<ConfigurableField> configurableFields = challenge.getConfigurableFields();
 
-        int size = (int) Math.max(1, Math.ceil(configurableFields.size() / 9f)) * 9;
+        int size = (int) Math.max(1, Math.ceil((configurableFields.size() + 1) / 9f)) * 9;
 
         Inventory inventory = Bukkit.createInventory(null, Math.min(6*9, size), "§6§l" + challenge.getName() + " §7- §6Konfiguration");
 
@@ -58,6 +61,12 @@ public class ConfigurationReader implements Listener {
                     .addPersistentDataContainer("cId", PersistentDataType.STRING, challenge.getClass().getName());
             inventory.addItem(itemBuilder.build());
         }
+
+        inventory.setItem(size - 1, new ItemBuilder(Material.BARRIER)
+                .setDisplayName("§c§lZurück")
+                .setLore("§7Klicke hier um zurück zu gehen.")
+                .addPersistentDataContainer("cId", PersistentDataType.STRING, challenge.getClass().getName())
+                .build());
 
         return inventory;
     }
@@ -99,7 +108,7 @@ public class ConfigurationReader implements Listener {
         Object object = field.getField().get(instance);
 
         String action;
-        if (type.equals(Boolean.class)) {
+        if (type.equals(Boolean.class) || type.equals(boolean.class)) {
             action = !((boolean) object) ? "§aAktivieren" : "§cDeaktivieren";
         } else if (type.isEnum()) {
             action = "§6Vorheriger Wert";
@@ -117,7 +126,7 @@ public class ConfigurationReader implements Listener {
         Object object = field.getField().get(instance);
 
         String action;
-        if (type.equals(Boolean.class)) {
+        if (type.equals(Boolean.class) || type.equals(boolean.class)) {
             action = ((boolean) object) ? "§aAktivieren" : "§cDeaktivieren";
         } else if (type.isEnum()) {
             action = "§6Nächster Wert";
@@ -136,8 +145,16 @@ public class ConfigurationReader implements Listener {
             event.setCancelled(true);
             if (event.getCurrentItem() == null) return;
             if (!event.getCurrentItem().hasItemMeta()) return;
-            if (!event.getCurrentItem().getItemMeta().getPersistentDataContainer().has(new NamespacedKey(Main.getInstance(), "cField"), PersistentDataType.STRING))
+            if (!event.getCurrentItem().getItemMeta().getPersistentDataContainer().has(new NamespacedKey(Main.getInstance(), "cField"), PersistentDataType.STRING)) {
+                if (!event.getCurrentItem().getItemMeta().getPersistentDataContainer().has(new NamespacedKey(Main.getInstance(), "cID"), PersistentDataType.STRING))
+                    return;
+
+                if (event.getCurrentItem().getType().equals(Material.BARRIER)) {
+                    new ChallengeMenu().openInventory((Player) event.getWhoClicked());
+                }
+
                 return;
+            }
 
             String fieldId = event.getCurrentItem().getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Main.getInstance(), "cField"), PersistentDataType.STRING);
             String id = event.getCurrentItem().getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Main.getInstance(), "cId"), PersistentDataType.STRING);

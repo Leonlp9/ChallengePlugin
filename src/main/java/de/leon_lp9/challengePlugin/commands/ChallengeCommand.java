@@ -7,6 +7,7 @@ import de.leon_lp9.challengePlugin.challenges.Challenge;
 import de.leon_lp9.challengePlugin.command.MinecraftCommand;
 import de.leon_lp9.challengePlugin.command.Run;
 import de.leon_lp9.challengePlugin.command.TabComplete;
+import de.leon_lp9.challengePlugin.commands.gui.ChallengeMenu;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -40,30 +41,9 @@ public class ChallengeCommand implements Listener {
                 return;
             }
 
-            openInventory(player);
+            new ChallengeMenu().openInventory(player);
 
         }
-    }
-
-    private void openInventory(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, 9, "§6Challenges");
-
-        Main.getInstance().getChallengeManager().getAllChallenges().values().forEach(challenge -> {
-            inventory.addItem(new ItemBuilder(challenge.getIcon())
-                    .setDisplayName("§6§l" + challenge.getName())
-                    .setLore("§7" + challenge.getDescription(),
-                            "",
-                            Main.getInstance().getChallengeManager().isChallengeActive(challenge.getClass())
-                                    ? "§7Status: §aAktiviert"
-                                    : "§7Status: §cDeaktiviert",
-                            "",
-                            "§7Linksklick: " + new ColorBuilder("Aktivieren").addColorToString(new Color(151, 199, 156, 255)).getText() + " §7/ " + new ColorBuilder("Deaktivieren").addColorToString(new Color(182, 144, 144, 255)).getText(),
-                            "§7Rechtsklick: " + new ColorBuilder("Config öffnen").addColorToString(new Color(151, 199, 193, 255)).getText())
-                    .addPersistentDataContainer("id", PersistentDataType.STRING, challenge.getClass().getName())
-                    .build());
-        });
-
-        player.openInventory(inventory);
     }
 
     @TabComplete
@@ -93,7 +73,7 @@ public class ChallengeCommand implements Listener {
                             Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage("§6" + Main.getInstance().getChallengeManager().getLoadedChallengeByClass(challengeClass).getName() + " §7wurde deaktiviert!"));
                             Main.getInstance().getChallengeManager().deactivateChallenge(challengeClass);
                         }
-                        openInventory(((Player) event.getWhoClicked()));
+                        new ChallengeMenu().openInventory(((Player) event.getWhoClicked()));
                     } else if (event.getClick().isRightClick() && Main.getInstance().getChallengeManager().isChallengeActive(challengeClass)) {
                         Inventory itemStacks = Main.getInstance().getConfigurationReader().openConfigurator(Main.getInstance().getChallengeManager().getActiveChallengeByClass(challengeClass));
                         event.getWhoClicked().openInventory(itemStacks);
