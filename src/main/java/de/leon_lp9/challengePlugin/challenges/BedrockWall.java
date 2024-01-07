@@ -13,15 +13,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 @LoadChallenge
-public class BedrockWand extends Challenge {
+public class BedrockWall extends Challenge {
 
     transient Set<Integer> blocks = new HashSet<>();
 
-    @ConfigurationValue(title = "Sekunden bis Bedrock", description = "Sekunden bis die Bedrock Wand hinter dir erscheint", icon = Material.CLOCK, min = 1)
+    @ConfigurationValue(title = "BedrockWallSecondsName", description = "BedrockWallSecondsDescription", icon = Material.CLOCK, min = 1)
     private int sekundenBisBedrock = 10;
 
-    public BedrockWand() {
-        super("Bedrock Wand", "Bedrock Wand verfolgt dich", Material.BEDROCK);
+    public BedrockWall() {
+        super(Material.BEDROCK);
     }
 
     @EventHandler

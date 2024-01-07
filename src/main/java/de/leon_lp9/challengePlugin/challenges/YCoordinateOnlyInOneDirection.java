@@ -7,18 +7,18 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 @LoadChallenge
-public class YCoordinateNurInEineRichtung extends Challenge{
+public class YCoordinateOnlyInOneDirection extends Challenge{
 
     public enum Direction {
         UP,
         DOWN
     }
 
-    @ConfigurationValue(title = "Richtung", description = "In welche Richtung du dich bewegen darfst", icon = Material.COMPASS)
+    @ConfigurationValue(title = "YCoordinateOnlyInOneDirectionDirectionName", description = "YCoordinateOnlyInOneDirectionDirectionDescription", icon = Material.COMPASS)
     private Direction direction = Direction.DOWN;
 
-    public YCoordinateNurInEineRichtung() {
-        super("Y Coordinate Nur In Eine Richtung", "Du darfst dich nur entweder nach oben oder nach unten bewegen", Material.ARROW);
+    public YCoordinateOnlyInOneDirection() {
+        super(Material.ARROW);
         System.out.println("YCoordinateNurInEineRichtung");
     }
 

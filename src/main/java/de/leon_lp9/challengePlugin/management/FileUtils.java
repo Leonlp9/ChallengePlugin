@@ -1,7 +1,8 @@
-package de.leon_lp9.challengePlugin;
+package de.leon_lp9.challengePlugin.management;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import de.leon_lp9.challengePlugin.Main;
 import lombok.Getter;
 
 import java.awt.*;

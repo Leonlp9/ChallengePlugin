@@ -38,24 +38,24 @@ public class ConfigurationReader implements Listener {
         challenge.setConfigurableFields(list);
     }
 
-    public Inventory openConfigurator(Challenge challenge) {
+    public Inventory openConfigurator(Challenge challenge, String lang) {
         Collection<ConfigurableField> configurableFields = challenge.getConfigurableFields();
 
         int size = (int) Math.max(1, Math.ceil((configurableFields.size() + 1) / 9f)) * 9;
 
-        Inventory inventory = Bukkit.createInventory(null, Math.min(6*9, size), "§6§l" + challenge.getName() + " §7- §6Konfiguration");
+        Inventory inventory = Bukkit.createInventory(null, Math.min(6*9, size), "§6§l" + challenge.getName() + " §7- §6" + Main.getInstance().getTranslationManager().getTranslation(lang, "configuration"));
 
         for (ConfigurableField configurableField : configurableFields) {
             ItemBuilder itemBuilder = new ItemBuilder(configurableField.getMetadata().icon())
-                    .setDisplayName("§6§l" + configurableField.getMetadata().title())
+                    .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, configurableField.getMetadata().title()))
                     .setLore(
-                            "§7" + configurableField.getMetadata().description(),
+                            "§7" + Main.getInstance().getTranslationManager().getTranslation(lang, configurableField.getMetadata().description()),
                             "",
-                            "§7Wert: §6" + getDisplayValue(configurableField, challenge),
-                            "§7Typ: §6" + getDisplayType(configurableField),
+                            "§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "value") + ": §6" + getDisplayValue(configurableField, challenge, lang),
+                            "§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "type") + ": §6" + getDisplayType(configurableField, lang),
                             "",
-                            getDisplayLeftAction(configurableField, challenge),
-                            getDisplayRightAction(configurableField, challenge)
+                            getDisplayLeftAction(configurableField, challenge, lang),
+                            getDisplayRightAction(configurableField, challenge, lang)
                     )
                     .addPersistentDataContainer("cField", PersistentDataType.STRING, configurableField.getId().toString())
                     .addPersistentDataContainer("cId", PersistentDataType.STRING, challenge.getClass().getName());
@@ -63,8 +63,8 @@ public class ConfigurationReader implements Listener {
         }
 
         inventory.setItem(size - 1, new ItemBuilder(Material.BARRIER)
-                .setDisplayName("§c§lZurück")
-                .setLore("§7Klicke hier um zurück zu gehen.")
+                .setDisplayName("§c§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "back"))
+                .setLore("§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "backDescription"))
                 .addPersistentDataContainer("cId", PersistentDataType.STRING, challenge.getClass().getName())
                 .build());
 
@@ -72,10 +72,10 @@ public class ConfigurationReader implements Listener {
     }
 
     @SneakyThrows
-    private String getDisplayValue(ConfigurableField configurableField, Object instance) {
+    private String getDisplayValue(ConfigurableField configurableField, Object instance, String lang) {
         Object value = configurableField.getField().get(instance);
         if (value instanceof Boolean) {
-            return (boolean) value ? "§aAktiviert" : "§cDeaktiviert";
+            return (boolean) value ? "§a" + Main.getInstance().getTranslationManager().getTranslation(lang, "enabled"): "§c" + Main.getInstance().getTranslationManager().getTranslation(lang, "disabled");
         } else if (value instanceof Number) {
             return value.toString();
         } else if (value instanceof String) {
@@ -83,65 +83,66 @@ public class ConfigurationReader implements Listener {
         } else if (value instanceof Enum) {
             return value.toString();
         } else {
-            return "§cUnbekannt";
+            return "§c" + Main.getInstance().getTranslationManager().getTranslation(lang, "unknown");
         }
     }
 
-    private String getDisplayType(ConfigurableField field) {
+    private String getDisplayType(ConfigurableField field, String lang) {
         String lowerCase = field.getType().getSimpleName().toLowerCase();
         return switch (lowerCase) {
-            case "boolean" -> "Ein/Aus";
-            case "integer", "int", "double", "float" -> "Zahl";
-            case "string" -> "Text";
+            case "boolean" -> Main.getInstance().getTranslationManager().getTranslation(lang, "onOff");
+            case "integer", "int", "double", "float" -> Main.getInstance().getTranslationManager().getTranslation(lang, "number");
+            case "string" -> Main.getInstance().getTranslationManager().getTranslation(lang, "text");
             default -> {
                 if (field.getType().isEnum()) {
                     yield field.getType().getSimpleName();
                 }
-                yield "Unbekannt";
+                yield Main.getInstance().getTranslationManager().getTranslation(lang, "unknown");
             }
         };
     }
 
     @SneakyThrows
-    private String getDisplayLeftAction(ConfigurableField field, Object instance) {
+    private String getDisplayLeftAction(ConfigurableField field, Object instance, String lang) {
         Class<?> type = field.getType();
         Object object = field.getField().get(instance);
 
         String action;
         if (type.equals(Boolean.class) || type.equals(boolean.class)) {
-            action = !((boolean) object) ? "§aAktivieren" : "§cDeaktivieren";
+            action = !((boolean) object) ? "§a" + Main.getInstance().getTranslationManager().getTranslation(lang, "activate"): "§c" + Main.getInstance().getTranslationManager().getTranslation(lang, "deactivate");
         } else if (type.isEnum()) {
-            action = "§6Vorheriger Wert";
+            action = "§6" + Main.getInstance().getTranslationManager().getTranslation(lang, "previousValue");
         } else if (type.equals(Integer.class) || type.equals(int.class)) {
-            action = "§aErhöhen";
+            action = "§a" + Main.getInstance().getTranslationManager().getTranslation(lang, "increase");
         } else {
-            action = "§6Unbekannt";
+            action = "§6" + Main.getInstance().getTranslationManager().getTranslation(lang, "unknown");
         }
-        return "§7Linksklick zum " + action + "§7.";
+        return "§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "leftKlick") + action + "§7.";
     }
 
     @SneakyThrows
-    private String getDisplayRightAction(ConfigurableField field, Object instance) {
+    private String getDisplayRightAction(ConfigurableField field, Object instance, String lang) {
         Class<?> type = field.getType();
         Object object = field.getField().get(instance);
 
         String action;
         if (type.equals(Boolean.class) || type.equals(boolean.class)) {
-            action = ((boolean) object) ? "§aAktivieren" : "§cDeaktivieren";
+            action = ((boolean) object) ? "§a" + Main.getInstance().getTranslationManager().getTranslation(lang, "activate"): "§c" + Main.getInstance().getTranslationManager().getTranslation(lang, "deactivate");
         } else if (type.isEnum()) {
-            action = "§6Nächster Wert";
+            action = "§6" + Main.getInstance().getTranslationManager().getTranslation(lang, "nextValue");
         } else if (type.equals(Integer.class) || type.equals(int.class)) {
-            action = "§cVerringern";
+            action = "§c" + Main.getInstance().getTranslationManager().getTranslation(lang, "decrease");
         } else {
-            action = "§6Unbekannt";
+            action = "§6" + Main.getInstance().getTranslationManager().getTranslation(lang, "unknown");
         }
-        return "§7Rechtsklick zum " + action + "§7.";
+        return "§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "rightKlick") + action + "§7.";
     }
 
     @SneakyThrows
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-        if (event.getView().getTitle().matches("§6§l.* §7- §6Konfiguration")) {
+        String lang = Main.getInstance().getTranslationManager().getLanguageOfPlayer((Player) event.getWhoClicked());
+        if (event.getView().getTitle().matches("§6§l.* §7- §6" + Main.getInstance().getTranslationManager().getTranslation(lang, "configuration"))) {
             event.setCancelled(true);
             if (event.getCurrentItem() == null) return;
             if (!event.getCurrentItem().hasItemMeta()) return;
@@ -170,7 +171,7 @@ public class ConfigurationReader implements Listener {
                 configurableField.getField().set(challenge, !object);
 
                 challenge.update();
-                Inventory itemStacks = openConfigurator(challenge);
+                Inventory itemStacks = openConfigurator(challenge, lang);
                 event.getWhoClicked().openInventory(itemStacks);
             }
 
@@ -195,7 +196,7 @@ public class ConfigurationReader implements Listener {
 
 
                 challenge.update();
-                Inventory itemStacks = openConfigurator(challenge);
+                Inventory itemStacks = openConfigurator(challenge, lang);
                 event.getWhoClicked().openInventory(itemStacks);
             }
 
@@ -212,7 +213,7 @@ public class ConfigurationReader implements Listener {
                 }
 
                 challenge.update();
-                Inventory itemStacks = openConfigurator(challenge);
+                Inventory itemStacks = openConfigurator(challenge, lang);
                 event.getWhoClicked().openInventory(itemStacks);
             }
         }

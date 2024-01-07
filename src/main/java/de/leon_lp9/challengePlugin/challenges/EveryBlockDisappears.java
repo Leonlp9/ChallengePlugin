@@ -2,32 +2,28 @@ package de.leon_lp9.challengePlugin.challenges;
 
 import de.leon_lp9.challengePlugin.challenges.config.ConfigurationValue;
 import de.leon_lp9.challengePlugin.challenges.config.LoadChallenge;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.checkerframework.checker.units.qual.C;
 
 @LoadChallenge
-public class JederBlockVerschwindet extends Challenge {
+public class EveryBlockDisappears extends Challenge {
 
-    @ConfigurationValue(title = "Block Platzieren", description = "Blöcke verschwinden beim Platzieren", icon = Material.GRASS_BLOCK)
+    @ConfigurationValue(title = "EveryBlockDisappearsBlockPlaceName", description = "EveryBlockDisappearsBlockPlaceDescription", icon = Material.GRASS_BLOCK)
     private boolean blockPlace = true;
-    @ConfigurationValue(title = "Block Abbauen", description = "Blöcke verschwinden beim Abbauen", icon = Material.DIAMOND_PICKAXE)
+    @ConfigurationValue(title = "EveryBlockDisappearsBlockBreakName", description = "EveryBlockDisappearsBlockBreakDescription", icon = Material.DIAMOND_PICKAXE)
     private boolean blockBreak = true;
 
-    @ConfigurationValue(title = "Block Drop beim Abbauen", description = "Blöcke droppen beim Abbauen", icon = Material.EGG)
+    @ConfigurationValue(title = "EveryBlockDisappearsBlockDropBreakName", description = "EveryBlockDisappearsBlockDropBreakDescription", icon = Material.EGG)
     private boolean blockDropByBreak = true;
-    @ConfigurationValue(title = "Block Drop beim Platzieren", description = "Blöcke droppen beim Platzieren", icon = Material.EGG)
+    @ConfigurationValue(title = "EveryBlockDisappearsBlockDropPlaceName", description = "EveryBlockDisappearsBlockDropPlaceDescription", icon = Material.EGG)
     private boolean blockDropByPlace = false;
 
-    public JederBlockVerschwindet() {
-        super("Jeder Block verschwindet", "Jeder Block mit dem du interagierst verschwindet aus dem Chunk", Material.STRUCTURE_VOID);
+    public EveryBlockDisappears() {
+        super(Material.STRUCTURE_VOID);
     }
 
     @EventHandler

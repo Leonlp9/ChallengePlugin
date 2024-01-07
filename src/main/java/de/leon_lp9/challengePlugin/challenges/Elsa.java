@@ -18,11 +18,11 @@ public class Elsa extends Challenge {
 
     private transient List<Player> playerWhoToggeledOffIce = new ArrayList<>();
 
-    @ConfigurationValue(title = "Eis-Radius", description = "Der Radius in dem Eis generiert wird", icon = Material.BAMBOO_BUTTON, min = 1, max = 10)
+    @ConfigurationValue(title = "ElsaIceRadiusName", description = "ElsaIceRadiusDescription", icon = Material.BAMBOO_BUTTON, min = 1, max = 10)
     private int iceRadius = 3;
 
     public Elsa() {
-        super("Elsa", "Unter dir wird Eis generiert", Material.PACKED_ICE);
+        super(Material.PACKED_ICE);
     }
 
     @EventHandler

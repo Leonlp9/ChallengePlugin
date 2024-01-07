@@ -6,12 +6,15 @@ import de.leon_lp9.challengePlugin.challenges.*;
 import de.leon_lp9.challengePlugin.challenges.config.ConfigurationReader;
 import de.leon_lp9.challengePlugin.challenges.config.LoadChallenge;
 import de.leon_lp9.challengePlugin.command.CommandManager;
+import de.leon_lp9.challengePlugin.gamerules.Gamerule;
+import de.leon_lp9.challengePlugin.management.FileUtils;
+import de.leon_lp9.challengePlugin.management.Metrics;
+import de.leon_lp9.challengePlugin.management.SpigotUpdateChecker;
+import de.leon_lp9.challengePlugin.management.TranslationManager;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,24 +29,58 @@ public final class Main extends JavaPlugin {
     @Getter
     private FileUtils fileUtils;
     private ChallengeManager challengeManager;
+    private GameruleManager gameruleManager;
     @Getter
     private TranslationManager translationManager;
+    private Metrics metrics;
 
     @Override
     public void onEnable() {
         instance = this;
-        File directory = new File(getDataFolder(), "translations");
-        if (!directory.exists()) {
-            directory.mkdirs();
-        }
-        saveResource("translations/de_DE.json", true);
-        saveResource("translations/en_US.json", true);
-
         fileUtils = new FileUtils();
         configurationReader = new ConfigurationReader();
         translationManager = new TranslationManager(this);
         getServer().getPluginManager().registerEvents(translationManager, this);
 
+        loadChallengeManagerFromConfig();
+        loadGameruleManagerFromConfig();
+        addChallenges();
+        challengeManager.getTimer().startTask();
+        challengeManager.getTimer().setResumed(false);
+        challengeManager.registerAllAktiveChallenges();
+
+        CommandManager commandManager = new CommandManager();
+        commandManager.init();
+
+        metrics = new Metrics(this, 20679);
+        new SpigotUpdateChecker(this, 107018).getVersion(version -> {
+            if (!this.getDescription().getVersion().equals(version)) {
+                getLogger().warning("There is a new update available.");
+                getLogger().warning("Your are using version " + this.getDescription().getVersion());
+                getLogger().warning("The latest version is " + version);
+                getLogger().warning("Download it here: https://www.spigotmc.org/resources/compactcrates.107018/");
+            }
+        });
+    }
+
+    @Override
+    public void onDisable() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("timer", challengeManager.getTimer());
+
+        Map<String, Object> activeChallenges = new HashMap<>();
+
+        for (Challenge aktiveChallenge : challengeManager.getActiveChallenges()) {
+            activeChallenges.put(aktiveChallenge.getClass().getName(), aktiveChallenge);
+        }
+
+        data.put("activeChallenges", activeChallenges);
+        fileUtils.writeToJsonFile("ChallengeManager", data);
+    }
+
+
+
+    private void loadChallengeManagerFromConfig() {
         if (fileUtils.fileExists("challengeManager")){
             Map<String, Object> data = fileUtils.readFromJsonFile("ChallengeManager", new TypeToken<Map<String, Object>>() {});
             Gson gson = fileUtils.getGson();
@@ -62,28 +99,27 @@ public final class Main extends JavaPlugin {
         }else{
             challengeManager = new ChallengeManager();
         }
-        addChallenges();
-        challengeManager.getTimer().startTask();
-        challengeManager.getTimer().setResumed(false);
-        challengeManager.registerAllAktiveChallenges();
-
-        CommandManager commandManager = new CommandManager();
-        commandManager.init();
     }
 
-    @Override
-    public void onDisable() {
-        Map<String, Object> data = new HashMap<>();
-        data.put("timer", challengeManager.getTimer());
-
-        Map<String, Object> activeChallenges = new HashMap<>();
-
-        for (Challenge aktiveChallenge : challengeManager.getActiveChallenges()) {
-            activeChallenges.put(aktiveChallenge.getClass().getName(), aktiveChallenge);
+    private void loadGameruleManagerFromConfig() {
+        if (fileUtils.fileExists("gameruleManager")){
+            Map<String, Object> data = fileUtils.readFromJsonFile("gameruleManager", new TypeToken<Map<String, Object>>() {});
+            Gson gson = fileUtils.getGson();
+            Timer timer = gson.fromJson(gson.toJson(data.get("timer")), Timer.class);
+            List<Gamerule> activeGamerules = gson.fromJson(gson.toJson(data.get("activeGamerules")), new TypeToken<Map<String, Object>>() {
+                    }).entrySet().stream()
+                    .map(e -> {
+                        try {
+                            return (Gamerule) gson.fromJson(gson.toJson(e.getValue()), Class.forName(e.getKey()));
+                        } catch (ClassNotFoundException classNotFoundException) {
+                            classNotFoundException.printStackTrace();
+                        }
+                        return null;
+                    }).collect(Collectors.toList());
+            gameruleManager = new GameruleManager();
+        }else{
+            gameruleManager = new GameruleManager();
         }
-
-        data.put("activeChallenges", activeChallenges);
-        fileUtils.writeToJsonFile("ChallengeManager", data);
     }
 
     public void addChallenges(){

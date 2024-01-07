@@ -44,6 +44,30 @@ public class ColorBuilder {
         return new Color(red, green, blue);
     }
 
+    public ColorBuilder addBackground(){
+        //nimm den text und füge hinter jedem char ein "󀀳󏿹" ein
+        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder color = new StringBuilder();
+        stringBuilder.append("\uDAC0\uDC34\uDAFF\uDFFD");
+        for (int i = 0; i < text.length(); i++) {
+            //wenn an der stelle ein "§" ist, füge nur den char ein und den darauffolgenden char
+            if (text.charAt(i) == '§') {
+                color.append(text.charAt(i));
+                color.append(text.charAt(i + 1));
+                i++;
+                continue;
+            }
+
+            stringBuilder.append("§f\uDAC0\uDC33\uDAFF\uDFF7");
+            stringBuilder.append(color);
+            stringBuilder.append(text.charAt(i));
+            color = new StringBuilder();
+        }
+        stringBuilder.append("§f\uDAFF\uDFFF\uDAC0\uDC35");
+        text = stringBuilder.toString();
+        return this;
+    }
+
     public String getText() {
         return text;
     }

@@ -4,6 +4,7 @@ import de.leon_lp9.challengePlugin.builder.ColorBuilder;
 import lombok.*;
 import org.bukkit.Bukkit;
 import java.awt.Color;
+import java.lang.management.ManagementFactory;
 
 @Data
 public class Timer {
@@ -24,6 +25,7 @@ public class Timer {
     private Color firstColor = new Color(207, 62, 229);
     private Color secondColor = new Color(128, 11, 146);
     private boolean bold = true;
+    private boolean background = true;
 
     public Timer(int seconds) {
         this.seconds = seconds;
@@ -63,7 +65,27 @@ public class Timer {
         Bukkit.getOnlinePlayers().forEach(player -> {
             ColorBuilder colorBuilder = new ColorBuilder(getFormattedTime() + (!resumed ? " | " + Main.getInstance().getTranslationManager().getTranslation(player, "paused") : "")).
             addColorGradientToString(firstColor, secondColor, fadeStep, 20, true);
+            if (background) {
+                colorBuilder.addBackground();
+            }
             player.sendActionBar(colorBuilder.getText());
+
+            //Get Server TPS, Cpu Usage, Memory Usage, and Player Count
+            double tps = Bukkit.getServer().getTPS()[0];
+            double cpu = ((com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getCpuLoad() * 100;
+            double mem = ((com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize() - ((com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getFreeMemorySize();
+
+            //round
+            tps = Math.round(tps * 100.0) / 100.0;
+            cpu = Math.round(cpu * 100.0) / 100.0;
+
+            //convert bytes to gb and round
+            mem = Math.round((mem / 1024 / 1024 / 1024) * 100.0) / 100.0;
+
+            int playerCount = Bukkit.getServer().getOnlinePlayers().size();
+
+            player.setPlayerListHeaderFooter("\uDAC0\uDC31\n\n\n\n\n\n", "\n§7TPS: §b" + tps + "§7 | CPU: §b" + cpu + "%§7 | RAM: §b" + mem + "GB§7 | Players: §b" + playerCount + "\n");
+
         });
     }
 

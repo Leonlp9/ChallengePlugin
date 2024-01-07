@@ -43,6 +43,12 @@ public class ItemBuilder {
         return this;
     }
 
+    public void addLineToLore(String line){
+        ArrayList<String> lore = new ArrayList<>(itemMeta.getLore());
+        lore.add(line);
+        itemMeta.setLore(lore);
+    }
+
     public ItemBuilder setUnbreakable(boolean unbreakable){
         itemMeta.setUnbreakable(unbreakable);
         return this;

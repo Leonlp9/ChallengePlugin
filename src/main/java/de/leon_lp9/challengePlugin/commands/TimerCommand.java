@@ -28,9 +28,13 @@ public class TimerCommand {
     @Run
     public boolean command(String[] strings, CommandSender commandSender) {
 
-        String prefix = "§c§lTimer §8| §7";
+        if (!(commandSender instanceof Player cPlayer)) {
+            commandSender.sendMessage("You must be a player to execute this command.");
+            return true;
+        }
+
         if (strings.length == 0) {
-            commandSender.sendMessage(prefix + "Der Timer ist aktuell auf §a§l" + timer.getFormattedTime() + "§7.");
+            commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerIsAt").replace("%time%", timer.getFormattedTime()));
             return true;
         }
 
@@ -38,11 +42,11 @@ public class TimerCommand {
             if (timer.isResumed()) {
                 timer.setResumed(false);
                 Bukkit.getOnlinePlayers().forEach(player -> {
-                    player.sendMessage(prefix + "Der Timer wurde §c§lpausiert§7 von §a§l" + commandSender.getName() + "§7.");
+                    player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerPaused").replace("%player%", commandSender.getName()));
                 });
                 timer.sendActionBar();
             } else {
-                commandSender.sendMessage(prefix + "Der Timer ist bereits §a§lpausiert§7.");
+                commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerAlreadyPaused"));
             }
             return true;
         }else
@@ -51,11 +55,11 @@ public class TimerCommand {
             if (!timer.isResumed()) {
                 timer.setResumed(true);
                 Bukkit.getOnlinePlayers().forEach(player -> {
-                    player.sendMessage(prefix + "Der Timer wurde §a§lfortgesetzt§7 von §a§l" + commandSender.getName() + "§7.");
+                    player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerResumed").replace("%player%", commandSender.getName()));
                 });
                 timer.sendActionBar();
             } else {
-                commandSender.sendMessage(prefix + "Der Timer läuft bereits.");
+                commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerAlreadyResumed"));
             }
             return true;
         }else
@@ -63,7 +67,7 @@ public class TimerCommand {
         if (strings[0].equalsIgnoreCase("reset")) {
             timer.setSeconds(0);
             Bukkit.getOnlinePlayers().forEach(player -> {
-                player.sendMessage(prefix + "Der Timer wurde §a§lzurückgesetzt§7 von §a§l" + commandSender.getName() + "§7.");
+                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerReset").replace("%player%", commandSender.getName()));
             });
             timer.sendActionBar();
             return true;
@@ -75,14 +79,14 @@ public class TimerCommand {
                     int seconds = Integer.parseInt(strings[1]);
                     timer.setSeconds(seconds);
                     Bukkit.getOnlinePlayers().forEach(player -> {
-                        player.sendMessage(prefix + "Der Timer wurde auf §a§l" + timer.getFormattedTime() + "§7 gesetzt von §a§l" + commandSender.getName() + "§7.");
+                        player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerSet").replace("%time%", timer.getFormattedTime()).replace("%player%", commandSender.getName()));
                     });
                     timer.sendActionBar();
                 } catch (NumberFormatException e) {
-                    commandSender.sendMessage(prefix + "Bitte gib eine §a§lZahl §7an.");
+                    commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "pleaseEnterAValidNumber"));
                 }
             } else {
-                commandSender.sendMessage(prefix + "Bitte gib eine §a§lZahl §7an.");
+                commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "pleaseEnterAValidNumber"));
             }
             return true;
         }else
@@ -93,14 +97,14 @@ public class TimerCommand {
                     int seconds = Integer.parseInt(strings[1]);
                     timer.setSeconds(timer.getSeconds() + seconds);
                     Bukkit.getOnlinePlayers().forEach(player -> {
-                        player.sendMessage(prefix + "Der Timer wurde um §a§l" + seconds + " Sekunden §7erhöht von §a§l" + commandSender.getName() + "§7.");
+                        player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerAdded").replace("%time%", String.valueOf(seconds)).replace("%player%", commandSender.getName()));
                     });
                     timer.sendActionBar();
                 } catch (NumberFormatException e) {
-                    commandSender.sendMessage(prefix + "Bitte gib eine §a§lZahl §7an.");
+                    commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "pleaseEnterAValidNumber"));
                 }
             } else {
-                commandSender.sendMessage(prefix + "Bitte gib eine §a§lZahl §7an.");
+                commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "pleaseEnterAValidNumber"));
             }
             return true;
         }else
@@ -111,20 +115,20 @@ public class TimerCommand {
                     int seconds = Integer.parseInt(strings[1]);
                     timer.setSeconds(timer.getSeconds() - seconds);
                     Bukkit.getOnlinePlayers().forEach(player -> {
-                        player.sendMessage(prefix + "Der Timer wurde um §a§l" + seconds + " Sekunden §7verringert von §a§l" + commandSender.getName() + "§7.");
+                        player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerRemoved").replace("%time%", String.valueOf(seconds)).replace("%player%", commandSender.getName()));
                     });
                     timer.sendActionBar();
                 } catch (NumberFormatException e) {
-                    commandSender.sendMessage(prefix + "Bitte gib eine §a§lZahl §7an.");
+                    commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "pleaseEnterAValidNumber"));
                 }
             } else {
-                commandSender.sendMessage(prefix + "Bitte gib eine §a§lZahl §7an.");
+                commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "pleaseEnterAValidNumber"));
             }
             return true;
         }else
 
         if (strings[0].equalsIgnoreCase("get")) {
-            commandSender.sendMessage(prefix + "Der Timer ist aktuell auf Sekunde §a§l" + timer.getSeconds() + "§7.");
+            commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerIsAt").replace("%time%", timer.getFormattedTime()));
             return true;
         }else
 
@@ -134,14 +138,14 @@ public class TimerCommand {
                     Timer.TimerState state = Timer.TimerState.valueOf(strings[1]);
                     timer.setState(state);
                     Bukkit.getOnlinePlayers().forEach(player -> {
-                        player.sendMessage(prefix + "Der Timer wurde auf §a§l" + state.toString() + "§7 gesetzt von §a§l" + commandSender.getName() + "§7.");
+                        player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "modeChanged").replace("%mode%", state.toString()).replace("%player%", commandSender.getName()));
                     });
                     timer.sendActionBar();
                 } catch (IllegalArgumentException e) {
-                    commandSender.sendMessage(prefix + "Bitte gib einen §a§lModus §7an.");
+                    commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "pleaseEnterAValidMode"));
                 }
             } else {
-                commandSender.sendMessage(prefix + "Bitte gib einen §a§lModus §7an.");
+                commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "pleaseEnterAValidMode"));
             }
             return true;
         }else
@@ -152,14 +156,14 @@ public class TimerCommand {
                     Color color = Color.decode(strings[1]);
                     timer.setFirstColor(color);
                     Bukkit.getOnlinePlayers().forEach(player -> {
-                        player.sendMessage(prefix + "Die erste Farbe wurde auf " + ChatColor.of(new java.awt.Color(color.getRed(), color.getGreen(), color.getBlue())) + "§l■■■§7 gesetzt von §a§l" + commandSender.getName() + "§7.");
+                        player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "firstColorChanged").replace("%color%", ChatColor.of(color) + "§l■■■§7").replace("%player%", commandSender.getName()));
                     });
                     timer.sendActionBar();
                 }catch (IllegalArgumentException e){
-                    commandSender.sendMessage(prefix + "Bitte gib eine §a§lFarbe §7an.");
+                    commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "pleaseEnterAValidColor"));
                 }
             }else{
-                commandSender.sendMessage(prefix + "Bitte gib eine §a§lFarbe §7an.");
+                commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "pleaseEnterAValidColor"));
             }
             return true;
         }else
@@ -170,14 +174,14 @@ public class TimerCommand {
                     Color color = Color.decode(strings[1]);
                     timer.setSecondColor(color);
                     Bukkit.getOnlinePlayers().forEach(player -> {
-                        player.sendMessage(prefix + "Die zweite Farbe wurde auf " + ChatColor.of(new java.awt.Color(color.getRed(), color.getGreen(), color.getBlue())) + "§l■■■§7 gesetzt von §a§l" + commandSender.getName() + "§7.");
+                        player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "secondColorChanged").replace("%color%", ChatColor.of(color) + "§l■■■§7").replace("%player%", commandSender.getName()));
                     });
                     timer.sendActionBar();
                 }catch (IllegalArgumentException e){
-                    commandSender.sendMessage(prefix + "Bitte gib eine §a§lFarbe §7an.");
+                    commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "pleaseEnterAValidColor"));
                 }
             }else{
-                commandSender.sendMessage(prefix + "Bitte gib eine §a§lFarbe §7an.");
+                commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "pleaseEnterAValidColor"));
             }
             return true;
         }else
@@ -188,17 +192,35 @@ public class TimerCommand {
                     boolean bold = Boolean.parseBoolean(strings[1]);
                     timer.setBold(bold);
                     Bukkit.getOnlinePlayers().forEach(player -> {
-                        player.sendMessage(prefix + "Bold wurde auf §a§l" + bold + "§7 gesetzt von §a§l" + commandSender.getName() + "§7.");
+                        player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "boldChanged").replace("%bold%", String.valueOf(bold)).replace("%player%", commandSender.getName()));
                     });
                     timer.sendActionBar();
                 } catch (IllegalArgumentException e) {
-                    commandSender.sendMessage(prefix + "Bitte gib einen §a§lWahrheitswert §7an.");
+                    commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "pleaseEnterAValidBoolean"));
                 }
             } else {
-                commandSender.sendMessage(prefix + "Bitte gib einen §a§lWahrheitswert §7an.");
+                commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "pleaseEnterAValidBoolean"));
             }
             return true;
-        }else if (strings[0].equalsIgnoreCase("help")) {
+        }else if(strings[0].equalsIgnoreCase("background")){
+            if (strings.length == 2) {
+                try {
+                    boolean background = Boolean.parseBoolean(strings[1]);
+                    timer.setBackground(background);
+                    Bukkit.getOnlinePlayers().forEach(player -> {
+                        player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "backgroundChanged").replace("%background%", String.valueOf(background)).replace("%player%", commandSender.getName()));
+                    });
+                    timer.sendActionBar();
+                } catch (IllegalArgumentException e) {
+                    commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "pleaseEnterAValidBoolean"));
+                }
+            } else {
+                commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "pleaseEnterAValidBoolean"));
+            }
+            return true;
+        }
+
+        else if (strings[0].equalsIgnoreCase("help")) {
 
             commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation((Player) commandSender, "timerHelp"));
 
@@ -225,6 +247,7 @@ public class TimerCommand {
             list.add("setFirstColor");
             list.add("setSecondColor");
             list.add("bold");
+            list.add("background");
             list.removeIf(string -> !string.startsWith(strings[0]));
         }
         if (strings.length == 2) {
@@ -245,7 +268,7 @@ public class TimerCommand {
                 list.add("#FFFF00");
                 list.add("#FFFFFF");
                 list.removeIf(string -> !string.startsWith(strings[1]));
-            }else if(strings[0].equalsIgnoreCase("bold")){
+            }else if(strings[0].equalsIgnoreCase("bold") || strings[0].equalsIgnoreCase("background")){
                 list.add("true");
                 list.add("false");
                 list.removeIf(string -> !string.startsWith(strings[1]));

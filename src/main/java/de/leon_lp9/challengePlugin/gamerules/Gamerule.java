@@ -1,4 +1,4 @@
-package de.leon_lp9.challengePlugin.challenges;
+package de.leon_lp9.challengePlugin.gamerules;
 
 import de.leon_lp9.challengePlugin.Main;
 import de.leon_lp9.challengePlugin.Timer;
@@ -13,21 +13,23 @@ import org.bukkit.event.Listener;
 import java.util.Collection;
 
 @Getter
-public class Challenge implements Listener {
+public class Gamerule implements Listener {
     private transient final String name;
     private transient final String description;
     private transient final Material icon;
+    @Getter
+    @Setter
+    private boolean enabled;
 
     @Setter
     @Getter
     private transient Collection<ConfigurableField> configurableFields;
 
-    public Challenge(Material icon) {
-        this.name = this.getClass().getSimpleName() + "Name";
-        this.description = this.getClass().getSimpleName() + "Description";
+    public Gamerule(Material icon) {
+        this.name = this.getClass().getSimpleName() + "GameruleName";
+        this.description = this.getClass().getSimpleName() + "GameruleDescription";
         this.icon = icon;
-
-        Main.getInstance().getConfigurationReader().readConfigurableFields(this);
+        this.enabled = false;
     }
 
     public void register() {
@@ -36,14 +38,6 @@ public class Challenge implements Listener {
 
     public void unregister() {
         HandlerList.unregisterAll(this);
-    }
-
-    public boolean isRunning() {
-        return Main.getInstance().getChallengeManager().getTimer().isResumed();
-    }
-
-    public Timer getTimer() {
-        return Main.getInstance().getChallengeManager().getTimer();
     }
 
     public void update(){}

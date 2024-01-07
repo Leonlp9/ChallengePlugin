@@ -7,14 +7,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
 @LoadChallenge
-public class ChunkBautSichAb extends Challenge {
+public class ChunkBreaksDown extends Challenge {
     private transient int taskID = 0;
 
-    @ConfigurationValue(title = "Sekunden bis Abbau", description = "Sekunden bis der Chunk abgebaut wird", icon = Material.CLOCK, min = 1)
+    @ConfigurationValue(title = "SecondsUntilChunkBreaksDownName", description = "SecondsUntilChunkBreaksDownDescription", icon = Material.CLOCK, min = 1)
     private int sekundenBisAbbau = 10;
 
-    public ChunkBautSichAb() {
-        super("Chunk Baut Sich Ab", "Der Chunk baut sich ab", Material.DIAMOND_PICKAXE);
+    public ChunkBreaksDown() {
+        super(Material.DIAMOND_PICKAXE);
     }
 
     @Override

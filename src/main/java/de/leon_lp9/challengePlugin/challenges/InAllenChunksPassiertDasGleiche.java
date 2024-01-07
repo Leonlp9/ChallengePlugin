@@ -23,7 +23,7 @@ public class InAllenChunksPassiertDasGleiche extends Challenge {
     private final Map<Integer, Material> placedBlocks = new HashMap<>();
 
     public InAllenChunksPassiertDasGleiche() {
-        super("In allen Chunks passiert das gleiche", "Wenn blöcke in einem Chunk platziert/abgebaut werden, passiert das gleiche in allen anderen Chunks", Material.STRUCTURE_BLOCK);
+        super(Material.STRUCTURE_BLOCK);
     }
 
     @EventHandler

@@ -20,14 +20,14 @@ public class RandomBlockDrops extends Challenge{
      * Wenn true, dann soll gespeichert werden, welches Item gedroppt wurde und wenn der block erneut abgebaut wird, soll das gleiche Item gedroppt werden
      */
     @Getter
-    @ConfigurationValue(title = "Save Drops", description = "Sollen die Items gespeichert werden?", icon = Material.PAPER)
+    @ConfigurationValue(title = "RandomBlockDropsSaveName", description = "RandomBlockDropsSaveDescription", icon = Material.PAPER)
     @SuppressWarnings("FieldMayBeFinal")
     private boolean saveDrops = true;
 
     private final Map<Integer, Integer> savedDropsOrdinal = new HashMap<>();
 
     public RandomBlockDrops() {
-        super("RandomBlockDrops", "Jeder Block dropt ein zufälliges Item", Material.CHEST);
+        super(Material.CHEST);
         System.out.println("RandomBlockDrops");
     }
 

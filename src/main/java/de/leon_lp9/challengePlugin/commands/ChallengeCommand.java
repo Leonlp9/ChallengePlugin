@@ -1,8 +1,6 @@
 package de.leon_lp9.challengePlugin.commands;
 
 import de.leon_lp9.challengePlugin.Main;
-import de.leon_lp9.challengePlugin.builder.ColorBuilder;
-import de.leon_lp9.challengePlugin.builder.ItemBuilder;
 import de.leon_lp9.challengePlugin.challenges.Challenge;
 import de.leon_lp9.challengePlugin.command.MinecraftCommand;
 import de.leon_lp9.challengePlugin.command.Run;
@@ -23,7 +21,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
 import java.util.List;
 
 @MinecraftCommand(name = "challenge", description = "Challenge command")
@@ -54,7 +51,10 @@ public class ChallengeCommand implements Listener {
     @SneakyThrows
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if(event.getView().getTitle().equals("§6Challenges")) {
+        if (!(event.getWhoClicked() instanceof Player ePlayer)) {
+            return;
+        }
+        if(event.getView().getTitle().equals("§6" + Main.getInstance().getTranslationManager().getTranslation(ePlayer, "challenges"))) {
             event.setCancelled(true);
             ItemStack currentItem = event.getCurrentItem();
             if(currentItem != null) {
@@ -68,17 +68,17 @@ public class ChallengeCommand implements Listener {
                     if (event.getClick().isLeftClick()) {
                         if (!Main.getInstance().getChallengeManager().isChallengeActive(challengeClass)) {
                             Main.getInstance().getChallengeManager().activateChallenge(challengeClass);
-                            Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage("§6" + Main.getInstance().getChallengeManager().getLoadedChallengeByClass(challengeClass).getName() + " §7wurde aktiviert!"));
+                            Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "hasBeenActivated").replace("%challenge%", Main.getInstance().getChallengeManager().getLoadedChallengeByClass(challengeClass).getTranslationName(player))));
                         } else {
-                            Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage("§6" + Main.getInstance().getChallengeManager().getLoadedChallengeByClass(challengeClass).getName() + " §7wurde deaktiviert!"));
+                            Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "hasBeenDeactivated").replace("%challenge%", Main.getInstance().getChallengeManager().getLoadedChallengeByClass(challengeClass).getTranslationName(player))));
                             Main.getInstance().getChallengeManager().deactivateChallenge(challengeClass);
                         }
                         new ChallengeMenu().openInventory(((Player) event.getWhoClicked()));
                     } else if (event.getClick().isRightClick() && Main.getInstance().getChallengeManager().isChallengeActive(challengeClass)) {
-                        Inventory itemStacks = Main.getInstance().getConfigurationReader().openConfigurator(Main.getInstance().getChallengeManager().getActiveChallengeByClass(challengeClass));
+                        Inventory itemStacks = Main.getInstance().getConfigurationReader().openConfigurator(Main.getInstance().getChallengeManager().getActiveChallengeByClass(challengeClass), Main.getInstance().getTranslationManager().getLanguageOfPlayer(((Player) event.getWhoClicked())));
                         event.getWhoClicked().openInventory(itemStacks);
                     }else if (event.getClick().isRightClick() && !Main.getInstance().getChallengeManager().isChallengeActive(challengeClass)){
-                        event.getWhoClicked().sendMessage("§cDiese Challenge ist nicht aktiviert!");
+                        event.getWhoClicked().sendMessage(Main.getInstance().getTranslationManager().getTranslation(((Player) event.getWhoClicked()), "challengeNotActive"));
                     }
                 }
             }
