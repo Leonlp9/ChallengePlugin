@@ -32,6 +32,13 @@ public class Gamerule implements Listener {
         this.enabled = false;
     }
 
+    public Gamerule(Material icon, boolean enabled) {
+        this.name = this.getClass().getSimpleName() + "GameruleName";
+        this.description = this.getClass().getSimpleName() + "GameruleDescription";
+        this.icon = icon;
+        this.enabled = enabled;
+    }
+
     public void register() {
         Main.getInstance().getServer().getPluginManager().registerEvents(this, Main.getInstance());
     }

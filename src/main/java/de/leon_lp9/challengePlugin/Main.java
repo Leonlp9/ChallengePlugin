@@ -6,7 +6,9 @@ import de.leon_lp9.challengePlugin.challenges.*;
 import de.leon_lp9.challengePlugin.challenges.config.ConfigurationReader;
 import de.leon_lp9.challengePlugin.challenges.config.LoadChallenge;
 import de.leon_lp9.challengePlugin.command.CommandManager;
+import de.leon_lp9.challengePlugin.gamerules.DamageMessages;
 import de.leon_lp9.challengePlugin.gamerules.Gamerule;
+import de.leon_lp9.challengePlugin.gamerules.config.LoadGamerule;
 import de.leon_lp9.challengePlugin.management.FileUtils;
 import de.leon_lp9.challengePlugin.management.Metrics;
 import de.leon_lp9.challengePlugin.management.SpigotUpdateChecker;
@@ -48,6 +50,8 @@ public final class Main extends JavaPlugin {
         challengeManager.getTimer().startTask();
         challengeManager.getTimer().setResumed(false);
         challengeManager.registerAllAktiveChallenges();
+        addGamerules();
+        gameruleManager.registerAllGamerules();
 
         CommandManager commandManager = new CommandManager();
         commandManager.init();
@@ -76,6 +80,20 @@ public final class Main extends JavaPlugin {
 
         data.put("activeChallenges", activeChallenges);
         fileUtils.writeToJsonFile("ChallengeManager", data);
+
+
+
+        Map<String, Object> data2 = new HashMap<>();
+
+        Map<String, Object> activeGamerules = new HashMap<>();
+
+        for (Gamerule activeGamerule : gameruleManager.getGamerules()) {
+            activeGamerules.put(activeGamerule.getClass().getName(), activeGamerule);
+        }
+
+        data2.put("activeGamerules", activeGamerules);
+
+        fileUtils.writeToJsonFile("GameruleManager", data2);
     }
 
 
@@ -102,8 +120,8 @@ public final class Main extends JavaPlugin {
     }
 
     private void loadGameruleManagerFromConfig() {
-        if (fileUtils.fileExists("gameruleManager")){
-            Map<String, Object> data = fileUtils.readFromJsonFile("gameruleManager", new TypeToken<Map<String, Object>>() {});
+        if (fileUtils.fileExists("GameruleManager")){
+            Map<String, Object> data = fileUtils.readFromJsonFile("GameruleManager", new TypeToken<Map<String, Object>>() {});
             Gson gson = fileUtils.getGson();
             Timer timer = gson.fromJson(gson.toJson(data.get("timer")), Timer.class);
             List<Gamerule> activeGamerules = gson.fromJson(gson.toJson(data.get("activeGamerules")), new TypeToken<Map<String, Object>>() {
@@ -138,6 +156,15 @@ public final class Main extends JavaPlugin {
             }
         });
 
+    }
+
+    public void addGamerules(){
+        Reflections reflections = new Reflections("de.leon_lp9.challengePlugin.gamerules");
+
+        reflections.getTypesAnnotatedWith(LoadGamerule.class).forEach(aClass -> {
+            System.out.println(aClass);
+            gameruleManager.addGameRuleIfNotExists((Class<? extends Gamerule>) aClass);
+        });
     }
 
 }
