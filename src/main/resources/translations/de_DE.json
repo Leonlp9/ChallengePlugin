@@ -1,0 +1,31 @@
+{
+  "prefix": "§8| §aServer §8» §6",
+  "debug": "Debug erfolgreich!",
+  "languageChanged": "%prefix%Sprache geändert auf Deutsch",
+  "noPermission": "%prefix%Du§7 hast keine §6Rechte§7 für diesen §6Command§7!",
+
+  "paused": "Pausiert",
+  "timerHelp": "§6§lTimer §8| §7Hilfe\n§7/timer §8- §7Zeigt die aktuelle Zeit an\n§7/timer pause §8- §7Pausiert den Timer\n§7/timer resume §8- §7Setzt den Timer fort\n§7/timer reset §8- §7Setzt den Timer zurück\n§7/timer set <Sekunden> §8- §7Setzt den Timer auf eine bestimmte Zeit\n§7/timer add <Sekunden> §8- §7Erhöht den Timer um eine bestimmte Zeit\n§7/timer remove <Sekunden> §8- §7Verringert den Timer um eine bestimmte Zeit\n§7/timer get §8- §7Zeigt die aktuelle Zeit an\n§7/timer mode <Countdown/Countup> §8- §7Setzt den Timer Modus\n§7/timer setFirstColor <Farbe> §8- §7Setzt die erste Farbe\n§7/timer setSecondColor <Farbe> §8- §7Setzt die zweite Farbe\n§7/timer bold <true/false> §8- §7Setzt den Bold Wert",
+  "back": "Zurück",
+  "backDescription": "Klicke hier um zurück zu gehen.",
+
+  "value": "Wert",
+  "type": "Typ",
+
+  "leftKlick": "Linksklick zum ",
+  "rightKlick": "Rechtsklick zum ",
+  "increase": "Erhöhen",
+  "reduce": "Verringern",
+  "nextValue": "Nächster Wert",
+  "previousValue": "Vorheriger Wert",
+  "activate": "Aktivieren",
+  "deactivate": "Deaktivieren",
+  "unknown": "Unbekannt",
+
+  "onOff": "An/Aus",
+  "number": "Zahl",
+  "text": "Text",
+
+  "theFloorIsLavaName": "Der Boden ist Lava!",
+  "theFloorIsLavaDescription": "Alles was unter dir ist, wird nach einer Zeit zu Lava"
+}

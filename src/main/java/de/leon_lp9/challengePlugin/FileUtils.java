@@ -6,14 +6,14 @@ import lombok.Getter;
 
 import java.awt.*;
 import java.io.*;
-import java.lang.reflect.Type;
-import java.util.Map;
+import java.nio.charset.StandardCharsets;
 
+@Getter
 public class FileUtils {
 
-    @Getter
     private final Gson gson = new GsonBuilder()
             .setPrettyPrinting()
+            .disableHtmlEscaping()
             .registerTypeAdapter(Color.class, (JsonDeserializer<Color>) (jsonElement, type, jsonDeserializationContext) -> Color.decode(jsonElement.getAsString()))
             .registerTypeAdapter(Color.class, (JsonSerializer<Color>) (color, type, jsonSerializationContext) -> jsonSerializationContext.serialize("#" + Integer.toHexString(color.getRGB()).substring(2)))
             .create();
@@ -48,7 +48,7 @@ public class FileUtils {
     }
 
     public <T> T readFromJsonFile(String fileName, TypeToken<T> type) {
-        try (Reader reader = new FileReader("plugins\\Challenge\\" + fileName + ".json")) {
+        try (Reader reader = new FileReader("plugins\\Challenge\\" + fileName + ".json", StandardCharsets.UTF_8)) {
             return gson.fromJson(reader, type);
         } catch (IOException e) {
             e.printStackTrace();

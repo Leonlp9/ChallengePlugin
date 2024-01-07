@@ -7,9 +7,11 @@ import de.leon_lp9.challengePlugin.challenges.config.ConfigurationReader;
 import de.leon_lp9.challengePlugin.challenges.config.LoadChallenge;
 import de.leon_lp9.challengePlugin.command.CommandManager;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,14 +23,26 @@ public final class Main extends JavaPlugin {
     private static Main instance;
 
     private ConfigurationReader configurationReader;
+    @Getter
     private FileUtils fileUtils;
     private ChallengeManager challengeManager;
+    @Getter
+    private TranslationManager translationManager;
 
     @Override
     public void onEnable() {
         instance = this;
+        File directory = new File(getDataFolder(), "translations");
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+        saveResource("translations/de_DE.json", true);
+        saveResource("translations/en_US.json", true);
+
         fileUtils = new FileUtils();
         configurationReader = new ConfigurationReader();
+        translationManager = new TranslationManager(this);
+        getServer().getPluginManager().registerEvents(translationManager, this);
 
         if (fileUtils.fileExists("challengeManager")){
             Map<String, Object> data = fileUtils.readFromJsonFile("ChallengeManager", new TypeToken<Map<String, Object>>() {});

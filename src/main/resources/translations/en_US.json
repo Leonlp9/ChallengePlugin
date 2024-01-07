@@ -1,0 +1,31 @@
+{
+  "prefix": "§8| §aServer §8» §6",
+  "debug": "Debug successful!",
+  "languageChanged": "%prefix%Language changed to English",
+  "noPermission": "%prefix%You§7 do not have §6permissions§7 for this §6command§7!",
+
+  "paused": "Paused",
+  "timerHelp": "§6§lTimer §8| §7Help\n§7/timer §8- §7Displays the current time\n§7/timer pause §8- §7Pauses the timer\n§7/timer resume §8- §7Resumes the timer\n§7/timer reset §8- §7Resets the timer\n§7/timer set <Seconds> §8- §7Sets the timer to a specific time\n§7/timer add <Seconds> §8- §7Increases the timer by a specific time\n§7/timer remove <Seconds> §8- §7Decreases the timer by a specific time\n§7/timer get §8- §7Displays the current time\n§7/timer mode <Countdown/Countup> §8- §7Sets the timer mode\n§7/timer setFirstColor <Color> §8- §7Sets the first color\n§7/timer setSecondColor <Color> §8- §7Sets the second color\n§7/timer bold <true/false> §8- §7Sets the bold value",
+  "back": "Back",
+  "backDescription": "Click here to go back.",
+
+  "value": "Value",
+  "type": "Type",
+
+  "leftKlick": "Left-click to ",
+  "rightKlick": "Right-click to ",
+  "increase": "Increase",
+  "reduce": "Reduce",
+  "nextValue": "Next value",
+  "previousValue": "Previous value",
+  "activate": "Activate",
+  "deactivate": "Deactivate",
+  "unknown": "Unknown",
+
+  "onOff": "On/Off",
+  "number": "Number",
+  "text": "Text",
+
+  "theFloorIsLavaName": "The Floor is Lava!",
+  "theFloorIsLavaDescription": "Everything beneath you turns to lava after some time."
+}

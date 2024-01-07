@@ -9,6 +9,7 @@ import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import java.awt.Color;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -197,6 +198,11 @@ public class TimerCommand {
                 commandSender.sendMessage(prefix + "Bitte gib einen §a§lWahrheitswert §7an.");
             }
             return true;
+        }else if (strings[0].equalsIgnoreCase("help")) {
+
+            commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation((Player) commandSender, "timerHelp"));
+
+            return true;
         }
 
         return false;
@@ -207,6 +213,7 @@ public class TimerCommand {
     public @Nullable List<String> test(CommandSender commandSender, @NotNull String[] strings) {
         ArrayList<String> list = new ArrayList<>();
         if (strings.length == 1) {
+            list.add("help");
             list.add("pause");
             list.add("resume");
             list.add("reset");
