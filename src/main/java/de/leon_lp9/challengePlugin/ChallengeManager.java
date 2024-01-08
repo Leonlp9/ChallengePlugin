@@ -2,6 +2,8 @@ package de.leon_lp9.challengePlugin;
 
 import de.leon_lp9.challengePlugin.challenges.Challenge;
 import lombok.Getter;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -96,4 +98,9 @@ public class ChallengeManager {
         return null;
     }
 
+    public void sendChallengeDoneMessage() {
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            onlinePlayer.sendMessage(Main.getInstance().getTranslationManager().getTranslation(onlinePlayer, "winMessage").replace("%time%", Main.getInstance().getChallengeManager().getTimer().getFormattedTime()));
+        }
+    }
 }

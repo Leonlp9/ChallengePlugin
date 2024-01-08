@@ -49,7 +49,7 @@ public final class Main extends JavaPlugin {
         challengeManager.getTimer().startTask();
         challengeManager.getTimer().setResumed(false);
         challengeManager.registerAllAktiveChallenges();
-        addGamerules();
+        addGameRules();
         gameruleManager.registerAllGameRules();
 
         CommandManager commandManager = new CommandManager();
@@ -157,7 +157,7 @@ public final class Main extends JavaPlugin {
 
     }
 
-    public void addGamerules(){
+    public void addGameRules(){
         Reflections reflections = new Reflections("de.leon_lp9.challengePlugin.gameRules");
 
         reflections.getTypesAnnotatedWith(LoadGamerule.class).forEach(aClass -> {

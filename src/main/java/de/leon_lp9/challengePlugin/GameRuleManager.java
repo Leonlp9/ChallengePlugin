@@ -22,7 +22,7 @@ public class GameRuleManager {
         }
     }
 
-    public boolean classIsInGameRules(Class gameRuleClass) {
+    public boolean classIsInGameRules(Class<? extends GameRule> gameRuleClass) {
         for (GameRule gamerule : gameRules) {
             if (gamerule.getClass().equals(gameRuleClass)) {
                 return true;

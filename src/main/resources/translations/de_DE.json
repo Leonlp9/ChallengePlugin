@@ -29,6 +29,7 @@
   "timerResumed": "%prefix%Der §6Timer §7wurde von §6%player% §7fortgesetzt!",
   "timerAlreadyPaused": "%prefix%Der §6Timer §7ist bereits §6pausiert§7!",
   "timerAlreadyResumed": "%prefix%Der §6Timer §7ist bereits §6fortgesetzt§7!",
+  "winMessage": "%prefix%Challenge beendet innerhalb von %time%",
 
   "configuration": "Konfiguration",
   "backDescription": "Klicke hier um zurück zu gehen.",
@@ -54,6 +55,9 @@
   "onOff": "An/Aus",
   "number": "Zahl",
   "text": "Text",
+
+  "damageGameRuleDamageYou": "%prefix%Du §7hast %amount% Herzen schaden bekommen!",
+  "damageGameRuleDamageOther": "%prefix%%player% hat %amount% Herzen schaden bekommen!",
 
   "BedrockWallName": "Bedrock Wand",
   "BedrockWallDescription": "Erstellt eine Wand aus Bedrock die nach ein paar Sekunden hinter dir erscheint",
