@@ -1,4 +1,4 @@
-package de.leon_lp9.challengePlugin.gameRules;
+package de.leon_lp9.challengePlugin.gamerules;
 
 import de.leon_lp9.challengePlugin.Main;
 import de.leon_lp9.challengePlugin.challenges.config.ConfigurableField;

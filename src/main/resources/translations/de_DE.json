@@ -56,8 +56,8 @@
   "number": "Zahl",
   "text": "Text",
 
-  "damageGameRuleDamageYou": "%prefix%Du §7hast %amount% Herzen schaden bekommen!",
-  "damageGameRuleDamageOther": "%prefix%%player% hat %amount% Herzen schaden bekommen!",
+  "damageGameRuleDamageYou": "%prefix%Du §7hast §6%amount% Herzen§7 schaden bekommen!",
+  "damageGameRuleDamageOther": "%prefix%%player% hat §6%amount% Herzen§7 schaden bekommen!",
 
   "BedrockWallName": "Bedrock Wand",
   "BedrockWallDescription": "Erstellt eine Wand aus Bedrock die nach ein paar Sekunden hinter dir erscheint",

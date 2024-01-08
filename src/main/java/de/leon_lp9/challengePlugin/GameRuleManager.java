@@ -1,6 +1,6 @@
 package de.leon_lp9.challengePlugin;
 
-import de.leon_lp9.challengePlugin.gameRules.GameRule;
+import de.leon_lp9.challengePlugin.gamerules.GameRule;
 import lombok.Getter;
 
 import java.util.ArrayList;

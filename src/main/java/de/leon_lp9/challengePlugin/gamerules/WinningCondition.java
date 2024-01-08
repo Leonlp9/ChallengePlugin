@@ -1,8 +1,8 @@
-package de.leon_lp9.challengePlugin.gameRules;
+package de.leon_lp9.challengePlugin.gamerules;
 
 import de.leon_lp9.challengePlugin.Main;
 import de.leon_lp9.challengePlugin.challenges.config.ConfigurationValue;
-import de.leon_lp9.challengePlugin.gameRules.config.LoadGamerule;
+import de.leon_lp9.challengePlugin.gamerules.config.LoadGamerule;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;

@@ -6,8 +6,8 @@ import de.leon_lp9.challengePlugin.challenges.*;
 import de.leon_lp9.challengePlugin.challenges.config.ConfigurationReader;
 import de.leon_lp9.challengePlugin.challenges.config.LoadChallenge;
 import de.leon_lp9.challengePlugin.command.CommandManager;
-import de.leon_lp9.challengePlugin.gameRules.GameRule;
-import de.leon_lp9.challengePlugin.gameRules.config.LoadGamerule;
+import de.leon_lp9.challengePlugin.gamerules.GameRule;
+import de.leon_lp9.challengePlugin.gamerules.config.LoadGamerule;
 import de.leon_lp9.challengePlugin.management.FileUtils;
 import de.leon_lp9.challengePlugin.management.Metrics;
 import de.leon_lp9.challengePlugin.management.SpigotUpdateChecker;
@@ -158,7 +158,7 @@ public final class Main extends JavaPlugin {
     }
 
     public void addGameRules(){
-        Reflections reflections = new Reflections("de.leon_lp9.challengePlugin.gameRules");
+        Reflections reflections = new Reflections("de.leon_lp9.challengePlugin.gamerules");
 
         reflections.getTypesAnnotatedWith(LoadGamerule.class).forEach(aClass -> {
             System.out.println(aClass);

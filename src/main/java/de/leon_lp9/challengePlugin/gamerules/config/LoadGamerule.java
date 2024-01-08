@@ -1,4 +1,4 @@
-package de.leon_lp9.challengePlugin.gameRules.config;
+package de.leon_lp9.challengePlugin.gamerules.config;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
