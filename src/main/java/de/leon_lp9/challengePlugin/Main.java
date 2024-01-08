@@ -6,9 +6,8 @@ import de.leon_lp9.challengePlugin.challenges.*;
 import de.leon_lp9.challengePlugin.challenges.config.ConfigurationReader;
 import de.leon_lp9.challengePlugin.challenges.config.LoadChallenge;
 import de.leon_lp9.challengePlugin.command.CommandManager;
-import de.leon_lp9.challengePlugin.gamerules.DamageMessages;
-import de.leon_lp9.challengePlugin.gamerules.Gamerule;
-import de.leon_lp9.challengePlugin.gamerules.config.LoadGamerule;
+import de.leon_lp9.challengePlugin.gameRules.GameRule;
+import de.leon_lp9.challengePlugin.gameRules.config.LoadGamerule;
 import de.leon_lp9.challengePlugin.management.FileUtils;
 import de.leon_lp9.challengePlugin.management.Metrics;
 import de.leon_lp9.challengePlugin.management.SpigotUpdateChecker;
@@ -31,7 +30,7 @@ public final class Main extends JavaPlugin {
     @Getter
     private FileUtils fileUtils;
     private ChallengeManager challengeManager;
-    private GameruleManager gameruleManager;
+    private GameRuleManager gameruleManager;
     @Getter
     private TranslationManager translationManager;
     private Metrics metrics;
@@ -45,13 +44,13 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(translationManager, this);
 
         loadChallengeManagerFromConfig();
-        loadGameruleManagerFromConfig();
+        loadGameRuleManagerFromConfig();
         addChallenges();
         challengeManager.getTimer().startTask();
         challengeManager.getTimer().setResumed(false);
         challengeManager.registerAllAktiveChallenges();
         addGamerules();
-        gameruleManager.registerAllGamerules();
+        gameruleManager.registerAllGameRules();
 
         CommandManager commandManager = new CommandManager();
         commandManager.init();
@@ -85,15 +84,15 @@ public final class Main extends JavaPlugin {
 
         Map<String, Object> data2 = new HashMap<>();
 
-        Map<String, Object> activeGamerules = new HashMap<>();
+        Map<String, Object> activeGameRules = new HashMap<>();
 
-        for (Gamerule activeGamerule : gameruleManager.getGamerules()) {
-            activeGamerules.put(activeGamerule.getClass().getName(), activeGamerule);
+        for (GameRule activeGamerule : gameruleManager.getGameRules()) {
+            activeGameRules.put(activeGamerule.getClass().getName(), activeGamerule);
         }
 
-        data2.put("activeGamerules", activeGamerules);
+        data2.put("activeGameRules", activeGameRules);
 
-        fileUtils.writeToJsonFile("GameruleManager", data2);
+        fileUtils.writeToJsonFile("GameRuleManager", data2);
     }
 
 
@@ -119,24 +118,24 @@ public final class Main extends JavaPlugin {
         }
     }
 
-    private void loadGameruleManagerFromConfig() {
-        if (fileUtils.fileExists("GameruleManager")){
-            Map<String, Object> data = fileUtils.readFromJsonFile("GameruleManager", new TypeToken<Map<String, Object>>() {});
+    private void loadGameRuleManagerFromConfig() {
+        if (fileUtils.fileExists("GameRuleManager")){
+            Map<String, Object> data = fileUtils.readFromJsonFile("GameRuleManager", new TypeToken<Map<String, Object>>() {});
             Gson gson = fileUtils.getGson();
             Timer timer = gson.fromJson(gson.toJson(data.get("timer")), Timer.class);
-            List<Gamerule> activeGamerules = gson.fromJson(gson.toJson(data.get("activeGamerules")), new TypeToken<Map<String, Object>>() {
+            List<GameRule> activeGamerules = gson.fromJson(gson.toJson(data.get("activeGameRules")), new TypeToken<Map<String, Object>>() {
                     }).entrySet().stream()
                     .map(e -> {
                         try {
-                            return (Gamerule) gson.fromJson(gson.toJson(e.getValue()), Class.forName(e.getKey()));
+                            return (GameRule) gson.fromJson(gson.toJson(e.getValue()), Class.forName(e.getKey()));
                         } catch (ClassNotFoundException classNotFoundException) {
                             classNotFoundException.printStackTrace();
                         }
                         return null;
                     }).collect(Collectors.toList());
-            gameruleManager = new GameruleManager();
+            gameruleManager = new GameRuleManager();
         }else{
-            gameruleManager = new GameruleManager();
+            gameruleManager = new GameRuleManager();
         }
     }
 
@@ -159,11 +158,11 @@ public final class Main extends JavaPlugin {
     }
 
     public void addGamerules(){
-        Reflections reflections = new Reflections("de.leon_lp9.challengePlugin.gamerules");
+        Reflections reflections = new Reflections("de.leon_lp9.challengePlugin.gameRules");
 
         reflections.getTypesAnnotatedWith(LoadGamerule.class).forEach(aClass -> {
             System.out.println(aClass);
-            gameruleManager.addGameRuleIfNotExists((Class<? extends Gamerule>) aClass);
+            gameruleManager.addGameRuleIfNotExists((Class<? extends GameRule>) aClass);
         });
     }
 

@@ -1,7 +1,6 @@
-package de.leon_lp9.challengePlugin.gamerules;
+package de.leon_lp9.challengePlugin.gameRules;
 
 import de.leon_lp9.challengePlugin.Main;
-import de.leon_lp9.challengePlugin.Timer;
 import de.leon_lp9.challengePlugin.challenges.config.ConfigurableField;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +12,7 @@ import org.bukkit.event.Listener;
 import java.util.Collection;
 
 @Getter
-public class Gamerule implements Listener {
+public class GameRule implements Listener {
     private transient final String name;
     private transient final String description;
     private transient final Material icon;
@@ -25,16 +24,16 @@ public class Gamerule implements Listener {
     @Getter
     private transient Collection<ConfigurableField> configurableFields;
 
-    public Gamerule(Material icon) {
-        this.name = this.getClass().getSimpleName() + "GameruleName";
-        this.description = this.getClass().getSimpleName() + "GameruleDescription";
+    public GameRule(Material icon) {
+        this.name = this.getClass().getSimpleName() + "GameRuleName";
+        this.description = this.getClass().getSimpleName() + "GameRuleDescription";
         this.icon = icon;
         this.enabled = false;
     }
 
-    public Gamerule(Material icon, boolean enabled) {
-        this.name = this.getClass().getSimpleName() + "GameruleName";
-        this.description = this.getClass().getSimpleName() + "GameruleDescription";
+    public GameRule(Material icon, boolean enabled) {
+        this.name = this.getClass().getSimpleName() + "GameRuleName";
+        this.description = this.getClass().getSimpleName() + "GameRuleDescription";
         this.icon = icon;
         this.enabled = enabled;
     }
