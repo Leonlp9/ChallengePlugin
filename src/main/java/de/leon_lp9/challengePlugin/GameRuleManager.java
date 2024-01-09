@@ -19,6 +19,7 @@ public class GameRuleManager {
                 throw new RuntimeException(e);
             }
             gameRules.add(gamerule);
+            Main.getInstance().getConfigurationReader().readConfigurableFields(gamerule);
         }
     }
 
@@ -57,6 +58,15 @@ public class GameRuleManager {
                 }
             }
         }
+    }
+
+    public GameRule getGameRuleByClass(Class<? extends GameRule> gameRule){
+        for (GameRule gameRule1 : gameRules) {
+            if (gameRule1.getClass().equals(gameRule)){
+                return gameRule1;
+            }
+        }
+        return null;
     }
 
 }

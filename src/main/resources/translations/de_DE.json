@@ -32,12 +32,14 @@
   "winMessage": "%prefix%Challenge beendet innerhalb von %time%",
 
   "configuration": "Konfiguration",
+  "configurationGameRule": "Spielregel einstellen",
   "backDescription": "Klicke hier um zurück zu gehen.",
 
   "value": "Wert",
   "type": "Typ",
 
   "challenges": "Herausforderungen",
+  "gamerules": "Spielregeln",
   "status": "Status",
   "openConfiguration": "Konfiguration öffnen",
   "leftKlick": "Linksklick zum ",
@@ -58,6 +60,15 @@
 
   "damageGameRuleDamageYou": "%prefix%Du §7hast §6%amount% Herzen§7 schaden bekommen!",
   "damageGameRuleDamageOther": "%prefix%%player% hat §6%amount% Herzen§7 schaden bekommen!",
+  "DamageMessagesGameRuleName": "Schadens Nachricht GameRule",
+  "DamageMessagesGameRuleDescription": "Zeigt eine Nachricht wenn du oder ein anderer Spieler Schaden bekommt",
+    "damageGameRuleShowToAllPlayers": "Sichbar für alle Spieler",
+    "damageGameRuleShowToAllPlayersDescription": "Zeigt allen Spielern den Schaden den du bekommen hast oder nur dir",
+
+  "WinningConditionGameRuleName": "Gewinnbedingung",
+  "WinningConditionGameRuleDescription": "Wenn diese Bedingung erfüllt ist, wird die Challenge beendet",
+    "winningConditionMobType": "Welcher Mob",
+    "winningConditionMobTypeDescription": "Welcher Mob muss getötet werden",
 
   "BedrockWallName": "Bedrock Wand",
   "BedrockWallDescription": "Erstellt eine Wand aus Bedrock die nach ein paar Sekunden hinter dir erscheint",

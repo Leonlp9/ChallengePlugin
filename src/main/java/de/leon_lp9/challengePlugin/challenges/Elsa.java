@@ -2,6 +2,7 @@ package de.leon_lp9.challengePlugin.challenges;
 
 import de.leon_lp9.challengePlugin.challenges.config.ConfigurationValue;
 import de.leon_lp9.challengePlugin.challenges.config.LoadChallenge;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;

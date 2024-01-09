@@ -4,6 +4,8 @@ import de.leon_lp9.challengePlugin.Main;
 import de.leon_lp9.challengePlugin.builder.ItemBuilder;
 import de.leon_lp9.challengePlugin.challenges.Challenge;
 import de.leon_lp9.challengePlugin.commands.gui.ChallengeMenu;
+import de.leon_lp9.challengePlugin.commands.gui.GameRuleMenu;
+import de.leon_lp9.challengePlugin.gamerules.GameRule;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -28,6 +30,17 @@ public class ConfigurationReader implements Listener {
 
     public void readConfigurableFields(Challenge challenge) {
         Class<? extends Challenge> challengeClass = challenge.getClass();
+
+        List<ConfigurableField> list = Arrays.stream(challengeClass.getDeclaredFields())
+                .peek(field -> field.setAccessible(true))
+                .filter(field -> field.isAnnotationPresent(ConfigurationValue.class))
+                .map(ConfigurableField::new)
+                .collect(Collectors.toList());
+
+        challenge.setConfigurableFields(list);
+    }
+    public void readConfigurableFields(GameRule challenge) {
+        Class<? extends GameRule> challengeClass = challenge.getClass();
 
         List<ConfigurableField> list = Arrays.stream(challengeClass.getDeclaredFields())
                 .peek(field -> field.setAccessible(true))
@@ -66,6 +79,39 @@ public class ConfigurationReader implements Listener {
                 .setDisplayName("§c§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "back"))
                 .setLore("§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "backDescription"))
                 .addPersistentDataContainer("cId", PersistentDataType.STRING, challenge.getClass().getName())
+                .build());
+
+        return inventory;
+    }
+
+    public Inventory openConfigurator(GameRule gameRule, String lang){
+        Collection<ConfigurableField> configurableFields = gameRule.getConfigurableFields();
+
+        int size = (int) Math.max(1, Math.ceil((configurableFields.size() + 1) / 9f)) * 9;
+
+        Inventory inventory = Bukkit.createInventory(null, Math.min(6*9, size), "§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, gameRule.getName()) + " §7- §6" + Main.getInstance().getTranslationManager().getTranslation(lang, "configurationGameRule"));
+
+        for (ConfigurableField configurableField : configurableFields) {
+            ItemBuilder itemBuilder = new ItemBuilder(configurableField.getMetadata().icon())
+                    .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, configurableField.getMetadata().title()))
+                    .setLore(
+                            "§7" + Main.getInstance().getTranslationManager().getTranslation(lang, configurableField.getMetadata().description()),
+                            "",
+                            "§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "value") + ": §6" + getDisplayValue(configurableField, gameRule, lang),
+                            "§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "type") + ": §6" + getDisplayType(configurableField, lang),
+                            "",
+                            getDisplayLeftAction(configurableField, gameRule, lang),
+                            getDisplayRightAction(configurableField, gameRule, lang)
+                    )
+                    .addPersistentDataContainer("cField", PersistentDataType.STRING, configurableField.getId().toString())
+                    .addPersistentDataContainer("cId", PersistentDataType.STRING, gameRule.getClass().getName());
+            inventory.addItem(itemBuilder.build());
+        }
+
+        inventory.setItem(size - 1, new ItemBuilder(Material.BARRIER)
+                .setDisplayName("§c§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "back"))
+                .setLore("§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "backDescription"))
+                .addPersistentDataContainer("cId", PersistentDataType.STRING, gameRule.getClass().getName())
                 .build());
 
         return inventory;
@@ -162,6 +208,80 @@ public class ConfigurationReader implements Listener {
             Class<? extends Challenge> challengeClass = (Class<? extends Challenge>) Class.forName(id);
 
             Challenge challenge = Main.getInstance().getChallengeManager().getActiveChallengeByClass(challengeClass);
+
+            ConfigurableField configurableField = challenge.getConfigurableFields().stream().filter(field -> field.getId().toString().equals(fieldId)).findFirst().orElse(null);
+            if (configurableField == null) return;
+
+            if (configurableField.getType().equals(Boolean.class) || configurableField.getType().equals(boolean.class)) {
+                boolean object = (boolean) configurableField.getField().get(challenge);
+                configurableField.getField().set(challenge, !object);
+
+                challenge.update();
+                Inventory itemStacks = openConfigurator(challenge, lang);
+                event.getWhoClicked().openInventory(itemStacks);
+            }
+
+            if (configurableField.getType().isEnum()) {
+                Enum<?>[] enumConstants = (Enum<?>[]) configurableField.getType().getEnumConstants();
+                int ordinal = ((Enum<?>) configurableField.getField().get(challenge)).ordinal();
+
+                int nextOrdinal = ordinal;
+                if (event.isLeftClick()) {
+                    nextOrdinal = ordinal - 1;
+                } else if (event.isRightClick()) {
+                    nextOrdinal = ordinal + 1;
+                }
+
+                if (nextOrdinal < 0) {
+                    nextOrdinal = enumConstants.length - 1;
+                } else if (nextOrdinal >= enumConstants.length) {
+                    nextOrdinal = 0;
+                }
+
+                configurableField.getField().set(challenge, enumConstants[nextOrdinal]);
+
+
+                challenge.update();
+                Inventory itemStacks = openConfigurator(challenge, lang);
+                event.getWhoClicked().openInventory(itemStacks);
+            }
+
+            if (configurableField.getType().equals(Integer.class) || configurableField.getType().equals(int.class)) {
+                int object = (int) configurableField.getField().get(challenge);
+
+                int min = configurableField.getMetadata().min();
+                int max = configurableField.getMetadata().max();
+
+                if (event.isLeftClick() && object < max) {
+                    configurableField.getField().set(challenge, object + 1);
+                } else if (event.isRightClick() && object > min) {
+                    configurableField.getField().set(challenge, object - 1);
+                }
+
+                challenge.update();
+                Inventory itemStacks = openConfigurator(challenge, lang);
+                event.getWhoClicked().openInventory(itemStacks);
+            }
+        }else if (event.getView().getTitle().matches("§6§l.* §7- §6" + Main.getInstance().getTranslationManager().getTranslation(lang, "configurationGameRule"))) {
+            event.setCancelled(true);
+            if (event.getCurrentItem() == null) return;
+            if (!event.getCurrentItem().hasItemMeta()) return;
+            if (!event.getCurrentItem().getItemMeta().getPersistentDataContainer().has(new NamespacedKey(Main.getInstance(), "cField"), PersistentDataType.STRING)) {
+                if (!event.getCurrentItem().getItemMeta().getPersistentDataContainer().has(new NamespacedKey(Main.getInstance(), "cID"), PersistentDataType.STRING))
+                    return;
+
+                if (event.getCurrentItem().getType().equals(Material.BARRIER)) {
+                    new GameRuleMenu().openInventory((Player) event.getWhoClicked());
+                }
+
+                return;
+            }
+
+            String fieldId = event.getCurrentItem().getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Main.getInstance(), "cField"), PersistentDataType.STRING);
+            String id = event.getCurrentItem().getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Main.getInstance(), "cId"), PersistentDataType.STRING);
+            Class<? extends GameRule> challengeClass = (Class<? extends GameRule>) Class.forName(id);
+
+            GameRule challenge = Main.getInstance().getGameruleManager().getGameRuleByClass(challengeClass);
 
             ConfigurableField configurableField = challenge.getConfigurableFields().stream().filter(field -> field.getId().toString().equals(fieldId)).findFirst().orElse(null);
             if (configurableField == null) return;

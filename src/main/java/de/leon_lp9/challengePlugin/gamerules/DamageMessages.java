@@ -1,6 +1,7 @@
 package de.leon_lp9.challengePlugin.gamerules;
 
 import de.leon_lp9.challengePlugin.Main;
+import de.leon_lp9.challengePlugin.challenges.config.ConfigurationValue;
 import de.leon_lp9.challengePlugin.gamerules.config.LoadGamerule;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -11,6 +12,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 @LoadGamerule
 public class DamageMessages extends GameRule {
 
+    @ConfigurationValue(title = "damageGameRuleShowToAllPlayers", description = "damageGameRuleShowToAllPlayersDescription", icon = Material.PLAYER_HEAD)
     private boolean showToAllPlayers;
 
     public DamageMessages() {
