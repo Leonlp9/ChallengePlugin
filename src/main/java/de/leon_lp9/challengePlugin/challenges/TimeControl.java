@@ -19,7 +19,7 @@ import java.util.List;
 @LoadChallenge
 public class TimeControl extends Challenge{
     private transient List<Player> cooldown = new ArrayList<>();
-    private ServerTickManager serverTickManager;
+    private transient ServerTickManager serverTickManager;
 
     public TimeControl() {
         super(Material.CLOCK);
@@ -47,10 +47,23 @@ public class TimeControl extends Challenge{
     public void register() {
         super.register();
         unfreeze();
-        ItemStack timePause = new ItemBuilder(Material.CLOCK).setDisplayName("§6Time Control (Pause)").addPersistentDataContainer("timeControl", PersistentDataType.STRING, "timeControlPause").build();
 
         Bukkit.getOnlinePlayers().forEach(player -> {
-            player.getInventory().addItem(timePause);
+
+            ItemStack timePause = new ItemBuilder(Material.CLOCK).setDisplayName(Main.getInstance().getTranslationManager().getTranslation(player, "TimeControlPause")).setLore(Main.getInstance().getTranslationManager().getTranslation(player, "TimeControlDescription")).addPersistentDataContainer("timeControl", PersistentDataType.STRING, "timeControlPause").build();
+            boolean hasTimePause = false;
+
+            //entferne alle Items mit dem Tag "timeControl"
+            for (ItemStack itemStack : player.getInventory()) {
+                if (itemStack != null && itemStack.hasItemMeta() && itemStack.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(Main.getInstance(), "timeControl"), PersistentDataType.STRING)){
+                    if (itemStack.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Main.getInstance(), "timeControl"), PersistentDataType.STRING).equals("timeControlPause") || itemStack.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Main.getInstance(), "timeControl"), PersistentDataType.STRING).equals("timeControlResume")){
+                        itemStack.setItemMeta(timePause.getItemMeta());
+                        hasTimePause = true;
+                    }
+                }
+            }
+
+            if (!hasTimePause) player.getInventory().addItem(timePause);
         });
     }
 
@@ -62,7 +75,7 @@ public class TimeControl extends Challenge{
             for (ItemStack itemStack : player.getInventory()) {
                 if (itemStack != null && itemStack.hasItemMeta() && itemStack.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(Main.getInstance(), "timeControl"), PersistentDataType.STRING)){
                     if (itemStack.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Main.getInstance(), "timeControl"), PersistentDataType.STRING).equals("timeControlPause")){
-                        ItemStack timeResume = new ItemBuilder(Material.CLOCK).setDisplayName("§6Time Control (Resume)").addPersistentDataContainer("timeControl", PersistentDataType.STRING, "timeControlResume").build();
+                        ItemStack timeResume = new ItemBuilder(Material.CLOCK).setDisplayName(Main.getInstance().getTranslationManager().getTranslation(player, "TimeControlResume")).setLore(Main.getInstance().getTranslationManager().getTranslation(player, "TimeControlDescription")).addPersistentDataContainer("timeControl", PersistentDataType.STRING, "timeControlResume").build();
                         itemStack.setItemMeta(timeResume.getItemMeta());
                     }
                 }
@@ -79,7 +92,7 @@ public class TimeControl extends Challenge{
             for (ItemStack itemStack : player.getInventory()) {
                 if (itemStack != null && itemStack.hasItemMeta() && itemStack.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(Main.getInstance(), "timeControl"), PersistentDataType.STRING)){
                     if (itemStack.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Main.getInstance(), "timeControl"), PersistentDataType.STRING).equals("timeControlResume")){
-                        ItemStack timePause = new ItemBuilder(Material.CLOCK).setDisplayName("§6Time Control (Pause)").addPersistentDataContainer("timeControl", PersistentDataType.STRING, "timeControlPause").build();
+                        ItemStack timePause = new ItemBuilder(Material.CLOCK).setDisplayName(Main.getInstance().getTranslationManager().getTranslation(player, "TimeControlPause")).setLore(Main.getInstance().getTranslationManager().getTranslation(player, "TimeControlDescription")).addPersistentDataContainer("timeControl", PersistentDataType.STRING, "timeControlPause").build();
                         itemStack.setItemMeta(timePause.getItemMeta());
                     }
                 }
@@ -99,13 +112,13 @@ public class TimeControl extends Challenge{
                 cooldown.add(e.getPlayer());
                 Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
                     cooldown.remove(e.getPlayer());
-                }, 10);
+                }, 5);
             }else{
                 freeze();
                 cooldown.add(e.getPlayer());
                 Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
                     cooldown.remove(e.getPlayer());
-                }, 10);
+                }, 5);
             }
         }
     }
