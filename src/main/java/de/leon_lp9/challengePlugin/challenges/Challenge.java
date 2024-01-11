@@ -48,6 +48,8 @@ public class Challenge implements Listener {
 
     public void update(){}
 
+    public void timerTick(int second){}
+
     public String getTranslationName(Player player) {
         return Main.getInstance().getTranslationManager().getTranslation(player, name);
     }

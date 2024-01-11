@@ -1,6 +1,7 @@
 package de.leon_lp9.challengePlugin;
 
 import de.leon_lp9.challengePlugin.builder.ColorBuilder;
+import de.leon_lp9.challengePlugin.challenges.Challenge;
 import lombok.*;
 import org.bukkit.Bukkit;
 import java.awt.Color;
@@ -46,6 +47,8 @@ public class Timer {
                 } else {
                     seconds++;
                 }
+
+                Main.getInstance().getChallengeManager().getActiveChallenges().forEach(challenge -> challenge.timerTick(seconds));
             }
 
         }, 0, 20).getTaskId();
