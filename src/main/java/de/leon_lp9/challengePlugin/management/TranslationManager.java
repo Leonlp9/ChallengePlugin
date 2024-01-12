@@ -2,7 +2,11 @@ package de.leon_lp9.challengePlugin.management;
 
 import com.google.gson.reflect.TypeToken;
 import de.leon_lp9.challengePlugin.Main;
+import lombok.SneakyThrows;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -106,6 +110,8 @@ public class TranslationManager implements Listener {
         Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
             player.setTexturePack("https://cdn.discordapp.com/attachments/997527016557518940/1193639359660961832/pack.zip");
         }, 20);
+
+        player.spigot().sendMessage(getTranslatedItemName(Material.LIGHT_WEIGHTED_PRESSURE_PLATE));
     }
 
     @EventHandler
@@ -114,6 +120,21 @@ public class TranslationManager implements Listener {
         if (event.getStatus() == PlayerResourcePackStatusEvent.Status.DECLINED) {
             player.kickPlayer(Main.getInstance().getTranslationManager().getTranslation(player, "youNeedToAcceptTheResourcePack"));
         }
+    }
+
+
+    public TextComponent getTranslatedItemName(Material material) {
+        TextComponent textComponent = new TextComponent();
+        TranslatableComponent giveMessage = new TranslatableComponent(material.getItemTranslationKey());
+        textComponent.addExtra(giveMessage);
+        return textComponent;
+    }
+
+    public TextComponent getTranslatedKeyName(String keyCode){
+        TextComponent textComponent = new TextComponent();
+        TranslatableComponent giveMessage = new TranslatableComponent(keyCode);
+        textComponent.addExtra(giveMessage);
+        return textComponent;
     }
 
 }
