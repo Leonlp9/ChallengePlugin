@@ -47,8 +47,8 @@ public class Challenge implements Listener {
     }
 
     public void update(){}
-
     public void timerTick(int second){}
+    public void tick(){}
 
     public String getTranslationName(Player player) {
         return Main.getInstance().getTranslationManager().getTranslation(player, name);

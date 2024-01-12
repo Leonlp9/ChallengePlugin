@@ -57,17 +57,19 @@ public class Timer {
             Bukkit.getScheduler().cancelTask(fadeTask);
         }
         fadeTask = Main.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(Main.getInstance(), () -> {
-            fadeStep = (fadeStep + 1) % 20;
+            fadeStep = (fadeStep + 1) % 40;
             if ((seconds >= 0 && state == TimerState.Countdown) || state == TimerState.Countup) {
                 sendActionBar();
             }
-        }, 0, 2).getTaskId();
+
+            Main.getInstance().getChallengeManager().getActiveChallenges().forEach(Challenge::tick);
+        }, 0, 1).getTaskId();
     }
 
     public void sendActionBar() {
         Bukkit.getOnlinePlayers().forEach(player -> {
             ColorBuilder colorBuilder = new ColorBuilder(getFormattedTime() + (!resumed ? " | " + Main.getInstance().getTranslationManager().getTranslation(player, "paused") : "")).
-            addColorGradientToString(firstColor, secondColor, fadeStep, 20, true);
+            addColorGradientToString(firstColor, secondColor, fadeStep, 40, true);
             if (background) {
                 colorBuilder.addBackground();
             }

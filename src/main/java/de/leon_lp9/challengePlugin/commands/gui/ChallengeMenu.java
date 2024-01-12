@@ -17,7 +17,9 @@ public class ChallengeMenu {
     public void openInventory(Player player) {
         String lang = Main.getInstance().getTranslationManager().getLanguageOfPlayer(player);
 
-        Inventory inventory = Bukkit.createInventory(null, 9, "§6" + Main.getInstance().getTranslationManager().getTranslation(lang, "challenges"));
+        int size = (int) Math.max(1, Math.ceil((Main.getInstance().getChallengeManager().getAllChallenges().size() + 1) / 9f)) * 9;
+
+        Inventory inventory = Bukkit.createInventory(null, size, "§6" + Main.getInstance().getTranslationManager().getTranslation(lang, "challenges"));
 
         Main.getInstance().getChallengeManager().getAllChallenges().values().stream().sorted(Comparator.comparing(Challenge::getName)).forEach(challenge -> {
             inventory.addItem(new ItemBuilder(challenge.getIcon())
