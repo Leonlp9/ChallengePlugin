@@ -58,6 +58,9 @@
   "number": "Zahl",
   "text": "Text",
 
+  "AllItemsName": "Alle Items sammlen",
+  "AllItemsDescription": "Sammle alle Items im Spiel in einer zufälligen Reihenfolge",
+
   "damageGameRuleDamageYou": "%prefix%Du §7hast §6%amount% Herzen§7 schaden bekommen!",
   "damageGameRuleDamageOther": "%prefix%%player% §7hat §6%amount% Herzen§7 schaden bekommen!",
   "DamageMessagesGameRuleName": "Schadens Nachricht GameRule",
@@ -91,15 +94,32 @@
     "EveryBlockDisappearsBlockPlaceDescription": "Blöcke verschwinden beim Platzieren",
     "EveryBlockDisappearsBlockBreakName": "Block abbauen",
     "EveryBlockDisappearsBlockBreakDescription": "Blöcke verschwinden beim Abbauen",
-    "EveryBlockDisappearsBlockDropPlaceName": "Block Drop beim Abbauen",
-    "EveryBlockDisappearsBlockDropPlaceDescription": "Blöcke droppen beim Abbauen",
-    "EveryBlockDisappearsBlockDropBreakName": "Block Drop beim Platzieren",
-    "EveryBlockDisappearsBlockDropBreakDescription": "Blöcke droppen beim Platzieren",
+    "EveryBlockDisappearsBlockDropPlaceName": "Block Drop beim Platzieren",
+    "EveryBlockDisappearsBlockDropPlaceDescription": "Blöcke droppen beim Platzieren",
+    "EveryBlockDisappearsBlockDropBreakName": "Block Drop beim Abbauen",
+    "EveryBlockDisappearsBlockDropBreakDescription": "Blöcke droppen beim Abbauen",
+
+  "MangnetName": "Du bist Mangnetisch",
+    "MangnetDescription": "Alle Kreaturen in einem bestimmten Radius werden zu dir gezogen",
+        "MangnetRangeName": "Magnet Radius",
+        "MangnetRangeDescription": "Der Radius in dem Items zu dir gezogen werden",
 
   "RandomBlockDropsName": "Blöcke droppen zufällige Items",
   "RandomBlockDropsDescription": "Jeder Block den du abbauen willst dropt ein zufälliges Item",
     "RandomBlockDropsSaveName": "Items speichern",
     "RandomBlockDropsSaveDescription": "Items werden gespeichert und droppen immer das gleiche",
+
+  "RandomMLGName": "Random MLG",
+  "RandomMLGDescription": "Du wirst in eine zufällige Höhe teleportiert und musst dort einen MLG machen",
+
+  "RandomMobInRandomBiomName": "Random Monster in random Biomen töten",
+  "RandomMobInRandomBiomDescription": "Du musst einen zufälligen Mob in einem zufälligen Biom töten, als Unterstützung bekommst du Pokébälle",
+    "RandomMobChillTime": "Spiel start Freizeit",
+    "RandomMobChillTimeDescription": "Minuten bis das erste Monster getötet werden muss",
+    "RandomMobCatchTime": "Monster fangen Zeit",
+    "RandomMobCatchTimeDescription": "Minuten bis das Monster gefangen werden muss",
+    "RandomMobCatchEggs": "Eier fangen",
+    "RandomMobCatchEggsDescription": "Wie viele Eier zur Verfügung stehen",
 
   "TheFloorIsLavaName": "Der Boden ist Lava!",
   "TheFloorIsLavaDescription": "Alles was unter dir ist, wird nach einer Zeit zu Lava",
@@ -111,5 +131,12 @@
   "YCoordinateOnlyInOneDirectionName": "Y Koordinate nur in eine Richtung",
   "YCoordinateOnlyInOneDirectionDescription": "Du kannst dich nur in eine Richtung bewegen",
     "YCoordinateOnlyInOneDirectionDirectionName": "Richtung",
-    "YCoordinateOnlyInOneDirectionDirectionDescription": "Die Richtung in die du dich bewegen kannst"
+    "YCoordinateOnlyInOneDirectionDirectionDescription": "Die Richtung in die du dich bewegen kannst",
+
+  "TimeControlName": "Zeit Kontrolle",
+  "TimeControlDescription": "Du kannst die Zeit kontrollieren (Pausieren, Fortsetzen)",
+    "TimeControlPause": "§fZeit §c§lPausieren",
+    "TimeControlResume": "§fZeit §a§lFortsetzen",
+    "TimeControlDescriptionItem": "§7Klicke mit dem Item in der Hand um die Zeit zu Pausieren oder Fortzusetzen"
+
 }

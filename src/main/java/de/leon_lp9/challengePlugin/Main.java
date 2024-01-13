@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import de.leon_lp9.challengePlugin.challenges.*;
 import de.leon_lp9.challengePlugin.challenges.config.ConfigurationReader;
 import de.leon_lp9.challengePlugin.challenges.config.LoadChallenge;
+import de.leon_lp9.challengePlugin.commands.HelpCommand;
 import de.leon_lp9.challengePlugin.command.CommandManager;
 import de.leon_lp9.challengePlugin.gamerules.GameRule;
 import de.leon_lp9.challengePlugin.gamerules.config.LoadGamerule;
@@ -25,10 +26,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Getter
 public final class Main extends JavaPlugin {
     @Getter
     private static Main instance;
+    @Getter
 
     private ConfigurationReader configurationReader;
     @Getter
@@ -36,12 +37,15 @@ public final class Main extends JavaPlugin {
     @Getter
     @Setter
     private ChallengeManager challengeManager;
+    @Getter
+    @Setter
     private GameRuleManager gameruleManager;
     @Getter
     private TranslationManager translationManager;
     @Getter
     private PlayerListManager playerListManager;
     private Metrics metrics;
+    private HelpCommand helpEvents;
 
     @Override
     public void onEnable() {
@@ -57,9 +61,9 @@ public final class Main extends JavaPlugin {
         challengeManager.getTimer().startTask();
         challengeManager.getTimer().setResumed(false);
         challengeManager.registerAllAktiveChallenges();
-        addGameRules();
         gameruleManager.registerAllGameRules();
         playerListManager = new PlayerListManager();
+        helpEvents = new HelpCommand();
 
         CommandManager commandManager = new CommandManager();
         commandManager.init();
@@ -152,7 +156,7 @@ public final class Main extends JavaPlugin {
                         }
                         return null;
                     }).collect(Collectors.toList());
-            gameruleManager = new GameRuleManager();
+            gameruleManager = new GameRuleManager(activeGamerules);
         }else{
             gameruleManager = new GameRuleManager();
         }
@@ -174,15 +178,6 @@ public final class Main extends JavaPlugin {
             }
         });
 
-    }
-
-    public void addGameRules(){
-        Reflections reflections = new Reflections("de.leon_lp9.challengePlugin.gamerules");
-
-        reflections.getTypesAnnotatedWith(LoadGamerule.class).forEach(aClass -> {
-            System.out.println(aClass);
-            gameruleManager.addGameRuleIfNotExists((Class<? extends GameRule>) aClass);
-        });
     }
 
 }

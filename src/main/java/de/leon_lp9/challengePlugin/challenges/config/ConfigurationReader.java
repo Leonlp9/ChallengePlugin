@@ -56,7 +56,7 @@ public class ConfigurationReader implements Listener {
 
         int size = (int) Math.max(1, Math.ceil((configurableFields.size() + 1) / 9f)) * 9;
 
-        Inventory inventory = Bukkit.createInventory(null, Math.min(6*9, size), "§6§l" + challenge.getName() + " §7- §6" + Main.getInstance().getTranslationManager().getTranslation(lang, "configuration"));
+        Inventory inventory = Bukkit.createInventory(null, Math.min(6*9, size), "§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, challenge.getName()) + " §7- §6" + Main.getInstance().getTranslationManager().getTranslation(lang, "configuration"));
 
         for (ConfigurableField configurableField : configurableFields) {
             ItemBuilder itemBuilder = new ItemBuilder(configurableField.getMetadata().icon())

@@ -33,7 +33,7 @@ public class ResetCommand implements Listener {
     public void command(String[] strings, CommandSender commandSender) {
 
         Main.getInstance().getChallengeManager().deactivateAllChallenges();
-        Main.getInstance().getGameruleManager().getGameRules().forEach(GameRule::unregister);
+        Main.getInstance().getGameruleManager().resetGameRules();
         Main.getInstance().getChallengeManager().getTimer().setResumed(false);
         Main.getInstance().getChallengeManager().getTimer().setSeconds(0);
 
@@ -61,29 +61,37 @@ public class ResetCommand implements Listener {
             }
         }
 
+        //Welten löschen
         World world = Bukkit.getWorld("ChallengeWorld");
         world.setKeepSpawnInMemory(false);
         Bukkit.unloadWorld(world, false);
         Main.getInstance().getFileUtils().deleteDirectory(world.getWorldFolder());
 
-        Bukkit.createWorld(new WorldCreator("ChallengeWorld"));
-
-
         World nether = Bukkit.getWorld("ChallengeWorld_nether");
         nether.setKeepSpawnInMemory(false);
         Bukkit.unloadWorld(nether, false);
-        Main.getInstance().getFileUtils().deleteDirectory(world.getWorldFolder());
-
-        Bukkit.createWorld(new WorldCreator("ChallengeWorld_nether").environment(World.Environment.NETHER));
-
+        Main.getInstance().getFileUtils().deleteDirectory(nether.getWorldFolder());
 
         World end = Bukkit.getWorld("ChallengeWorld_the_end");
         end.setKeepSpawnInMemory(false);
         Bukkit.unloadWorld(end, false);
-        Main.getInstance().getFileUtils().deleteDirectory(world.getWorldFolder());
+        Main.getInstance().getFileUtils().deleteDirectory(end.getWorldFolder());
 
-        Bukkit.createWorld(new WorldCreator("ChallengeWorld_the_end").environment(World.Environment.THE_END));
+        //Welten erstellen
+        WorldCreator overworldCreator = new WorldCreator("ChallengeWorld");
+        Bukkit.createWorld(overworldCreator);
 
+        WorldCreator netherCreator = new WorldCreator("ChallengeWorld_nether");
+        netherCreator.environment(World.Environment.NETHER);
+        netherCreator.seed(overworldCreator.seed());
+        netherCreator.createWorld();
+
+        WorldCreator theEndCreator = new WorldCreator("ChallengeWorld_the_end");
+        theEndCreator.environment(World.Environment.THE_END);
+        theEndCreator.seed(overworldCreator.seed());
+        theEndCreator.createWorld();
+
+        //Spieler teleportieren
         for (Player all : Bukkit.getOnlinePlayers()) {
             all.teleport(Bukkit.getWorld("ChallengeWorld").getSpawnLocation());
         }

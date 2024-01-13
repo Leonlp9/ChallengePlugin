@@ -1,25 +1,42 @@
 package de.leon_lp9.challengePlugin;
 
 import de.leon_lp9.challengePlugin.gamerules.GameRule;
+import de.leon_lp9.challengePlugin.gamerules.config.LoadGamerule;
 import lombok.Getter;
+import org.reflections.Reflections;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 public class GameRuleManager {
 
     private final ArrayList<GameRule> gameRules = new ArrayList<>();
 
-    public void addGameRuleIfNotExists(Class<? extends GameRule> gameRuleClass){
-        if (!classIsInGameRules(gameRuleClass)) {
-            GameRule gamerule = null;
+    public GameRuleManager(List<GameRule> gameRules){
+        this.gameRules.addAll(gameRules);
+        gameRules.forEach(gameRule -> Main.getInstance().getConfigurationReader().readConfigurableFields(gameRule));
+    }
+
+    public GameRuleManager(){
+        Reflections reflections = new Reflections("de.leon_lp9.challengePlugin.gamerules");
+
+        reflections.getTypesAnnotatedWith(LoadGamerule.class).forEach(aClass -> {
+            System.out.println(aClass);
             try {
-                gamerule = (GameRule) gameRuleClass.newInstance();
+                GameRule gameRule = (GameRule) aClass.newInstance();
+                addGameRuleIfNotExists(gameRule);
+                Main.getInstance().getConfigurationReader().readConfigurableFields(gameRule);
             } catch (InstantiationException | IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
-            gameRules.add(gamerule);
-            Main.getInstance().getConfigurationReader().readConfigurableFields(gamerule);
+        });
+    }
+
+    public void addGameRuleIfNotExists(GameRule gameRule){
+        if (!classIsInGameRules(gameRule.getClass())) {
+            gameRules.add(gameRule);
+            Main.getInstance().getConfigurationReader().readConfigurableFields(gameRule);
         }
     }
 
@@ -67,6 +84,14 @@ public class GameRuleManager {
             }
         }
         return null;
+    }
+
+    public void resetGameRules(){
+        for (GameRule gameRule : gameRules) {
+            gameRule.unregister();
+        }
+        gameRules.clear();
+        Main.getInstance().setGameruleManager(new GameRuleManager());
     }
 
 }

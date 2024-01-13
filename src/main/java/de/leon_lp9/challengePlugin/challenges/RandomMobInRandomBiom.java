@@ -154,7 +154,7 @@ public class RandomMobInRandomBiom extends Challenge {
         biome = Biome.values()[random.nextInt(Biome.values().length)];
         entityType = EntityType.values()[random.nextInt(EntityType.values().length)];
 
-        while (!entityType.isAlive()){
+        while (!entityType.isAlive() || entityType.equals(EntityType.PLAYER) || entityType.equals(EntityType.ENDER_DRAGON) || entityType.equals(EntityType.DROPPED_ITEM) || entityType.equals(EntityType.EGG) || entityType.equals(EntityType.ARROW) || entityType.equals(EntityType.ILLUSIONER)){
             entityType = EntityType.values()[random.nextInt(EntityType.values().length)];
         }
 
