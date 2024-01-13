@@ -51,6 +51,7 @@ public class Challenge implements Listener {
     public void tick(){}
     public void unload(){}
     public void timerFirstTimeResume(){}
+    public void skipIfIsPossible(){}
 
     public String getTranslationName(Player player) {
         return Main.getInstance().getTranslationManager().getTranslation(player, name);

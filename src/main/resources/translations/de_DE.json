@@ -58,6 +58,8 @@
   "number": "Zahl",
   "text": "Text",
 
+  "SkipUsed": "§6%player% §7hat einen §6Skip §7verwendet!",
+
   "AllItemsName": "Alle Items sammlen",
   "AllItemsDescription": "Sammle alle Items im Spiel in einer zufälligen Reihenfolge",
 

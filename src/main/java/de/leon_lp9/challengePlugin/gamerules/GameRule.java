@@ -47,6 +47,7 @@ public class GameRule implements Listener {
     }
 
     public void update(){}
+    public void timerFirstTimeResume(){}
 
     public String getTranslationName(Player player) {
         return Main.getInstance().getTranslationManager().getTranslation(player, name);

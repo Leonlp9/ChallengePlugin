@@ -100,6 +100,13 @@ public class RandomMobInRandomBiom extends Challenge {
         });
     }
 
+    @Override
+    public void skipIfIsPossible() {
+        super.skipIfIsPossible();
+
+        newMob();
+    }
+
     //Wenn Entitys mit dem Pokéball abgeworfen werden, dann soll derren Spawn Eggs an der stelle erscheinen und das Entity soll verschwinden
     @EventHandler
     public void onPlayerDropItem(PlayerEggThrowEvent event) {

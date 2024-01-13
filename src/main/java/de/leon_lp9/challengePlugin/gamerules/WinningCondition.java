@@ -27,7 +27,7 @@ public class WinningCondition extends GameRule{
     private List<EntityType> killedEntityTypes;
 
     public WinningCondition() {
-        super(Material.DRAGON_HEAD);
+        super(Material.DRAGON_HEAD, true);
         winningCondition = WinningConditions.EnderDragon;
         killedEntityTypes = new ArrayList<>();
     }

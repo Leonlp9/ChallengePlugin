@@ -107,12 +107,14 @@ public class ChallengeManager {
     public void deactivateAllChallenges(){
         if (activeChallenges.isEmpty()) return;
         try {
-            activeChallenges.forEach(challenge -> {
-                deactivateChallenge(challenge.getClass());
-            });
+            for (Challenge activeChallenge : activeChallenges) {
+                deactivateChallenge(activeChallenge.getClass());
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
+        allChallenges.clear();
+        Main.getInstance().addChallenges();
 
     }
 }

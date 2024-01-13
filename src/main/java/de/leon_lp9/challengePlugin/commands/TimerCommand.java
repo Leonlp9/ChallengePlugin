@@ -6,6 +6,7 @@ import de.leon_lp9.challengePlugin.challenges.Challenge;
 import de.leon_lp9.challengePlugin.command.MinecraftCommand;
 import de.leon_lp9.challengePlugin.command.Run;
 import de.leon_lp9.challengePlugin.command.TabComplete;
+import de.leon_lp9.challengePlugin.gamerules.GameRule;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import java.awt.Color;
@@ -62,6 +63,7 @@ public class TimerCommand {
 
                 if (timer.getSeconds() == 0) {
                     Main.getInstance().getChallengeManager().getActiveChallenges().forEach(Challenge::timerFirstTimeResume);
+                    Main.getInstance().getGameruleManager().getGameRules().forEach(GameRule::timerFirstTimeResume);
                 }
 
             } else {
