@@ -13,6 +13,10 @@ import de.leon_lp9.challengePlugin.management.Metrics;
 import de.leon_lp9.challengePlugin.management.SpigotUpdateChecker;
 import de.leon_lp9.challengePlugin.management.TranslationManager;
 import lombok.Getter;
+import lombok.Setter;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 
@@ -29,10 +33,14 @@ public final class Main extends JavaPlugin {
     private ConfigurationReader configurationReader;
     @Getter
     private FileUtils fileUtils;
+    @Getter
+    @Setter
     private ChallengeManager challengeManager;
     private GameRuleManager gameruleManager;
     @Getter
     private TranslationManager translationManager;
+    @Getter
+    private PlayerListManager playerListManager;
     private Metrics metrics;
 
     @Override
@@ -51,6 +59,7 @@ public final class Main extends JavaPlugin {
         challengeManager.registerAllAktiveChallenges();
         addGameRules();
         gameruleManager.registerAllGameRules();
+        playerListManager = new PlayerListManager();
 
         CommandManager commandManager = new CommandManager();
         commandManager.init();
@@ -64,6 +73,16 @@ public final class Main extends JavaPlugin {
                 getLogger().warning("Download it here: https://www.spigotmc.org/resources/compactcrates.107018/");
             }
         });
+
+        if (Bukkit.getWorld("ChallengeWorld") == null) {
+            Bukkit.createWorld(new org.bukkit.WorldCreator("ChallengeWorld"));
+        }
+        if (Bukkit.getWorld("ChallengeWorld_nether") == null) {
+            Bukkit.createWorld(new WorldCreator("ChallengeWorld_nether").environment(World.Environment.NETHER));
+        }
+        if (Bukkit.getWorld("ChallengeWorld_the_end") == null) {
+            Bukkit.createWorld(new WorldCreator("ChallengeWorld_the_end").environment(World.Environment.THE_END));
+        }
     }
 
     @Override
@@ -80,8 +99,6 @@ public final class Main extends JavaPlugin {
         data.put("activeChallenges", activeChallenges);
         fileUtils.writeToJsonFile("ChallengeManager", data);
 
-
-
         Map<String, Object> data2 = new HashMap<>();
 
         Map<String, Object> activeGameRules = new HashMap<>();
@@ -93,6 +110,8 @@ public final class Main extends JavaPlugin {
         data2.put("activeGameRules", activeGameRules);
 
         fileUtils.writeToJsonFile("GameRuleManager", data2);
+
+        challengeManager.getActiveChallenges().forEach(Challenge::unload);
     }
 
 

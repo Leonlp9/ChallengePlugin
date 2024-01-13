@@ -111,4 +111,9 @@ public class Timer {
         }
     }
 
+    public void stopTask() {
+        Bukkit.getScheduler().cancelTask(task);
+        Bukkit.getScheduler().cancelTask(fadeTask);
+    }
+
 }

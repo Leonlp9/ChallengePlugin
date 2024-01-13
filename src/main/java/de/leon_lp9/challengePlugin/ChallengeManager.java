@@ -103,4 +103,10 @@ public class ChallengeManager {
             onlinePlayer.sendMessage(Main.getInstance().getTranslationManager().getTranslation(onlinePlayer, "winMessage").replace("%time%", Main.getInstance().getChallengeManager().getTimer().getFormattedTime()));
         }
     }
+
+    public void deactivateAllChallenges(){
+        activeChallenges.forEach(challenge -> {
+            deactivateChallenge(challenge.getClass());
+        });
+    }
 }

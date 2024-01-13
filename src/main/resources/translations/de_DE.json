@@ -59,7 +59,7 @@
   "text": "Text",
 
   "damageGameRuleDamageYou": "%prefix%Du §7hast §6%amount% Herzen§7 schaden bekommen!",
-  "damageGameRuleDamageOther": "%prefix%%player% hat §6%amount% Herzen§7 schaden bekommen!",
+  "damageGameRuleDamageOther": "%prefix%%player% §7hat §6%amount% Herzen§7 schaden bekommen!",
   "DamageMessagesGameRuleName": "Schadens Nachricht GameRule",
   "DamageMessagesGameRuleDescription": "Zeigt eine Nachricht wenn du oder ein anderer Spieler Schaden bekommt",
     "damageGameRuleShowToAllPlayers": "Sichbar für alle Spieler",

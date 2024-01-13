@@ -2,6 +2,7 @@ package de.leon_lp9.challengePlugin.commands;
 
 import de.leon_lp9.challengePlugin.Main;
 import de.leon_lp9.challengePlugin.Timer;
+import de.leon_lp9.challengePlugin.challenges.Challenge;
 import de.leon_lp9.challengePlugin.command.MinecraftCommand;
 import de.leon_lp9.challengePlugin.command.Run;
 import de.leon_lp9.challengePlugin.command.TabComplete;
@@ -58,6 +59,11 @@ public class TimerCommand {
                     player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerResumed").replace("%player%", commandSender.getName()));
                 });
                 timer.sendActionBar();
+
+                if (timer.getSeconds() == 0) {
+                    Main.getInstance().getChallengeManager().getActiveChallenges().forEach(Challenge::timerFirstTimeResume);
+                }
+
             } else {
                 commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerAlreadyResumed"));
             }
@@ -66,6 +72,7 @@ public class TimerCommand {
 
         if (strings[0].equalsIgnoreCase("reset")) {
             timer.setSeconds(0);
+            timer.setResumed(false);
             Bukkit.getOnlinePlayers().forEach(player -> {
                 player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerReset").replace("%player%", commandSender.getName()));
             });

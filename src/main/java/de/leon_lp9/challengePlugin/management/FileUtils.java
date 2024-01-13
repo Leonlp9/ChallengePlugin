@@ -4,6 +4,9 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import de.leon_lp9.challengePlugin.Main;
 import lombok.Getter;
+import org.bukkit.Bukkit;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import java.awt.*;
 import java.io.*;
@@ -15,8 +18,11 @@ public class FileUtils {
     private final Gson gson = new GsonBuilder()
             .setPrettyPrinting()
             .disableHtmlEscaping()
+
+            /* Color */
             .registerTypeAdapter(Color.class, (JsonDeserializer<Color>) (jsonElement, type, jsonDeserializationContext) -> Color.decode(jsonElement.getAsString()))
             .registerTypeAdapter(Color.class, (JsonSerializer<Color>) (color, type, jsonSerializationContext) -> jsonSerializationContext.serialize("#" + Integer.toHexString(color.getRGB()).substring(2)))
+
             .create();
 
     public void writeToJsonFile(String fileName, Object data) {
@@ -64,6 +70,18 @@ public class FileUtils {
 
     public void deleteFile(String fileName) {
         File file = new File("plugins\\Challenge\\" + fileName + ".json");
+        file.delete();
+    }
+
+    public void deleteDirectory(File file) {
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            if (files != null && files.length > 0) {
+                for (File f : files) {
+                    deleteDirectory(f);
+                }
+            }
+        }
         file.delete();
     }
 
