@@ -12,7 +12,6 @@ import java.lang.annotation.Target;
 public @interface ConfigurationValue {
 
     String title();
-    String description();
     Material icon();
 
     int min() default 0;

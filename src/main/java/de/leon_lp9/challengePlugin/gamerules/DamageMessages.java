@@ -12,7 +12,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 @LoadGamerule
 public class DamageMessages extends GameRule {
 
-    @ConfigurationValue(title = "damageGameRuleShowToAllPlayers", description = "damageGameRuleShowToAllPlayersDescription", icon = Material.PLAYER_HEAD)
+    @ConfigurationValue(title = "damageGameRuleShowToAllPlayers", icon = Material.PLAYER_HEAD)
     private boolean showToAllPlayers;
 
     public DamageMessages() {

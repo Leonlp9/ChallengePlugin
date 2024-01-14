@@ -21,7 +21,7 @@ public class WinningCondition extends GameRule{
         AllBossMobs;
     }
 
-    @ConfigurationValue(title = "winningConditionMobType", description = "winningConditionMobTypeDescription", icon = Material.WITHER_SKELETON_SKULL)
+    @ConfigurationValue(title = "winningConditionMobType", icon = Material.WITHER_SKELETON_SKULL)
     private WinningConditions winningCondition;
 
     private List<EntityType> killedEntityTypes;

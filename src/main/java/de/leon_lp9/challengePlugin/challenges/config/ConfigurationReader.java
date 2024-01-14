@@ -62,7 +62,7 @@ public class ConfigurationReader implements Listener {
             ItemBuilder itemBuilder = new ItemBuilder(configurableField.getMetadata().icon())
                     .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, configurableField.getMetadata().title()))
                     .setLore(
-                            "§7" + Main.getInstance().getTranslationManager().getTranslation(lang, configurableField.getMetadata().description()),
+                            "§7" + Main.getInstance().getTranslationManager().getTranslation(lang, configurableField.getMetadata().title() + "Description"),
                             "",
                             "§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "value") + ": §6" + getDisplayValue(configurableField, challenge, lang),
                             "§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "type") + ": §6" + getDisplayType(configurableField, lang),
@@ -95,7 +95,7 @@ public class ConfigurationReader implements Listener {
             ItemBuilder itemBuilder = new ItemBuilder(configurableField.getMetadata().icon())
                     .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, configurableField.getMetadata().title()))
                     .setLore(
-                            "§7" + Main.getInstance().getTranslationManager().getTranslation(lang, configurableField.getMetadata().description()),
+                            "§7" + Main.getInstance().getTranslationManager().getTranslation(lang, configurableField.getMetadata().title() + "Description"),
                             "",
                             "§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "value") + ": §6" + getDisplayValue(configurableField, gameRule, lang),
                             "§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "type") + ": §6" + getDisplayType(configurableField, lang),

@@ -2,7 +2,7 @@ package de.leon_lp9.challengePlugin.commands;
 
 import de.leon_lp9.challengePlugin.Main;
 import de.leon_lp9.challengePlugin.builder.ItemBuilder;
-import de.leon_lp9.challengePlugin.challenges.crafting.Crafting;
+import de.leon_lp9.challengePlugin.crafting.Crafting;
 import de.leon_lp9.challengePlugin.command.MinecraftCommand;
 import de.leon_lp9.challengePlugin.command.Run;
 import de.leon_lp9.challengePlugin.command.TabComplete;

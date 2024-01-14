@@ -17,10 +17,10 @@ public class TheFloorIsLava extends Challenge {
 
     transient Set<Integer> blocks = new HashSet<>();
 
-    @ConfigurationValue(title = "TheFloorIsLavaSecondsMagmaName", description = "TheFloorIsLavaSecondsMagmaDescription", icon = Material.MAGMA_BLOCK, min = 1)
+    @ConfigurationValue(title = "TheFloorIsLavaSecondsMagmaName", icon = Material.MAGMA_BLOCK, min = 1)
     @SuppressWarnings("FieldMayBeFinal")
     private int sekundenBisMagma = 3;
-    @ConfigurationValue(title = "TheFloorIsLavaSecondsLavaName", description = "TheFloorIsLavaSecondsLavaDescription", icon = Material.LAVA_BUCKET, min = 1)
+    @ConfigurationValue(title = "TheFloorIsLavaSecondsLavaName", icon = Material.LAVA_BUCKET, min = 1)
     @SuppressWarnings("FieldMayBeFinal")
     private int sekundenBisLava = 6;
 

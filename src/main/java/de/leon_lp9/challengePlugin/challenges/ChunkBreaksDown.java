@@ -10,7 +10,7 @@ import org.bukkit.Material;
 public class ChunkBreaksDown extends Challenge {
     private transient int taskID = 0;
 
-    @ConfigurationValue(title = "SecondsUntilChunkBreaksDownName", description = "SecondsUntilChunkBreaksDownDescription", icon = Material.CLOCK, min = 1)
+    @ConfigurationValue(title = "SecondsUntilChunkBreaksDownName", icon = Material.CLOCK, min = 1)
     private int sekundenBisAbbau = 10;
 
     public ChunkBreaksDown() {

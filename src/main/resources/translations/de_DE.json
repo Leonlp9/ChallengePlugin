@@ -139,6 +139,11 @@
   "TimeControlDescription": "Du kannst die Zeit kontrollieren (Pausieren, Fortsetzen)",
     "TimeControlPause": "§fZeit §c§lPausieren",
     "TimeControlResume": "§fZeit §a§lFortsetzen",
-    "TimeControlDescriptionItem": "§7Klicke mit dem Item in der Hand um die Zeit zu Pausieren oder Fortzusetzen"
+    "TimeControlDescriptionItem": "§7Klicke mit dem Item in der Hand um die Zeit zu Pausieren oder Fortzusetzen",
+
+  "WolfiName": "Wolfi Challenge",
+  "WolfiDescription": "Wenn dein Wolf stirbt, stirbst du auch! (Beim Deaktivieren der Challenge wird dein Wolf nur gelöscht, wenn er geladen ist)",
+    "nameTagVisible": "NameTag sichtbar",
+    "nameTagVisibleDescription": "Soll das NameTag des Wolfs sichtbar sein"
 
 }

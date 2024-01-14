@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 @LoadChallenge
 public class Magnet extends Challenge {
 
-    @ConfigurationValue(title = "MagnetRange", description = "MagnetRangeDescription", icon = Material.COMPASS)
+    @ConfigurationValue(title = "MagnetRange", icon = Material.COMPASS)
     int magnetRange = 25;
 
     public Magnet() {

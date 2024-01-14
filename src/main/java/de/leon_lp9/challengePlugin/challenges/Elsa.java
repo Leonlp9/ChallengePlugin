@@ -19,7 +19,7 @@ public class Elsa extends Challenge {
 
     private transient List<Player> playerWhoToggeledOffIce = new ArrayList<>();
 
-    @ConfigurationValue(title = "ElsaIceRadiusName", description = "ElsaIceRadiusDescription", icon = Material.BAMBOO_BUTTON, min = 1, max = 10)
+    @ConfigurationValue(title = "ElsaIceRadiusName", icon = Material.BAMBOO_BUTTON, min = 1, max = 10)
     private int iceRadius = 3;
 
     public Elsa() {

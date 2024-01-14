@@ -48,13 +48,13 @@ public class RandomMLG extends Challenge {
 
     }
 
-    @ConfigurationValue(title = "RandomMLGFlatWorldName", description = "RandomMLGFlatWorldDescription", icon = Material.GRASS_BLOCK)
+    @ConfigurationValue(title = "RandomMLGFlatWorldName", icon = Material.GRASS_BLOCK)
     private boolean inFlatWorld = true;
-    @ConfigurationValue(title = "RandomMLGGiveWaterBucketName", description = "RandomMLGGiveWaterBucketDescription", icon = Material.WATER_BUCKET)
+    @ConfigurationValue(title = "RandomMLGGiveWaterBucketName", icon = Material.WATER_BUCKET)
     private boolean giveWaterBucket = true;
-    @ConfigurationValue(title = "RandomMLGTimeBetweenMLGsInMinutesName", description = "RandomMLGTimeBetweenMLGsInMinutesDescription", icon = Material.CLOCK)
+    @ConfigurationValue(title = "RandomMLGTimeBetweenMLGsInMinutesName", icon = Material.CLOCK)
     private int timeBetweenMLGsInMinutes = 10;
-    @ConfigurationValue(title = "RandomMLGItemType", description = "RandomMLGItemTypeDescription", icon = Material.DIAMOND)
+    @ConfigurationValue(title = "RandomMLGItemType", icon = Material.DIAMOND)
     private RandomMLGItemType randomMLGItemType = RandomMLGItemType.WaterBucket;
 
 

@@ -17,7 +17,7 @@ public class BedrockWall extends Challenge {
 
     transient Set<Integer> blocks = new HashSet<>();
 
-    @ConfigurationValue(title = "BedrockWallSecondsName", description = "BedrockWallSecondsDescription", icon = Material.CLOCK, min = 1)
+    @ConfigurationValue(title = "BedrockWallSecondsName", icon = Material.CLOCK, min = 1)
     private int sekundenBisBedrock = 10;
 
     public BedrockWall() {

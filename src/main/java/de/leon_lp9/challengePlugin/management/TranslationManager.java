@@ -32,8 +32,6 @@ public class TranslationManager implements Listener {
         }
         Main.getInstance().saveResource("translations/de_DE.json", true);
         Main.getInstance().saveResource("translations/en_US.json", true);
-        Main.getInstance().saveResource("translations/en_PT.json", true);
-        Main.getInstance().saveResource("translations/lol_US.json", true);
         loadTranslations();
     }
 

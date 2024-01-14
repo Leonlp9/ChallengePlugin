@@ -20,7 +20,7 @@ public class RandomBlockDrops extends Challenge{
      * Wenn true, dann soll gespeichert werden, welches Item gedroppt wurde und wenn der block erneut abgebaut wird, soll das gleiche Item gedroppt werden
      */
     @Getter
-    @ConfigurationValue(title = "RandomBlockDropsSaveName", description = "RandomBlockDropsSaveDescription", icon = Material.PAPER)
+    @ConfigurationValue(title = "RandomBlockDropsSaveName", icon = Material.PAPER)
     @SuppressWarnings("FieldMayBeFinal")
     private boolean saveDrops = true;
 

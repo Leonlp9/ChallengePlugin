@@ -14,7 +14,7 @@ public class YCoordinateOnlyInOneDirection extends Challenge{
         DOWN
     }
 
-    @ConfigurationValue(title = "YCoordinateOnlyInOneDirectionDirectionName", description = "YCoordinateOnlyInOneDirectionDirectionDescription", icon = Material.COMPASS)
+    @ConfigurationValue(title = "YCoordinateOnlyInOneDirectionDirectionName", icon = Material.COMPASS)
     private Direction direction = Direction.DOWN;
 
     public YCoordinateOnlyInOneDirection() {

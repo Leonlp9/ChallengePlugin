@@ -12,14 +12,14 @@ import org.bukkit.event.block.BlockPlaceEvent;
 @LoadChallenge
 public class EveryBlockDisappears extends Challenge {
 
-    @ConfigurationValue(title = "EveryBlockDisappearsBlockPlaceName", description = "EveryBlockDisappearsBlockPlaceDescription", icon = Material.GRASS_BLOCK)
+    @ConfigurationValue(title = "EveryBlockDisappearsBlockPlaceName", icon = Material.GRASS_BLOCK)
     private boolean blockPlace = true;
-    @ConfigurationValue(title = "EveryBlockDisappearsBlockBreakName", description = "EveryBlockDisappearsBlockBreakDescription", icon = Material.DIAMOND_PICKAXE)
+    @ConfigurationValue(title = "EveryBlockDisappearsBlockBreakName", icon = Material.DIAMOND_PICKAXE)
     private boolean blockBreak = true;
 
-    @ConfigurationValue(title = "EveryBlockDisappearsBlockDropBreakName", description = "EveryBlockDisappearsBlockDropBreakDescription", icon = Material.EGG)
+    @ConfigurationValue(title = "EveryBlockDisappearsBlockDropBreakName", icon = Material.EGG)
     private boolean blockDropByBreak = true;
-    @ConfigurationValue(title = "EveryBlockDisappearsBlockDropPlaceName", description = "EveryBlockDisappearsBlockDropPlaceDescription", icon = Material.EGG)
+    @ConfigurationValue(title = "EveryBlockDisappearsBlockDropPlaceName", icon = Material.EGG)
     private boolean blockDropByPlace = false;
 
     public EveryBlockDisappears() {

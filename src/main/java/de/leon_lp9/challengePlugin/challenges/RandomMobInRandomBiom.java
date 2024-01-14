@@ -33,13 +33,13 @@ import java.util.Random;
 @LoadChallenge
 public class RandomMobInRandomBiom extends Challenge {
 
-    @ConfigurationValue(title = "RandomMobChillTime", description = "RandomMobChillTimeDescription", icon = Material.CLOCK)
+    @ConfigurationValue(title = "RandomMobChillTime", icon = Material.CLOCK)
     private int chillTimeInMinutes = 4;
 
-    @ConfigurationValue(title = "RandomMobCatchTime", description = "RandomMobCatchTimeDescription", icon = Material.CLOCK)
+    @ConfigurationValue(title = "RandomMobCatchTime", icon = Material.CLOCK)
     private int catchTimeInMinutes = 12;
 
-    @ConfigurationValue(title = "RandomMobCatchEggs", description = "RandomMobCatchEggsDescription", icon = Material.EGG)
+    @ConfigurationValue(title = "RandomMobCatchEggs", icon = Material.EGG)
     private int catchEggs = 5;
 
     private Biome biome;

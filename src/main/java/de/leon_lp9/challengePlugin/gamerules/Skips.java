@@ -20,7 +20,7 @@ import java.util.Objects;
 @LoadGamerule
 public class Skips extends GameRule {
 
-    @ConfigurationValue(title = "AmountOfSkips", description = "AmountOfSkipsDescription", min = 0, max = 100, icon = Material.ACACIA_BUTTON)
+    @ConfigurationValue(title = "AmountOfSkips", min = 0, max = 100, icon = Material.ACACIA_BUTTON)
     private int amountOfSkips = 1;
 
     private transient ItemStack skipItem = new ItemBuilder(Material.BARRIER).setDisplayName("§cSkip").addPersistentDataContainer("skip", PersistentDataType.STRING, "skip").build();
@@ -34,8 +34,10 @@ public class Skips extends GameRule {
     public void timerFirstTimeResume() {
         super.timerFirstTimeResume();
 
-        skipItem.setAmount(amountOfSkips);
-        Bukkit.getOnlinePlayers().forEach(player -> player.getInventory().addItem(skipItem));
+        if (isEnabled()) {
+            skipItem.setAmount(amountOfSkips);
+            Bukkit.getOnlinePlayers().forEach(player -> player.getInventory().addItem(skipItem));
+        }
     }
 
     @EventHandler

@@ -1,4 +1,4 @@
-package de.leon_lp9.challengePlugin.challenges.crafting;
+package de.leon_lp9.challengePlugin.crafting;
 
 import de.leon_lp9.challengePlugin.builder.ItemBuilder;
 import org.bukkit.Bukkit;
