@@ -24,6 +24,7 @@ import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 import java.util.UUID;
 
 @LoadChallenge
@@ -39,15 +40,21 @@ public class FlagQuiz extends Challenge {
     @ConfigurationValue(title = "resolution", icon = Material.MAP, min = 10, max = 120)
     private int resolution = 60;
 
+    private int nextFlagTimer;
+
     public FlagQuiz() {
         super(Material.MAP);
+        Random random = new Random();
+        nextFlagTimer = random.nextInt(60*5)+60;
     }
 
     @Override
     public void register() {
         super.register();
 
-        newFlag();
+        if (nextFlagTimer <= 0) {
+            newFlag();
+        }
     }
 
     @Override
@@ -82,11 +89,13 @@ public class FlagQuiz extends Challenge {
             textDisplay.remove();
         }
 
+
         currentFlag = Flags.getRand();
 
         Player selectedPlayer = Bukkit.getOnlinePlayers().stream().findAny().orElse(null);
         if (selectedPlayer == null) return;
         selectedPlayerUUID = selectedPlayer.getUniqueId();
+        Main.getInstance().getChallengeManager().getTimer().setResumed(false);
 
         textDisplay = spawnFlagTextDisplay(currentFlag, selectedPlayer.getEyeLocation());
 
@@ -111,6 +120,16 @@ public class FlagQuiz extends Challenge {
                 });
             });
         }
+    }
+
+    public void correctAnswer(){
+        if (textDisplay != null){
+            textDisplay.remove();
+        }
+        Main.getInstance().getChallengeManager().getTimer().setResumed(true);
+        selectedPlayerUUID = null;
+        Random random = new Random();
+        nextFlagTimer = random.nextInt(60*5)+60;
     }
 
     public TextDisplay spawnFlagTextDisplay(Flags flag, Location loc){
@@ -185,6 +204,7 @@ public class FlagQuiz extends Challenge {
 
     @EventHandler
     public void onPlayerMove(org.bukkit.event.player.PlayerMoveEvent event) {
+        if (selectedPlayerUUID == null) return;
         if (event.getPlayer().getUniqueId().equals(selectedPlayerUUID)){
             if (event.getFrom().getX() != event.getTo().getX() || event.getFrom().getZ() != event.getTo().getZ() || event.getFrom().getY() != event.getTo().getY()){
                 event.getPlayer().teleport(event.getFrom());
@@ -199,11 +219,23 @@ public class FlagQuiz extends Challenge {
 
         Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
             Bukkit.getOnlinePlayers().forEach(player -> {
+                if (selectedPlayerUUID == null) return;
                 if (selectedPlayerUUID.equals(player.getUniqueId())) {
+                    if(textDisplay == null) return;
                     textDisplay.teleport(getLocation(player.getEyeLocation()));
                 }
             });
         });
+    }
+
+    @Override
+    public void timerTick(int second) {
+        super.timerTick(second);
+
+        nextFlagTimer--;
+        if (nextFlagTimer <= 0){
+            Bukkit.getScheduler().runTask(Main.getInstance(), this::newFlag);
+        }
     }
 
     @EventHandler
@@ -214,12 +246,20 @@ public class FlagQuiz extends Challenge {
                 Bukkit.getOnlinePlayers().forEach(player -> {
                     player.sendMessage("§a" + event.getPlayer().getName() + " §7hat die Flagge erraten!");
                 });
-                Bukkit.getScheduler().runTask(Main.getInstance(), this::newFlag);
+                Bukkit.getScheduler().runTask(Main.getInstance(), this::correctAnswer);
             }else{
                 Bukkit.getOnlinePlayers().forEach(player -> {
                     player.sendMessage("§a" + event.getPlayer().getName() + " §7hat die Flagge falsch erraten!");
                     Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
                         player.setHealth(0);
+
+                        if (textDisplay != null){
+                            textDisplay.remove();
+                        }
+                        Main.getInstance().getChallengeManager().getTimer().setResumed(true);
+                        selectedPlayerUUID = null;
+                        Random random = new Random();
+                        nextFlagTimer = random.nextInt(60*5)+60;
                     });
                 });
             }
