@@ -8,7 +8,6 @@ import de.leon_lp9.challengePlugin.challenges.config.LoadChallenge;
 import de.leon_lp9.challengePlugin.commands.HelpCommand;
 import de.leon_lp9.challengePlugin.command.CommandManager;
 import de.leon_lp9.challengePlugin.gamerules.GameRule;
-import de.leon_lp9.challengePlugin.gamerules.config.LoadGamerule;
 import de.leon_lp9.challengePlugin.management.FileUtils;
 import de.leon_lp9.challengePlugin.management.Metrics;
 import de.leon_lp9.challengePlugin.management.SpigotUpdateChecker;

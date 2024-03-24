@@ -37,6 +37,11 @@
             <goals>
               <goal>shade</goal>
             </goals>
+              <configuration>
+                  <createDependencyReducedPom>false</createDependencyReducedPom>
+                  <outputDirectory>D:\MinecraftServer\1.20.4\plugins</outputDirectory>
+                  <shadedArtifactAttached>true</shadedArtifactAttached>
+              </configuration>
           </execution>
         </executions>
       </plugin>

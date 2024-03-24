@@ -22,12 +22,23 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Ein Listener, der Konfigurationsänderungen für Herausforderungen und Spielregeln in einem Bukkit-Plugin verarbeitet.
+ */
 public class ConfigurationReader implements Listener {
 
+    /**
+     * Konstruktor für den ConfigurationReader. Registriert den Listener beim Bukkit-Plugin.
+     */
     public ConfigurationReader() {
         Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
     }
 
+    /**
+     * Liest konfigurierbare Felder aus einer Herausforderungsklasse und speichert sie in der Herausforderung.
+     *
+     * @param challenge Die Herausforderung, aus der die konfigurierbaren Felder gelesen werden sollen.
+     */
     public void readConfigurableFields(Challenge challenge) {
         Class<? extends Challenge> challengeClass = challenge.getClass();
 
@@ -39,6 +50,12 @@ public class ConfigurationReader implements Listener {
 
         challenge.setConfigurableFields(list);
     }
+
+    /**
+     * Liest konfigurierbare Felder aus einer Spielregelklasse und speichert sie in der Spielregel.
+     *
+     * @param challenge Die Spielregel, aus der die konfigurierbaren Felder gelesen werden sollen.
+     */
     public void readConfigurableFields(GameRule challenge) {
         Class<? extends GameRule> challengeClass = challenge.getClass();
 
@@ -51,6 +68,13 @@ public class ConfigurationReader implements Listener {
         challenge.setConfigurableFields(list);
     }
 
+    /**
+     * Öffnet einen Konfigurator für eine Herausforderung.
+     *
+     * @param challenge Die Herausforderung, für die der Konfigurator geöffnet werden soll.
+     * @param lang      Die Sprache, in der der Konfigurator angezeigt werden soll.
+     * @return Das Inventar des Konfigurators.
+     */
     public Inventory openConfigurator(Challenge challenge, String lang) {
         Collection<ConfigurableField> configurableFields = challenge.getConfigurableFields();
 
@@ -84,6 +108,13 @@ public class ConfigurationReader implements Listener {
         return inventory;
     }
 
+    /**
+     * Öffnet einen Konfigurator für eine Spielregel.
+     *
+     * @param gameRule Die Spielregel, für die der Konfigurator geöffnet werden soll.
+     * @param lang     Die Sprache, in der der Konfigurator angezeigt werden soll.
+     * @return Das Inventar des Konfigurators.
+     */
     public Inventory openConfigurator(GameRule gameRule, String lang){
         Collection<ConfigurableField> configurableFields = gameRule.getConfigurableFields();
 
@@ -184,6 +215,11 @@ public class ConfigurationReader implements Listener {
         return "§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "rightKlick") + action + "§7.";
     }
 
+    /**
+     * Reagiert auf Klick-Ereignisse im Inventar des Konfigurators.
+     *
+     * @param event Das Klick-Ereignis.
+     */
     @SneakyThrows
     @EventHandler
     public void onClick(InventoryClickEvent event) {
@@ -325,11 +361,12 @@ public class ConfigurationReader implements Listener {
 
                 int min = configurableField.getMetadata().min();
                 int max = configurableField.getMetadata().max();
+                int step = configurableField.getMetadata().step();
 
                 if (event.isLeftClick() && object < max) {
-                    configurableField.getField().set(challenge, object + 1);
+                    configurableField.getField().set(challenge, object + step);
                 } else if (event.isRightClick() && object > min) {
-                    configurableField.getField().set(challenge, object - 1);
+                    configurableField.getField().set(challenge, object - step);
                 }
 
                 challenge.update();

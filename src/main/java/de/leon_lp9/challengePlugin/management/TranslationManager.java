@@ -107,7 +107,7 @@ public class TranslationManager implements Listener {
             player.sendMessage("§7Please use one of the following languages: §6" + String.join(", ", getLanguages()));
         }
         Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
-            player.setTexturePack("https://cdn.discordapp.com/attachments/997527016557518940/1193639359660961832/pack.zip");
+            player.setTexturePack("https://i9klpg.ph.files.1drv.com/y4m52ad-vEoZ_xeIhfYevVzM9FmOZRwOxIKjOS4ckJ27RWNFg0rPQJrPGcDxig_oa0AypWgZ5uLMkdoXosIZ_xtq9GqhZ74s5gcji0QFRN7_zasVZHzlBLVUDFZA-iXmIyxs-ecPW7zJ0jiscrfGMbm6LijWjIycCQlXX9HIBphbrTfAqFuu7razEPA78VIXrrjOXJbxwZ_umoitpYVlX_Ciw");
         }, 20);
     }
 

@@ -30,6 +30,10 @@
             <goals>
               <goal>shade</goal>
             </goals>
+            <configuration>
+              <createDependencyReducedPom>true</createDependencyReducedPom>
+              <outputDirectory>D:\MinecraftServer\1.20.4\plugins</outputDirectory>
+            </configuration>
           </execution>
         </executions>
       </plugin>

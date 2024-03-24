@@ -16,5 +16,5 @@ public @interface ConfigurationValue {
 
     int min() default 0;
     int max() default 60;
-
+    int step() default 1;
 }
