@@ -2,18 +2,22 @@ package de.leon_lp9.challengePlugin.management;
 
 import com.google.gson.reflect.TypeToken;
 import de.leon_lp9.challengePlugin.Main;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLocaleChangeEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
+import org.bukkit.event.server.ServerListPingEvent;
 
 import java.io.File;
 import java.util.HashMap;
@@ -94,28 +98,6 @@ public class TranslationManager implements Listener {
             player.sendMessage("§7Please use one of the following languages: §6" + String.join(", ", getLanguages()));
         }else {
             player.sendMessage(getTranslation(language, "languageChanged"));
-        }
-    }
-
-    @EventHandler
-    public void onPlayerJoinEvent(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        String language = getLanguageOfPlayer(player);
-        player.closeInventory();
-        if (getTranslation(language, "languageChanged").equals("%languageChanged%")){
-            player.sendMessage("§7You use an unsupported language: §6" + language);
-            player.sendMessage("§7Please use one of the following languages: §6" + String.join(", ", getLanguages()));
-        }
-        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
-            player.setTexturePack("https://i9klpg.ph.files.1drv.com/y4m52ad-vEoZ_xeIhfYevVzM9FmOZRwOxIKjOS4ckJ27RWNFg0rPQJrPGcDxig_oa0AypWgZ5uLMkdoXosIZ_xtq9GqhZ74s5gcji0QFRN7_zasVZHzlBLVUDFZA-iXmIyxs-ecPW7zJ0jiscrfGMbm6LijWjIycCQlXX9HIBphbrTfAqFuu7razEPA78VIXrrjOXJbxwZ_umoitpYVlX_Ciw");
-        }, 20);
-    }
-
-    @EventHandler
-    public void onPlayerRecourcePackStatusEvent(PlayerResourcePackStatusEvent event) {
-        Player player = event.getPlayer();
-        if (event.getStatus() == PlayerResourcePackStatusEvent.Status.DECLINED) {
-            player.kickPlayer(Main.getInstance().getTranslationManager().getTranslation(player, "youNeedToAcceptTheResourcePack"));
         }
     }
 

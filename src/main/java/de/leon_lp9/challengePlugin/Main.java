@@ -8,10 +8,7 @@ import de.leon_lp9.challengePlugin.challenges.config.LoadChallenge;
 import de.leon_lp9.challengePlugin.commands.HelpCommand;
 import de.leon_lp9.challengePlugin.command.CommandManager;
 import de.leon_lp9.challengePlugin.gamerules.GameRule;
-import de.leon_lp9.challengePlugin.management.FileUtils;
-import de.leon_lp9.challengePlugin.management.Metrics;
-import de.leon_lp9.challengePlugin.management.SpigotUpdateChecker;
-import de.leon_lp9.challengePlugin.management.TranslationManager;
+import de.leon_lp9.challengePlugin.management.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -48,11 +45,16 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
+        requireSpigot();
+        requirePaper();
+
         instance = this;
         fileUtils = new FileUtils();
         configurationReader = new ConfigurationReader();
         translationManager = new TranslationManager(this);
         getServer().getPluginManager().registerEvents(translationManager, this);
+        getServer().getPluginManager().registerEvents(new GlobalEvents(), this);
 
         loadChallengeManagerFromConfig();
         loadGameRuleManagerFromConfig();
@@ -68,12 +70,12 @@ public final class Main extends JavaPlugin {
         commandManager.init();
 
         metrics = new Metrics(this, 20679);
-        new SpigotUpdateChecker(this, 107018).getVersion(version -> {
+        new SpigotUpdateChecker(this, 115834).getVersion(version -> {
             if (!this.getDescription().getVersion().equals(version)) {
                 getLogger().warning("There is a new update available.");
                 getLogger().warning("Your are using version " + this.getDescription().getVersion());
                 getLogger().warning("The latest version is " + version);
-                getLogger().warning("Download it here: https://www.spigotmc.org/resources/compactcrates.107018/");
+                getLogger().warning("Download it here: https://www.spigotmc.org/resources/challenges-plugin.115834/");
             }
         });
 
@@ -117,7 +119,42 @@ public final class Main extends JavaPlugin {
         challengeManager.getActiveChallenges().forEach(Challenge::unload);
     }
 
+    private void requireSpigot() {
+        try {
+            Bukkit.spigot();
+        } catch (Throwable var2) {
+            getLogger().warning("");
+            getLogger().warning("============================== ERROR ==============================");
+            getLogger().warning("");
+            getLogger().warning("This plugin requires Spigot or Paper to run (Your server: " + Bukkit.getVersion() + ")");
+            getLogger().warning("Please ensure you are using Spigot or Paper to utilize this plugin!");
+            getLogger().warning("");
+            getLogger().warning("Download PaperMC: https://papermc.io/downloads");
+            getLogger().warning("Download Spigot: https://getbukkit.org/download/spigot");
+            getLogger().warning("");
+            getLogger().warning("============================== ERROR ==============================");
+            getLogger().warning("");
+            throw new IllegalStateException();
+        }
+    }
 
+    private void requirePaper() {
+        try {
+            Class.forName("com.destroystokyo.paper.VersionHistoryManager");
+        } catch (Throwable var2) {
+            getLogger().warning("");
+            getLogger().warning("============================== ERROR ==============================");
+            getLogger().warning("");
+            getLogger().warning("This plugin requires Paper to run (Your server: " + Bukkit.getVersion() + ")");
+            getLogger().warning("Please make sure you are using Paper to utilize this plugin!");
+            getLogger().warning("");
+            getLogger().warning("Download PaperMC: https://papermc.io/downloads");
+            getLogger().warning("");
+            getLogger().warning("============================== ERROR ==============================");
+            getLogger().warning("");
+            throw new IllegalStateException();
+        }
+    }
 
     private void loadChallengeManagerFromConfig() {
         if (fileUtils.fileExists("challengeManager")){

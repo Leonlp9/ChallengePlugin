@@ -8,6 +8,7 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 @LoadChallenge
@@ -30,7 +31,19 @@ public class Ampel extends Challenge {
     private transient BossBar bossBar;
 
     @ConfigurationValue(title = "AmpelRotPhaseMillisName", icon = Material.REDSTONE_TORCH, min = 1, max = 10000, step = 100)
-    private int ampelGelbPhaseMillis = 1000;
+    private int ampelRotPhaseMillis = 5000;
+
+    @ConfigurationValue(title = "AmpelGelbPhaseMillisName", icon = Material.REDSTONE_TORCH, min = 1, max = 10000, step = 100)
+    private int ampelGelbPhaseMillis = 2000;
+
+    //Es muss mindestens 60 Sekunden rum sein, bevor die Ampel wieder auf gelb springen kann nach wahrscheinlichkeit
+    @ConfigurationValue(title = "GruenSchonPhaseSecsName", icon = Material.REDSTONE_TORCH, min = 10, max = 10000, step = 60)
+    private int gruenSchonPhaseSecs = 60;
+
+    @ConfigurationValue(title = "WahrscheinlichkeitFuerVonGruenNachGelbName", icon = Material.REDSTONE_TORCH, min = 1, max = 100)
+    public int wahrscheinlichkeitFuerVonGruenNachGelb = 5;
+
+    private transient long lastSwitch = System.currentTimeMillis();
 
     private AmpelStatus status;
 
@@ -64,8 +77,19 @@ public class Ampel extends Challenge {
     }
 
     @Override
-    public void tick(){
-        super.tick();
+    public void timerTick(int second){
+        super.timerTick(second);
+
+        if (status == AmpelStatus.ROT && System.currentTimeMillis() - lastSwitch > ampelRotPhaseMillis){
+            switchStatus();
+            lastSwitch = System.currentTimeMillis();
+        } else if (status == AmpelStatus.GELB && System.currentTimeMillis() - lastSwitch > ampelGelbPhaseMillis){
+            switchStatus();
+            lastSwitch = System.currentTimeMillis();
+        } else if (status == AmpelStatus.GRUEN && System.currentTimeMillis() - lastSwitch > gruenSchonPhaseSecs * 1000 && Math.random() * 100 < wahrscheinlichkeitFuerVonGruenNachGelb){
+            switchStatus();
+            lastSwitch = System.currentTimeMillis();
+        }
     }
 
     private void setTitle(){
@@ -95,6 +119,11 @@ public class Ampel extends Challenge {
         if (status == AmpelStatus.ROT && (event.getFrom().getX() != event.getTo().getX() || event.getFrom().getZ() != event.getTo().getZ() || event.getFrom().getY() != event.getTo().getY())){
             event.getPlayer().setHealth(0);
         }
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event){
+        bossBar.addPlayer(event.getPlayer());
     }
 
 }

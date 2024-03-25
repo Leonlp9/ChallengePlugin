@@ -89,7 +89,13 @@ public class Timer {
 
             int playerCount = Bukkit.getServer().getOnlinePlayers().size();
 
-            player.setPlayerListHeaderFooter("\uDAC0\uDC31\n\n\n\n\n\n", "\n§7TPS: §b" + tps + "§7 | CPU: §b" + cpu + "%§7 | RAM: §b" + mem + "GB§7 | Players: §b" + playerCount + "\n");
+            if (!Main.getInstance().getConfig().contains("useTablist")) {
+                Main.getInstance().getConfig().set("useTablist", true);
+                Main.getInstance().saveConfig();
+            }
+            if (Main.getInstance().getConfig().getBoolean("useTablist")) {
+                player.setPlayerListHeaderFooter("\uDAC0\uDC31\n\n\n\n\n\n", "\n§7TPS: §b" + tps + "§7 | CPU: §b" + cpu + "%§7 | RAM: §b" + mem + "GB§7 | Players: §b" + playerCount + "\n");
+            }
 
         });
     }

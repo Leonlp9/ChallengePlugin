@@ -63,17 +63,16 @@
   "AllItemsName": "Alle Items sammlen",
   "AllItemsDescription": "Sammle alle Items im Spiel in einer zufälligen Reihenfolge",
 
-  "damageGameRuleDamageYou": "%prefix%Du §7hast §6%amount% Herzen§7 schaden bekommen!",
-  "damageGameRuleDamageOther": "%prefix%%player% §7hat §6%amount% Herzen§7 schaden bekommen!",
-  "DamageMessagesGameRuleName": "Schadens Nachricht GameRule",
-  "DamageMessagesGameRuleDescription": "Zeigt eine Nachricht wenn du oder ein anderer Spieler Schaden bekommt",
-    "damageGameRuleShowToAllPlayers": "Sichbar für alle Spieler",
-    "damageGameRuleShowToAllPlayersDescription": "Zeigt allen Spielern den Schaden den du bekommen hast oder nur dir",
-
-  "WinningConditionGameRuleName": "Gewinnbedingung",
-  "WinningConditionGameRuleDescription": "Wenn diese Bedingung erfüllt ist, wird die Challenge beendet",
-    "winningConditionMobType": "Welcher Mob",
-    "winningConditionMobTypeDescription": "Welcher Mob muss getötet werden",
+  "AmpelName": "Ampel",
+    "AmpelDescription": "Du musst auf die Ampel achten und bei Rot stehen bleiben",
+        "AmpelRotPhaseMillisName": "Rot Phase",
+          "AmpelRotPhaseMillisNameDescription": "Die Zeit in Millisekunden die die Rot Phase andauert",
+        "AmpelGelbPhaseMillisName": "Gelb Phase",
+          "AmpelGelbPhaseMillisNameDescription": "Die Zeit in Millisekunden die die Gelb Phase andauert",
+        "GruenSchonPhaseSecsName": "Grün Schon Phase",
+          "GruenSchonPhaseSecsNameDescription": "Die Zeit in Sekunden die die Grün Schonphase andauert (Solange kann nicht Gelb werden)",
+        "WahrscheinlichkeitFuerVonGruenNachGelbName": "Wahrscheinlichkeit für von Grün nach Gelb",
+          "WahrscheinlichkeitFuerVonGruenNachGelbNameDescription": "Die Wahrscheinlichkeit in Prozent das die Ampel von Grün nach Gelb wechselt",
 
   "BedrockWallName": "Bedrock Wand",
   "BedrockWallDescription": "Erstellt eine Wand aus Bedrock die nach ein paar Sekunden hinter dir erscheint",
@@ -101,10 +100,17 @@
     "EveryBlockDisappearsBlockDropBreakName": "Block Drop beim Abbauen",
     "EveryBlockDisappearsBlockDropBreakDescription": "Blöcke droppen beim Abbauen",
 
-  "MangnetName": "Du bist Mangnetisch",
-    "MangnetDescription": "Alle Kreaturen in einem bestimmten Radius werden zu dir gezogen",
-        "MangnetRangeName": "Magnet Radius",
-        "MangnetRangeDescription": "Der Radius in dem Items zu dir gezogen werden",
+  "FlagQuizName": "Flaggen Quiz",
+    "FlagQuizDescription": "Du musst die Flagge eines Landes erraten",
+        "multipleChoice": "Multiple Choice",
+          "multipleChoiceDescription": "Mehrere Antwortmöglichkeiten",
+        "resolution": "Auflösung",
+          "resolutionDescription": "Ändert die Auflösung der Flagge",
+
+  "MagnetName": "Du bist Magnetisch",
+    "MagnetDescription": "Alle Kreaturen in einem bestimmten Radius werden zu dir gezogen",
+        "MagnetRangeName": "Magnet Radius",
+        "MagnetRangeDescription": "Der Radius in dem Items zu dir gezogen werden",
 
   "RandomBlockDropsName": "Blöcke droppen zufällige Items",
   "RandomBlockDropsDescription": "Jeder Block den du abbauen willst dropt ein zufälliges Item",
@@ -144,6 +150,32 @@
   "WolfiName": "Wolfi Challenge",
   "WolfiDescription": "Wenn dein Wolf stirbt, stirbst du auch! (Beim Deaktivieren der Challenge wird dein Wolf nur gelöscht, wenn er geladen ist)",
     "nameTagVisible": "NameTag sichtbar",
-    "nameTagVisibleDescription": "Soll das NameTag des Wolfs sichtbar sein"
+    "nameTagVisibleDescription": "Soll das NameTag des Wolfs sichtbar sein",
+
+  "damageGameRuleDamageYou": "%prefix%Du §7hast §6%amount% Herzen§7 schaden bekommen!",
+  "damageGameRuleDamageOther": "%prefix%%player% §7hat §6%amount% Herzen§7 schaden bekommen!",
+  "DamageMessagesGameRuleName": "Schadens Nachricht GameRule",
+  "DamageMessagesGameRuleDescription": "Zeigt eine Nachricht wenn du oder ein anderer Spieler Schaden bekommt",
+  "damageGameRuleShowToAllPlayers": "Sichbar für alle Spieler",
+  "damageGameRuleShowToAllPlayersDescription": "Zeigt allen Spielern den Schaden den du bekommen hast oder nur dir",
+
+  "WinningConditionGameRuleName": "Gewinnbedingung",
+  "WinningConditionGameRuleDescription": "Wenn diese Bedingung erfüllt ist, wird die Challenge beendet",
+  "winningConditionMobType": "Welcher Mob",
+  "winningConditionMobTypeDescription": "Welcher Mob muss getötet werden",
+
+  "SyncInventoryGameRuleName": "Inventar synchronisieren",
+  "SyncInventoryGameRuleDescription": "Synchronisiert das Inventar aller Spieler",
+
+  "SyncXPGameRuleName": "XP synchronisieren",
+  "SyncXPGameRuleDescription": "Synchronisiert die XP aller Spieler",
+
+  "SkipsGameRuleName": "Skips",
+  "SkipsGameRuleDescription": "Anzahl der Skips die ein Spieler hat",
+    "AmountOfSkips": "Anzahl der Skips",
+    "AmountOfSkipsDescription": "Anzahl der Skips die ein Spieler hat",
+
+  "BackPackGameRuleName": "Rucksack",
+  "BackPackGameRuleDescription": "Ob der /backpack Command aktiviert ist"
 
 }
