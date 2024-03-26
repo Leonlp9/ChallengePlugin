@@ -40,7 +40,7 @@ public class GameRuleCommand implements Listener {
                 return;
             }
 
-            new GameRuleMenu().openInventory(player);
+            Main.getInstance().getMenus().getGameRuleMenu().openInventory(player);
 
         }
     }
@@ -50,39 +50,6 @@ public class GameRuleCommand implements Listener {
         return null;
     }
 
-    @SneakyThrows
-    @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
-        if (!(event.getWhoClicked() instanceof Player ePlayer)) {
-            return;
-        }
-        if(event.getView().getTitle().equals("§6" + Main.getInstance().getTranslationManager().getTranslation(ePlayer, "gamerules"))) {
-            event.setCancelled(true);
-            ItemStack currentItem = event.getCurrentItem();
-            if(currentItem != null) {
-                ItemMeta itemMeta = currentItem.getItemMeta();
-                if(itemMeta != null) {
-                    if (!itemMeta.getPersistentDataContainer().has(new NamespacedKey(Main.getInstance(), "id"), PersistentDataType.STRING)) return;
 
-                    String id = itemMeta.getPersistentDataContainer().get(new NamespacedKey(Main.getInstance(), "id"), PersistentDataType.STRING);
-                    Class<? extends GameRule> challengeClass = (Class<? extends GameRule>) Class.forName(id);
-
-                    if (event.getClick().isLeftClick()) {
-                        if (!Main.getInstance().getGameruleManager().isEnable(challengeClass)) {
-                            Main.getInstance().getGameruleManager().setEnable(challengeClass, true);
-                            Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "hasBeenActivated").replace("%challenge%", Main.getInstance().getGameruleManager().getGameRuleByClass(challengeClass).getTranslationName(player))));
-                        } else {
-                            Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "hasBeenDeactivated").replace("%challenge%", Main.getInstance().getGameruleManager().getGameRuleByClass(challengeClass).getTranslationName(player))));
-                            Main.getInstance().getGameruleManager().setEnable(challengeClass, false);
-                        }
-                        new GameRuleMenu().openInventory(((Player) event.getWhoClicked()));
-                    } else {
-                        Inventory itemStacks = Main.getInstance().getConfigurationReader().openConfigurator(Main.getInstance().getGameruleManager().getGameRuleByClass(challengeClass), Main.getInstance().getTranslationManager().getLanguageOfPlayer(((Player) event.getWhoClicked())));
-                        event.getWhoClicked().openInventory(itemStacks);
-                    }
-                }
-            }
-        }
-    }
 
 }

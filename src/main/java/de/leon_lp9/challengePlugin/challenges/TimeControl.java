@@ -22,7 +22,7 @@ public class TimeControl extends Challenge{
     private transient ServerTickManager serverTickManager;
 
     public TimeControl() {
-        super(Material.CLOCK);
+        super(Material.CLOCK, ChallengeType.MISC);
         serverTickManager = Bukkit.getServer().getServerTickManager();
     }
 

@@ -17,7 +17,7 @@ public class CraftingRandomizerChallenge extends Challenge{
     protected final Map<Material, Material> randomization = new HashMap();
 
     public CraftingRandomizerChallenge() {
-        super(Material.CRAFTING_TABLE);
+        super(Material.CRAFTING_TABLE, ChallengeType.RANDOMIZER);
     }
 
     protected void reloadRandomization() {

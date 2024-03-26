@@ -8,7 +8,7 @@ import org.bukkit.Material;
 public class LevelEqualsBorder extends Challenge{
 
     public LevelEqualsBorder() {
-        super(Material.STRUCTURE_BLOCK);
+        super(Material.STRUCTURE_BLOCK, ChallengeType.MINIGAME);
     }
 
     @Override

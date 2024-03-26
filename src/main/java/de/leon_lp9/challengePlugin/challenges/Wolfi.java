@@ -21,7 +21,7 @@ public class Wolfi extends Challenge{
     private boolean nameTagVisible = true;
 
     public Wolfi() {
-        super(Material.BONE);
+        super(Material.BONE, ChallengeType.ENTITYS);
         playerWolfiMap = new HashMap<>();
     }
 

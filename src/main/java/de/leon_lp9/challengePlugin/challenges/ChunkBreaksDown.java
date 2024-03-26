@@ -14,7 +14,7 @@ public class ChunkBreaksDown extends Challenge {
     private int sekundenBisAbbau = 10;
 
     public ChunkBreaksDown() {
-        super(Material.DIAMOND_PICKAXE);
+        super(Material.DIAMOND_PICKAXE, ChallengeType.BLOCKS);
     }
 
     @Override

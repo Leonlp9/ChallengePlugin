@@ -23,7 +23,7 @@ public class Elsa extends Challenge {
     private int iceRadius = 3;
 
     public Elsa() {
-        super(Material.PACKED_ICE);
+        super(Material.PACKED_ICE, ChallengeType.MOVEMENT);
     }
 
     @EventHandler

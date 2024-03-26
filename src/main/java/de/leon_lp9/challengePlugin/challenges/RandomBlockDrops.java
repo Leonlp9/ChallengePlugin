@@ -27,7 +27,7 @@ public class RandomBlockDrops extends Challenge{
     private final Map<Integer, Integer> savedDropsOrdinal = new HashMap<>();
 
     public RandomBlockDrops() {
-        super(Material.CHEST);
+        super(Material.CHEST, ChallengeType.RANDOMIZER);
         System.out.println("RandomBlockDrops");
     }
 

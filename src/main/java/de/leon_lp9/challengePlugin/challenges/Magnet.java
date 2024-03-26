@@ -14,7 +14,7 @@ public class Magnet extends Challenge {
     int magnetRange = 25;
 
     public Magnet() {
-        super(Material.COMPASS);
+        super(Material.COMPASS, ChallengeType.MOVEMENT);
     }
 
     @Override

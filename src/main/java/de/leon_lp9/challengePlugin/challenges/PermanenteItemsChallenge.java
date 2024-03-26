@@ -14,7 +14,7 @@ import javax.annotation.Nonnull;
 @LoadChallenge
 public class PermanenteItemsChallenge extends Challenge{
     public PermanenteItemsChallenge() {
-        super(Material.VINE);
+        super(Material.VINE, ChallengeType.INVENTORY);
     }
 
     @EventHandler(

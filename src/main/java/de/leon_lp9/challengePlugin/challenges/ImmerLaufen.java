@@ -11,7 +11,7 @@ import org.bukkit.util.Vector;
 @LoadChallenge
 public class ImmerLaufen extends Challenge {
     public ImmerLaufen() {
-        super(Material.IRON_BOOTS);
+        super(Material.IRON_BOOTS, ChallengeType.MOVEMENT);
     }
 
     @Override

@@ -18,7 +18,7 @@ public class YCoordinateOnlyInOneDirection extends Challenge{
     private Direction direction = Direction.DOWN;
 
     public YCoordinateOnlyInOneDirection() {
-        super(Material.ARROW);
+        super(Material.ARROW, ChallengeType.MOVEMENT);
         System.out.println("YCoordinateNurInEineRichtung");
     }
 

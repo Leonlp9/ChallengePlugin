@@ -48,7 +48,7 @@ public class Ampel extends Challenge {
     private AmpelStatus status;
 
     public Ampel() {
-        super(Material.REDSTONE);
+        super(Material.REDSTONE, ChallengeType.MOVEMENT);
         status = AmpelStatus.GRUEN;
     }
 
@@ -77,8 +77,8 @@ public class Ampel extends Challenge {
     }
 
     @Override
-    public void timerTick(int second){
-        super.timerTick(second);
+    public void tick(){
+        super.tick();
 
         if (status == AmpelStatus.ROT && System.currentTimeMillis() - lastSwitch > ampelRotPhaseMillis){
             switchStatus();
@@ -86,7 +86,7 @@ public class Ampel extends Challenge {
         } else if (status == AmpelStatus.GELB && System.currentTimeMillis() - lastSwitch > ampelGelbPhaseMillis){
             switchStatus();
             lastSwitch = System.currentTimeMillis();
-        } else if (status == AmpelStatus.GRUEN && System.currentTimeMillis() - lastSwitch > gruenSchonPhaseSecs * 1000 && Math.random() * 100 < wahrscheinlichkeitFuerVonGruenNachGelb){
+        } else if (status == AmpelStatus.GRUEN && System.currentTimeMillis() - lastSwitch > gruenSchonPhaseSecs * 1000 && Math.random() * 100 < (double) wahrscheinlichkeitFuerVonGruenNachGelb / 20){
             switchStatus();
             lastSwitch = System.currentTimeMillis();
         }

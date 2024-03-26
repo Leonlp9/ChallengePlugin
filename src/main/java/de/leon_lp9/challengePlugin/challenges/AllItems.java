@@ -33,7 +33,7 @@ public class AllItems extends Challenge {
     private transient BossBar bossBar;
 
     public AllItems() {
-        super(Material.ENDER_CHEST);
+        super(Material.ENDER_CHEST, ChallengeType.MINIGAME);
         allCollectedItems = new ArrayList<>();
 
         allMaterialsRandomized = new ArrayList<>();

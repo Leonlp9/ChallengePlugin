@@ -25,7 +25,7 @@ public class TheFloorIsLava extends Challenge {
     private int sekundenBisLava = 6;
 
     public TheFloorIsLava() {
-        super(Material.LAVA_BUCKET);
+        super(Material.LAVA_BUCKET, ChallengeType.MOVEMENT);
         System.out.println("TheFloorIsLava");
     }
 

@@ -23,7 +23,7 @@ public class EveryBlockDisappears extends Challenge {
     private boolean blockDropByPlace = false;
 
     public EveryBlockDisappears() {
-        super(Material.STRUCTURE_VOID);
+        super(Material.STRUCTURE_VOID, ChallengeType.BLOCKS);
     }
 
     @EventHandler

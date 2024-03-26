@@ -18,18 +18,20 @@ public class BlockeFliegenInDieLuft extends Challenge {
     private int zeitBisBlockFliegt = 20;
 
     public BlockeFliegenInDieLuft() {
-        super(Material.SAND);
+        super(Material.SAND, ChallengeType.MOVEMENT);
     }
 
     @EventHandler()
     public void onMove(PlayerMoveEvent event) {
-        if (event.getTo() != null) {
-            Block blockBelow = event.getTo().getBlock().getRelative(0, -1, 0);
-            if (blockBelow != null) {
-                if (blockBelow.getType().isSolid()) {
-                    Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
-                        this.boostBlockInAir(blockBelow);
-                    }, this.zeitBisBlockFliegt);
+        if (isRunning()) {
+            if (event.getTo() != null) {
+                Block blockBelow = event.getTo().getBlock().getRelative(0, -1, 0);
+                if (blockBelow != null) {
+                    if (blockBelow.getType().isSolid()) {
+                        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                            this.boostBlockInAir(blockBelow);
+                        }, this.zeitBisBlockFliegt);
+                    }
                 }
             }
         }

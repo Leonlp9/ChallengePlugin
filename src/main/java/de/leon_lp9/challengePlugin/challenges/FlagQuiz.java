@@ -8,6 +8,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -40,12 +41,29 @@ public class FlagQuiz extends Challenge {
     @ConfigurationValue(title = "resolution", icon = Material.MAP, min = 10, max = 120)
     private int resolution = 60;
 
+    @ConfigurationValue(title = "minWaitTime", icon = Material.CLOCK, min = 10, max = 300)
+    private int minWaitTime = 60;
+
+    @ConfigurationValue(title = "maxWaitTime", icon = Material.CLOCK, min = 10, max = 300)
+    private int maxWaitTime = 300;
+
     private int nextFlagTimer;
 
     public FlagQuiz() {
-        super(Material.MAP);
+        super(Material.MAP, ChallengeType.ZWISCHENZIELE);
+
+        setNextRandomTime();
+    }
+
+    public void setNextRandomTime(){
         Random random = new Random();
-        nextFlagTimer = random.nextInt(60*5)+60;
+        nextFlagTimer = random.nextInt(maxWaitTime)+minWaitTime;
+    }
+
+    @Override
+    public void update(){
+        super.update();
+        setNextRandomTime();
     }
 
     @Override
@@ -92,7 +110,16 @@ public class FlagQuiz extends Challenge {
 
         currentFlag = Flags.getRand();
 
-        Player selectedPlayer = Bukkit.getOnlinePlayers().stream().findAny().orElse(null);
+        //Get Random Player that is in Survival
+        Player selectedPlayer = null;
+        ArrayList<Player> players = new ArrayList<>();
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            if (!player.getGameMode().equals(GameMode.SPECTATOR)){
+                players.add(player);
+            }
+        });
+        selectedPlayer = players.get(new Random().nextInt(players.size()));
+
         if (selectedPlayer == null) return;
         selectedPlayerUUID = selectedPlayer.getUniqueId();
         Main.getInstance().getChallengeManager().getTimer().setResumed(false);
@@ -128,8 +155,7 @@ public class FlagQuiz extends Challenge {
         }
         Main.getInstance().getChallengeManager().getTimer().setResumed(true);
         selectedPlayerUUID = null;
-        Random random = new Random();
-        nextFlagTimer = random.nextInt(60*5)+60;
+        setNextRandomTime();
     }
 
     public TextDisplay spawnFlagTextDisplay(Flags flag, Location loc){
@@ -259,7 +285,7 @@ public class FlagQuiz extends Challenge {
                         Main.getInstance().getChallengeManager().getTimer().setResumed(true);
                         selectedPlayerUUID = null;
                         Random random = new Random();
-                        nextFlagTimer = random.nextInt(60*5)+60;
+                        setNextRandomTime();
                     });
                 });
             }

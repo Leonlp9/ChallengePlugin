@@ -51,7 +51,7 @@ public class RandomMobInRandomBiom extends Challenge {
     private transient BossBar bossBar;
 
     public RandomMobInRandomBiom() {
-        super(Material.ALLAY_SPAWN_EGG);
+        super(Material.ALLAY_SPAWN_EGG, ChallengeType.ENTITYS);
         biome = null;
         entityType = null;
     }

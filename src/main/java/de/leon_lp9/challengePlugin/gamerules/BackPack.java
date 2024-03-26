@@ -8,7 +8,7 @@ import org.bukkit.inventory.Inventory;
 @LoadGamerule
 public class BackPack extends GameRule {
 
-    private final transient Inventory inventory = Bukkit.createInventory(null, 9*3, "BackPack");
+    private final transient Inventory inventory = Bukkit.createInventory(null, 9*3, "\uDAFF\uDFEE§f\uDAC0\uDC39");
 
     public BackPack(){
         super(Material.CHEST);

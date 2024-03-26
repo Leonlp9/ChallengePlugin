@@ -7,6 +7,7 @@ import de.leon_lp9.challengePlugin.challenges.config.ConfigurationReader;
 import de.leon_lp9.challengePlugin.challenges.config.LoadChallenge;
 import de.leon_lp9.challengePlugin.commands.HelpCommand;
 import de.leon_lp9.challengePlugin.command.CommandManager;
+import de.leon_lp9.challengePlugin.commands.gui.Menus;
 import de.leon_lp9.challengePlugin.gamerules.GameRule;
 import de.leon_lp9.challengePlugin.management.*;
 import lombok.Getter;
@@ -40,6 +41,8 @@ public final class Main extends JavaPlugin {
     private TranslationManager translationManager;
     @Getter
     private PlayerListManager playerListManager;
+    @Getter
+    private Menus menus;
     private Metrics metrics;
     private HelpCommand helpEvents;
 
@@ -65,6 +68,7 @@ public final class Main extends JavaPlugin {
         gameruleManager.registerAllGameRules();
         playerListManager = new PlayerListManager();
         helpEvents = new HelpCommand();
+        menus = new Menus();
 
         CommandManager commandManager = new CommandManager();
         commandManager.init();

@@ -65,7 +65,7 @@ public class RandomMLG extends Challenge {
     private transient boolean isDead = false;
 
     public RandomMLG() {
-        super(Material.WATER_BUCKET);
+        super(Material.WATER_BUCKET, ChallengeType.EXTRA_WORLD);
         playerLocations = new HashMap<>();
         playerInventoryContents = new HashMap<>();
     }

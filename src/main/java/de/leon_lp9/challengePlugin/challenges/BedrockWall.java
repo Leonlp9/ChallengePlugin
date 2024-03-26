@@ -21,7 +21,7 @@ public class BedrockWall extends Challenge {
     private int sekundenBisBedrock = 10;
 
     public BedrockWall() {
-        super(Material.BEDROCK);
+        super(Material.BEDROCK, ChallengeType.MOVEMENT);
     }
 
     @EventHandler

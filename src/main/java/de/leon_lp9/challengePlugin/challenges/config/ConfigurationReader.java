@@ -103,6 +103,8 @@ public class ConfigurationReader implements Listener {
                 .setDisplayName("§c§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "back"))
                 .setLore("§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "backDescription"))
                 .addPersistentDataContainer("cId", PersistentDataType.STRING, challenge.getClass().getName())
+                .addPersistentDataContainer("cType", PersistentDataType.STRING, challenge.getType().name())
+                .setCustomModelData(1)
                 .build());
 
         return inventory;
@@ -143,6 +145,7 @@ public class ConfigurationReader implements Listener {
                 .setDisplayName("§c§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "back"))
                 .setLore("§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "backDescription"))
                 .addPersistentDataContainer("cId", PersistentDataType.STRING, gameRule.getClass().getName())
+                .setCustomModelData(1)
                 .build());
 
         return inventory;
@@ -228,12 +231,13 @@ public class ConfigurationReader implements Listener {
             event.setCancelled(true);
             if (event.getCurrentItem() == null) return;
             if (!event.getCurrentItem().hasItemMeta()) return;
+
             if (!event.getCurrentItem().getItemMeta().getPersistentDataContainer().has(new NamespacedKey(Main.getInstance(), "cField"), PersistentDataType.STRING)) {
                 if (!event.getCurrentItem().getItemMeta().getPersistentDataContainer().has(new NamespacedKey(Main.getInstance(), "cID"), PersistentDataType.STRING))
                     return;
 
                 if (event.getCurrentItem().getType().equals(Material.BARRIER)) {
-                    new ChallengeMenu().openInventory((Player) event.getWhoClicked());
+                    new ChallengeMenu().openInventory((Player) event.getWhoClicked(), Challenge.ChallengeType.valueOf(event.getCurrentItem().getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Main.getInstance(), "cType"), PersistentDataType.STRING)));
                 }
 
                 return;
