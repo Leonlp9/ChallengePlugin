@@ -93,4 +93,12 @@ public class GlobalEvents implements Listener {
         }
     }
 
+    @EventHandler
+    public void onPackSuccess(PlayerResourcePackStatusEvent event) {
+        Player player = event.getPlayer();
+        if (event.getStatus() == PlayerResourcePackStatusEvent.Status.SUCCESSFULLY_LOADED) {
+            player.spawnParticle(org.bukkit.Particle.FIREWORKS_SPARK, player.getLocation(), 100, 0.5, 0.5, 0.5, 0.1);
+        }
+    }
+
 }
