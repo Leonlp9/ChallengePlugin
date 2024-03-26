@@ -18,9 +18,11 @@ import org.bukkit.WorldCreator;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public final class Main extends JavaPlugin {
@@ -42,6 +44,10 @@ public final class Main extends JavaPlugin {
     @Getter
     private PlayerListManager playerListManager;
     @Getter
+    private BossBarInformation bossBarInformation;
+    @Getter
+    PlayerHeadManager playerHeadManager;
+    @Getter
     private Menus menus;
     private Metrics metrics;
     private HelpCommand helpEvents;
@@ -56,6 +62,8 @@ public final class Main extends JavaPlugin {
         fileUtils = new FileUtils();
         configurationReader = new ConfigurationReader();
         translationManager = new TranslationManager(this);
+        bossBarInformation = new BossBarInformation();
+        playerHeadManager = new PlayerHeadManager();
         getServer().getPluginManager().registerEvents(translationManager, this);
         getServer().getPluginManager().registerEvents(new GlobalEvents(), this);
 

@@ -1,5 +1,6 @@
 package de.leon_lp9.challengePlugin.builder;
 
+import de.leon_lp9.challengePlugin.management.Spacing;
 import net.md_5.bungee.api.ChatColor;
 import java.awt.Color;
 
@@ -49,7 +50,26 @@ public class ColorBuilder {
         StringBuilder stringBuilder = new StringBuilder();
         StringBuilder color = new StringBuilder();
         stringBuilder.append("\uDAC0\uDC34\uDAFF\uDFFD");
+
+        boolean skip = false;
+
         for (int i = 0; i < text.length(); i++) {
+
+            if (text.charAt(i) == Spacing.ZEROPIXEl.getSpacing().charAt(0) && text.charAt(i + 1) == Spacing.ZEROPIXEl.getSpacing().charAt(1)) {
+                skip = !skip;
+                i++;
+                if (skip){
+                    stringBuilder.append("§f" + Spacing.POSITIVE1PIXEl.getSpacing() + "\uDAC0\uDC33" + Spacing.NEGATIVE1PIXEl.getSpacing() + "\uDAC0\uDC33" + Spacing.NEGATIVE2PIXEl.getSpacing() + "\uDAFF\uDFF7\uDAFF\uDFF7" + Spacing.POSITIVE1PIXEl.getSpacing());
+                    stringBuilder.append(color);
+                }
+                continue;
+            }
+
+            if (skip) {
+                stringBuilder.append(text.charAt(i));
+                continue;
+            }
+
             //wenn an der stelle ein "§" ist, füge nur den char ein und den darauffolgenden char
             if (text.charAt(i) == '§') {
                 color.append(text.charAt(i));
@@ -63,7 +83,7 @@ public class ColorBuilder {
             stringBuilder.append(text.charAt(i));
             color = new StringBuilder();
         }
-        stringBuilder.append("§f\uDAFF\uDFFF\uDAC0\uDC35");
+        stringBuilder.append("§f" + Spacing.NEGATIVE1PIXEl.getSpacing() + "\uDAC0\uDC35");
         text = stringBuilder.toString();
         return this;
     }

@@ -61,7 +61,7 @@ public class Timer {
             if ((seconds >= 0 && state == TimerState.Countdown) || state == TimerState.Countup) {
                 sendActionBar();
             }
-
+            Main.getInstance().getBossBarInformation().update();
             Main.getInstance().getChallengeManager().getActiveChallenges().forEach(Challenge::tick);
         }, 0, 1).getTaskId();
     }

@@ -18,6 +18,7 @@ public class GlobalEvents implements Listener {
     @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+        Main.getInstance().getPlayerHeadManager().downloadPlayerHeadAsync(player.getUniqueId().toString());
         String language = Main.getInstance().getTranslationManager().getLanguageOfPlayer(player);
         player.closeInventory();
         if (Main.getInstance().getTranslationManager().getTranslation(language, "languageChanged").equals("%languageChanged%")){
@@ -98,6 +99,7 @@ public class GlobalEvents implements Listener {
         Player player = event.getPlayer();
         if (event.getStatus() == PlayerResourcePackStatusEvent.Status.SUCCESSFULLY_LOADED) {
             player.spawnParticle(org.bukkit.Particle.FIREWORKS_SPARK, player.getLocation(), 100, 0.5, 0.5, 0.5, 0.1);
+            player.sendTitle(Main.getInstance().getPlayerHeadManager().getHeadComponent(player), "§aHallo " + player.getName(), 10, 100, 20);
         }
     }
 
