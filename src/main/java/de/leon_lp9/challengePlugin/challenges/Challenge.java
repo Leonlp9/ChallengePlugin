@@ -51,6 +51,7 @@ public class Challenge implements Listener {
     private transient final Material icon;
     @Getter
     private final transient ChallengeType type;
+    protected transient final Main plugin;
 
     @Setter
     @Getter
@@ -61,6 +62,7 @@ public class Challenge implements Listener {
         this.description = this.getClass().getSimpleName() + "Description";
         this.icon = icon;
         this.type = type;
+        this.plugin = Main.getInstance();
 
         Main.getInstance().getConfigurationReader().readConfigurableFields(this);
     }

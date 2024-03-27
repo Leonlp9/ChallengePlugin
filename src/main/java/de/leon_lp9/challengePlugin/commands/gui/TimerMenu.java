@@ -60,6 +60,26 @@ public class TimerMenu implements Listener {
                     .build());
         }
 
+        if (Main.getInstance().getChallengeManager().getTimer().isBold()) {
+            inventory.setItem(21, new ItemBuilder(Material.IRON_NUGGET)
+                    .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "toggleBoldOff"))
+                    .setLore("§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "toggleBoldDescriptionOff"))
+                    .addPersistentDataContainer("id", PersistentDataType.STRING, "bold")
+                    .build());
+        }else {
+            inventory.setItem(21, new ItemBuilder(Material.IRON_INGOT)
+                    .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "toggleBoldOn"))
+                    .setLore("§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "toggleBoldDescriptionOn"))
+                    .addPersistentDataContainer("id", PersistentDataType.STRING, "bold")
+                    .build());
+        }
+
+        inventory.setItem(23, new ItemBuilder(Material.BARRIER)
+                .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "resetTimer"))
+                .setLore("§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "resetTimerDescription"))
+                .addPersistentDataContainer("id", PersistentDataType.STRING, "reset")
+                .build());
+
         if (Main.getInstance().getChallengeManager().getTimer().getState().equals(Timer.TimerState.Countdown)) {
             inventory.setItem(25, new ItemBuilder(Material.OAK_STAIRS)
                     .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "switchtocountup"))
@@ -108,7 +128,7 @@ public class TimerMenu implements Listener {
                             openInventory(ePlayer);
                             Bukkit.getOnlinePlayers().forEach(player -> {
                                 player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
-                                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerResumed").replace("%player%", ePlayer.getName()));
+                                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerResumed").replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent(ePlayer) + "§6" + ePlayer.getName()));
                             });
                             break;
                         case "pause":
@@ -116,7 +136,7 @@ public class TimerMenu implements Listener {
                             openInventory(ePlayer);
                             Bukkit.getOnlinePlayers().forEach(player -> {
                                 player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
-                                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerPaused").replace("%player%", ePlayer.getName()));
+                                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerPaused").replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent(ePlayer) + "§6" + ePlayer.getName()));
                             });
                             break;
                         case "background":
@@ -124,7 +144,7 @@ public class TimerMenu implements Listener {
                             openInventory(ePlayer);
                             Bukkit.getOnlinePlayers().forEach(player -> {
                                 player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
-                                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "backgroundChanged").replace("%player%", ePlayer.getName()).replace("%background%", Main.getInstance().getChallengeManager().getTimer().isBackground() ? "§a" + Main.getInstance().getTranslationManager().getTranslation(player, "enabled") : "§c" + Main.getInstance().getTranslationManager().getTranslation(player, "disabled")));
+                                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "backgroundChanged").replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent(ePlayer) + "§6" + ePlayer.getName()).replace("%background%", Main.getInstance().getChallengeManager().getTimer().isBackground() ? "§a" + Main.getInstance().getTranslationManager().getTranslation(player, "enabled") : "§c" + Main.getInstance().getTranslationManager().getTranslation(player, "disabled")));
                             });
                             break;
                         case "countdown":
@@ -132,7 +152,7 @@ public class TimerMenu implements Listener {
                             openInventory(ePlayer);
                             Bukkit.getOnlinePlayers().forEach(player -> {
                                 player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
-                                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "modeChanged").replace("%player%", ePlayer.getName()).replace("%mode%", Main.getInstance().getChallengeManager().getTimer().getState().name()));
+                                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "modeChanged").replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent(ePlayer) + "§6" + ePlayer.getName()).replace("%mode%", Main.getInstance().getChallengeManager().getTimer().getState().name()));
                             });
                             break;
                         case "countup":
@@ -140,11 +160,28 @@ public class TimerMenu implements Listener {
                             openInventory(ePlayer);
                             Bukkit.getOnlinePlayers().forEach(player -> {
                                 player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
-                                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "modeChanged").replace("%player%", ePlayer.getName()).replace("%mode%", Main.getInstance().getChallengeManager().getTimer().getState().name()));
+                                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "modeChanged").replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent(ePlayer) + "§6" + ePlayer.getName()).replace("%mode%", Main.getInstance().getChallengeManager().getTimer().getState().name()));
                             });
                             break;
                         case "back":
                             Main.getInstance().getMenus().getHubMenu().openInventory(ePlayer);
+                            break;
+                        case "bold":
+                            Main.getInstance().getChallengeManager().getTimer().setBold(!Main.getInstance().getChallengeManager().getTimer().isBold());
+                            openInventory(ePlayer);
+                            Bukkit.getOnlinePlayers().forEach(player -> {
+                                player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "boldChanged").replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent(ePlayer) + "§6" + ePlayer.getName()).replace("%bold%", Main.getInstance().getChallengeManager().getTimer().isBold() ? "§a" + Main.getInstance().getTranslationManager().getTranslation(player, "enabled") : "§c" + Main.getInstance().getTranslationManager().getTranslation(player, "disabled")));
+                            });
+                            break;
+                        case "reset":
+                            Main.getInstance().getChallengeManager().getTimer().setSeconds(0);
+                            Main.getInstance().getChallengeManager().getTimer().setResumed(false);
+                            openInventory(ePlayer);
+                            Bukkit.getOnlinePlayers().forEach(player -> {
+                                player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerReset").replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent(ePlayer) +  ePlayer.getName()));
+                            });
                             break;
                     }
                 }

@@ -1,9 +1,8 @@
 package de.leon_lp9.challengePlugin.challenges;
 
 import com.google.common.collect.Lists;
-import de.leon_lp9.challengePlugin.Main;
 import de.leon_lp9.challengePlugin.challenges.config.LoadChallenge;
-import de.leon_lp9.challengePlugin.management.Triple;
+import de.leon_lp9.challengePlugin.storage.Triple;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -12,16 +11,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.player.PlayerBucketEmptyEvent;
-import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -37,7 +32,7 @@ public class InAllenChunksPassiertDasGleiche extends Challenge {
 
     private void changeBlockInEveryChunk(World world, int x, int y, int z, BlockData data, Block exception) {
         this.updatedChunks.clear();
-        Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
+        Bukkit.getScheduler().runTask(plugin, () -> {
             Map<Triple<Integer, Integer, Integer>, BlockData> map = (Map)this.changedBlocks.getOrDefault(world.getName(), new HashMap());
             this.changedBlocks.putIfAbsent(world.getName(), map);
             map.put(new Triple(x, y, z), data);

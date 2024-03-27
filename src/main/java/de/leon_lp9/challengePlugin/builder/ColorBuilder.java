@@ -1,6 +1,7 @@
 package de.leon_lp9.challengePlugin.builder;
 
 import de.leon_lp9.challengePlugin.management.Spacing;
+import lombok.Setter;
 import net.md_5.bungee.api.ChatColor;
 import java.awt.Color;
 

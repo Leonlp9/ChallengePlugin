@@ -1,4 +1,4 @@
-package de.leon_lp9.challengePlugin.management;
+package de.leon_lp9.challengePlugin.storage;
 
 import java.util.Objects;
 import java.util.function.Function;
@@ -104,10 +104,5 @@ public class Triple<F, S, T> implements Pair {
     @Nonnull
     public static <F, S, T> Triple<F, S, T> of(@Nullable F first, @Nullable S second, @Nullable T third) {
         return new Triple(first, second, third);
-    }
-
-    @Nonnull
-    public static <F, S, T> Triple<F, S, T> empty() {
-        return new Triple();
     }
 }

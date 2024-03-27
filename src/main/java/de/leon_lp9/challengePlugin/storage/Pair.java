@@ -1,4 +1,4 @@
-package de.leon_lp9.challengePlugin.management;
+package de.leon_lp9.challengePlugin.storage;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;

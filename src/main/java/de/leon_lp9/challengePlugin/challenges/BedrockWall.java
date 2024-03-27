@@ -34,7 +34,7 @@ public class BedrockWall extends Challenge {
 
         if (!blocks.contains(location.hashCode())){
             blocks.add(location.hashCode());
-            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
 
                 //Bedrock von 0 bis Max Y setzen
                 for (int y = -64; y < 256; y++) {

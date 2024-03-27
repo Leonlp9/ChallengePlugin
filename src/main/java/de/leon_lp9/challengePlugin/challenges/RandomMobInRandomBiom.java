@@ -127,7 +127,7 @@ public class RandomMobInRandomBiom extends Challenge {
     }
 
     public void setTitle(){
-        int second = Main.getInstance().getChallengeManager().getTimer().getSeconds() - chillTimeInMinutes * 60 + catchTimeInMinutes * 60;
+        int second = plugin.getChallengeManager().getTimer().getSeconds() - chillTimeInMinutes * 60 + catchTimeInMinutes * 60;
         int time = (second % (catchTimeInMinutes * 60));
 
         if (time == 0){
@@ -169,14 +169,14 @@ public class RandomMobInRandomBiom extends Challenge {
             TextComponent textComponent = new TextComponent("Töte ");
             textComponent.setColor(net.md_5.bungee.api.ChatColor.WHITE);
 
-            TextComponent entity = new TextComponent(Main.getInstance().getTranslationManager().getTranslation(entityType));
+            TextComponent entity = new TextComponent(plugin.getTranslationManager().getTranslation(entityType));
             entity.setColor(net.md_5.bungee.api.ChatColor.DARK_PURPLE);
             entity.setBold(true);
 
             TextComponent in = new TextComponent(" in ");
             in.setColor(net.md_5.bungee.api.ChatColor.WHITE);
 
-            TextComponent cBiome = new TextComponent(Main.getInstance().getTranslationManager().getTranslation(biome));
+            TextComponent cBiome = new TextComponent(plugin.getTranslationManager().getTranslation(biome));
             cBiome.setColor(net.md_5.bungee.api.ChatColor.DARK_PURPLE);
             cBiome.setBold(true);
 
@@ -236,7 +236,7 @@ public class RandomMobInRandomBiom extends Challenge {
         TextComponent tc = new TextComponent("");
         tc.setItalic(false);
 
-        spawnEggMeta.setDisplayNameComponent(new TextComponent[]{tc, Main.getInstance().getTranslationManager().getTranslation(entity.getType())});
+        spawnEggMeta.setDisplayNameComponent(new TextComponent[]{tc, plugin.getTranslationManager().getTranslation(entity.getType())});
         spawnEgg.setItemMeta(spawnEggMeta);
 
         Entity entity1 = entity.getWorld().dropItemNaturally(entity.getLocation(), spawnEgg);

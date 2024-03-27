@@ -37,14 +37,14 @@ public class TheFloorIsLava extends Challenge {
         Location location = event.getPlayer().getLocation().clone().add(0, -1, 0);
         if (location.getBlock().getType() != Material.AIR && location.getBlock().getType() != Material.LAVA && location.getBlock().getType() != Material.MAGMA_BLOCK && !blocks.contains(location.hashCode())){
             blocks.add(location.hashCode());
-            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 location.getBlock().setType(Material.MAGMA_BLOCK);
                 if (sekundenBisLava < sekundenBisMagma){
                     blocks.remove(location.hashCode());
                 }
             }, 20L * sekundenBisMagma);
 
-            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 location.getBlock().setType(Material.LAVA);
                 if (sekundenBisLava >= sekundenBisMagma){
                     blocks.remove(location.hashCode());

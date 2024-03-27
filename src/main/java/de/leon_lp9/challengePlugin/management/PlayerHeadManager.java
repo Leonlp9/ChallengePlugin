@@ -76,7 +76,7 @@ public class PlayerHeadManager {
                 }
                 message.append(Spacing.NEGATIVE1PIXEl.getSpacing());
             }
-            if (i != 7){ message.append(Spacing.NEGATIVE8PIXEl.getSpacing()); }else { message.append(Spacing.POSITIVE2PIXEl.getSpacing()); }
+            if (i != 7){ message.append(Spacing.NEGATIVE8PIXEl.getSpacing()); }else { message.append(Spacing.POSITIVE2PIXEl.getSpacing()); message.append(Spacing.POSITIVE1PIXEl.getSpacing());  }
         }
         message.append(Spacing.ZEROPIXEl.getSpacing());
         cachedHeads.put(UUID.fromString(playerUUID), message.toString());

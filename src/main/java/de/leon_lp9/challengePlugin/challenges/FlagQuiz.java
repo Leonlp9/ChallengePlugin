@@ -122,7 +122,7 @@ public class FlagQuiz extends Challenge {
 
         if (selectedPlayer == null) return;
         selectedPlayerUUID = selectedPlayer.getUniqueId();
-        Main.getInstance().getChallengeManager().getTimer().setResumed(false);
+        plugin.getChallengeManager().getTimer().setResumed(false);
 
         textDisplay = spawnFlagTextDisplay(currentFlag, selectedPlayer.getEyeLocation());
 
@@ -153,7 +153,7 @@ public class FlagQuiz extends Challenge {
         if (textDisplay != null){
             textDisplay.remove();
         }
-        Main.getInstance().getChallengeManager().getTimer().setResumed(true);
+        plugin.getChallengeManager().getTimer().setResumed(true);
         selectedPlayerUUID = null;
         setNextRandomTime();
     }
@@ -243,7 +243,7 @@ public class FlagQuiz extends Challenge {
     public void tick() {
         super.tick();
 
-        Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
+        Bukkit.getScheduler().runTask(plugin, () -> {
             Bukkit.getOnlinePlayers().forEach(player -> {
                 if (selectedPlayerUUID == null) return;
                 if (selectedPlayerUUID.equals(player.getUniqueId())) {
@@ -260,7 +260,7 @@ public class FlagQuiz extends Challenge {
 
         nextFlagTimer--;
         if (nextFlagTimer <= 0){
-            Bukkit.getScheduler().runTask(Main.getInstance(), this::newFlag);
+            Bukkit.getScheduler().runTask(plugin, this::newFlag);
         }
     }
 
@@ -272,17 +272,17 @@ public class FlagQuiz extends Challenge {
                 Bukkit.getOnlinePlayers().forEach(player -> {
                     player.sendMessage("§a" + event.getPlayer().getName() + " §7hat die Flagge erraten!");
                 });
-                Bukkit.getScheduler().runTask(Main.getInstance(), this::correctAnswer);
+                Bukkit.getScheduler().runTask(plugin, this::correctAnswer);
             }else{
                 Bukkit.getOnlinePlayers().forEach(player -> {
                     player.sendMessage("§a" + event.getPlayer().getName() + " §7hat die Flagge falsch erraten!");
-                    Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
+                    Bukkit.getScheduler().runTask(plugin, () -> {
                         player.setHealth(0);
 
                         if (textDisplay != null){
                             textDisplay.remove();
                         }
-                        Main.getInstance().getChallengeManager().getTimer().setResumed(true);
+                        plugin.getChallengeManager().getTimer().setResumed(true);
                         selectedPlayerUUID = null;
                         Random random = new Random();
                         setNextRandomTime();

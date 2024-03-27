@@ -72,9 +72,7 @@ public class AnvilRainChallenge extends Challenge{
     public void timerTick(int seconds) {
         super.timerTick(seconds);
 
-        Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
-        this.handleTimeActivation();
-        });
+        Bukkit.getScheduler().runTask(plugin, this::handleTimeActivation);
     }
 
     private void handleTimeActivation() {

@@ -28,7 +28,7 @@ public class BlockeFliegenInDieLuft extends Challenge {
                 Block blockBelow = event.getTo().getBlock().getRelative(0, -1, 0);
                 if (blockBelow != null) {
                     if (blockBelow.getType().isSolid()) {
-                        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                        Bukkit.getScheduler().runTaskLater(plugin, () -> {
                             this.boostBlockInAir(blockBelow);
                         }, this.zeitBisBlockFliegt);
                     }

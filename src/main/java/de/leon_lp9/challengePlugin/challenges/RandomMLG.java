@@ -104,12 +104,12 @@ public class RandomMLG extends Challenge {
         super.timerTick(second);
 
         //new sync Thread because of the method is called async
-        Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
+        Bukkit.getScheduler().runTask(plugin, () -> {
             if (second % 60 * timeBetweenMLGsInMinutes == 60 * timeBetweenMLGsInMinutes - 1) {
                 Player player = getRandomPlayer();
                 if (player != null) {
 
-                    Main.getInstance().getChallengeManager().getTimer().setResumed(false);
+                    plugin.getChallengeManager().getTimer().setResumed(false);
 
                     Location getHighestBlockAt;
 
@@ -158,7 +158,7 @@ public class RandomMLG extends Challenge {
     @EventHandler
     public void onPlayerInteract(PlayerBucketEmptyEvent event) {
         if (event.getPlayer().getWorld().getName().equals("MLG_World")) {
-            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 event.getBlock().setType(Material.AIR);
             }, 20);
         }
@@ -168,7 +168,7 @@ public class RandomMLG extends Challenge {
     @EventHandler
     public void onPlayerInteract(BlockPlaceEvent event) {
         if (event.getPlayer().getWorld().getName().equals("MLG_World")) {
-            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 event.getBlock().setType(Material.AIR);
             }, 20);
         }
@@ -179,7 +179,7 @@ public class RandomMLG extends Challenge {
     public void onPlayerInteract(EntityPlaceEvent event) {
         if (event.getEntity().getWorld().getName().equals("MLG_World")) {
             if (event.getEntity().getType().equals(EntityType.BOAT)) {
-                Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
                     event.getEntity().remove();
                 }, 20);
             }

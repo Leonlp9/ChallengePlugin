@@ -37,6 +37,7 @@ public class TimerCommand {
 
         if (strings.length == 0) {
             commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerIsAt").replace("%time%", timer.getFormattedTime()));
+            Main.getInstance().getMenus().getTimerMenu().openInventory(cPlayer);
             return true;
         }
 
@@ -44,7 +45,7 @@ public class TimerCommand {
             if (timer.isResumed()) {
                 timer.setResumed(false);
                 Bukkit.getOnlinePlayers().forEach(player -> {
-                    player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerPaused").replace("%player%", commandSender.getName()));
+                    player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerPaused").replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent((Player) commandSender) + "§6" + commandSender.getName()));
                 });
                 timer.sendActionBar();
             } else {
@@ -57,7 +58,7 @@ public class TimerCommand {
             if (!timer.isResumed()) {
                 timer.setResumed(true);
                 Bukkit.getOnlinePlayers().forEach(player -> {
-                    player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerResumed").replace("%player%", commandSender.getName()));
+                    player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerResumed").replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent((Player) commandSender) + "§6" + commandSender.getName()));
                 });
                 timer.sendActionBar();
 
@@ -76,7 +77,7 @@ public class TimerCommand {
             timer.setSeconds(0);
             timer.setResumed(false);
             Bukkit.getOnlinePlayers().forEach(player -> {
-                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerReset").replace("%player%", commandSender.getName()));
+                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerReset").replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent((Player) commandSender) + "§6" + commandSender.getName()));
             });
             timer.sendActionBar();
             return true;
@@ -88,7 +89,7 @@ public class TimerCommand {
                     int seconds = Integer.parseInt(strings[1]);
                     timer.setSeconds(seconds);
                     Bukkit.getOnlinePlayers().forEach(player -> {
-                        player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerSet").replace("%time%", timer.getFormattedTime()).replace("%player%", commandSender.getName()));
+                        player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerSet").replace("%time%", timer.getFormattedTime()).replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent((Player) commandSender) + "§6" + commandSender.getName()));
                     });
                     timer.sendActionBar();
                 } catch (NumberFormatException e) {
@@ -106,7 +107,7 @@ public class TimerCommand {
                     int seconds = Integer.parseInt(strings[1]);
                     timer.setSeconds(timer.getSeconds() + seconds);
                     Bukkit.getOnlinePlayers().forEach(player -> {
-                        player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerAdded").replace("%time%", String.valueOf(seconds)).replace("%player%", commandSender.getName()));
+                        player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerAdded").replace("%time%", String.valueOf(seconds)).replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent((Player) commandSender) + "§6" + commandSender.getName()));
                     });
                     timer.sendActionBar();
                 } catch (NumberFormatException e) {
@@ -124,7 +125,7 @@ public class TimerCommand {
                     int seconds = Integer.parseInt(strings[1]);
                     timer.setSeconds(timer.getSeconds() - seconds);
                     Bukkit.getOnlinePlayers().forEach(player -> {
-                        player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerRemoved").replace("%time%", String.valueOf(seconds)).replace("%player%", commandSender.getName()));
+                        player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "timerRemoved").replace("%time%", String.valueOf(seconds)).replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent((Player) commandSender) + "§6" + commandSender.getName()));
                     });
                     timer.sendActionBar();
                 } catch (NumberFormatException e) {
@@ -147,7 +148,7 @@ public class TimerCommand {
                     Timer.TimerState state = Timer.TimerState.valueOf(strings[1]);
                     timer.setState(state);
                     Bukkit.getOnlinePlayers().forEach(player -> {
-                        player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "modeChanged").replace("%mode%", state.toString()).replace("%player%", commandSender.getName()));
+                        player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "modeChanged").replace("%mode%", state.toString()).replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent((Player) commandSender) + "§6" + commandSender.getName()));
                     });
                     timer.sendActionBar();
                 } catch (IllegalArgumentException e) {
@@ -165,7 +166,7 @@ public class TimerCommand {
                     Color color = Color.decode(strings[1]);
                     timer.setFirstColor(color);
                     Bukkit.getOnlinePlayers().forEach(player -> {
-                        player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "firstColorChanged").replace("%color%", ChatColor.of(color) + "§l■■■§7").replace("%player%", commandSender.getName()));
+                        player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "firstColorChanged").replace("%color%", ChatColor.of(color) + "§l■■■§7").replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent((Player) commandSender) + "§6" + commandSender.getName()));
                     });
                     timer.sendActionBar();
                 }catch (IllegalArgumentException e){
@@ -183,7 +184,7 @@ public class TimerCommand {
                     Color color = Color.decode(strings[1]);
                     timer.setSecondColor(color);
                     Bukkit.getOnlinePlayers().forEach(player -> {
-                        player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "secondColorChanged").replace("%color%", ChatColor.of(color) + "§l■■■§7").replace("%player%", commandSender.getName()));
+                        player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "secondColorChanged").replace("%color%", ChatColor.of(color) + "§l■■■§7").replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent((Player) commandSender) + "§6" + commandSender.getName()));
                     });
                     timer.sendActionBar();
                 }catch (IllegalArgumentException e){
@@ -201,7 +202,7 @@ public class TimerCommand {
                     boolean bold = Boolean.parseBoolean(strings[1]);
                     timer.setBold(bold);
                     Bukkit.getOnlinePlayers().forEach(player -> {
-                        player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "boldChanged").replace("%bold%", String.valueOf(bold)).replace("%player%", commandSender.getName()));
+                        player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "boldChanged").replace("%bold%", String.valueOf(bold)).replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent((Player) commandSender) + "§6" + commandSender.getName()));
                     });
                     timer.sendActionBar();
                 } catch (IllegalArgumentException e) {
@@ -217,7 +218,7 @@ public class TimerCommand {
                     boolean background = Boolean.parseBoolean(strings[1]);
                     timer.setBackground(background);
                     Bukkit.getOnlinePlayers().forEach(player -> {
-                        player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "backgroundChanged").replace("%background%", String.valueOf(background)).replace("%player%", commandSender.getName()));
+                        player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "backgroundChanged").replace("%background%", String.valueOf(background)).replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent((Player) commandSender) + "§6" + commandSender.getName()));
                     });
                     timer.sendActionBar();
                 } catch (IllegalArgumentException e) {

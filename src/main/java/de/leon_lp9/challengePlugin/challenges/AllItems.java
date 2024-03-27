@@ -75,7 +75,7 @@ public class AllItems extends Challenge {
 
     public void setTitle(){
         TextComponent textComponent = new TextComponent("Next Item: ");
-        textComponent.addExtra(Main.getInstance().getTranslationManager().getTranslation(allMaterialsRandomized.get(0)));
+        textComponent.addExtra(plugin.getTranslationManager().getTranslation(allMaterialsRandomized.get(0)));
         bossBar.setTitle(textComponent.toLegacyText());
     }
 
@@ -84,14 +84,14 @@ public class AllItems extends Challenge {
         TextComponent hacken = new TextComponent("✔ ");
         hacken.setColor(ChatColor.GREEN);
 
-        TextComponent gefunden = new TextComponent(Main.getInstance().getTranslationManager().getTranslation(allMaterialsRandomized.get(0)));
+        TextComponent gefunden = new TextComponent(plugin.getTranslationManager().getTranslation(allMaterialsRandomized.get(0)));
         gefunden.setColor(ChatColor.YELLOW);
         gefunden.addExtra(" gefunden!");
 
         TextComponent textComponent = new TextComponent("\nNext Item: ");
         textComponent.setColor(ChatColor.WHITE);
 
-        TextComponent nextItem = new TextComponent(Main.getInstance().getTranslationManager().getTranslation(allMaterialsRandomized.get(1)));
+        TextComponent nextItem = new TextComponent(plugin.getTranslationManager().getTranslation(allMaterialsRandomized.get(1)));
         nextItem.setColor(ChatColor.GRAY);
         nextItem.setUnderlined(true);
 

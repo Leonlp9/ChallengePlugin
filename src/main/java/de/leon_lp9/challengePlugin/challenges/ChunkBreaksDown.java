@@ -37,7 +37,7 @@ public class ChunkBreaksDown extends Challenge {
 
     public void startTaskTimer() {
         if (taskID != 0) Bukkit.getScheduler().cancelTask(taskID);
-        taskID = Bukkit.getScheduler().runTaskTimer(Main.getInstance(), () -> {
+        taskID = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
             if (!isRunning()) {
                 return;
             }

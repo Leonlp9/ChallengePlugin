@@ -69,7 +69,7 @@ public class Timer {
     public void sendActionBar() {
         Bukkit.getOnlinePlayers().forEach(player -> {
             ColorBuilder colorBuilder = new ColorBuilder(getFormattedTime() + (!resumed ? " | " + Main.getInstance().getTranslationManager().getTranslation(player, "paused") : "")).
-            addColorGradientToString(firstColor, secondColor, fadeStep, 40, true);
+            addColorGradientToString(firstColor, secondColor, fadeStep, 40, Main.getInstance().getChallengeManager().getTimer().bold);
             if (background) {
                 colorBuilder.addBackground();
             }

@@ -34,8 +34,8 @@ public class TimeControl extends Challenge{
         //entferne alle Items mit dem Tag "timeControl"
         Bukkit.getOnlinePlayers().forEach(player -> {
             for (ItemStack itemStack : player.getInventory()) {
-                if (itemStack != null && itemStack.hasItemMeta() && itemStack.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(Main.getInstance(), "timeControl"), PersistentDataType.STRING)){
-                    if (itemStack.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Main.getInstance(), "timeControl"), PersistentDataType.STRING).equals("timeControlPause") || itemStack.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Main.getInstance(), "timeControl"), PersistentDataType.STRING).equals("timeControlResume")){
+                if (itemStack != null && itemStack.hasItemMeta() && itemStack.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "timeControl"), PersistentDataType.STRING)){
+                    if (itemStack.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "timeControl"), PersistentDataType.STRING).equals("timeControlPause") || itemStack.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "timeControl"), PersistentDataType.STRING).equals("timeControlResume")){
                         player.getInventory().remove(itemStack);
                     }
                 }
@@ -50,13 +50,13 @@ public class TimeControl extends Challenge{
 
         Bukkit.getOnlinePlayers().forEach(player -> {
 
-            ItemStack timePause = new ItemBuilder(Material.CLOCK).setDisplayName(Main.getInstance().getTranslationManager().getTranslation(player, "TimeControlPause")).setLore(Main.getInstance().getTranslationManager().getTranslation(player, "TimeControlDescriptionItem")).addPersistentDataContainer("timeControl", PersistentDataType.STRING, "timeControlPause").build();
+            ItemStack timePause = new ItemBuilder(Material.CLOCK).setDisplayName(plugin.getTranslationManager().getTranslation(player, "TimeControlPause")).setLore(plugin.getTranslationManager().getTranslation(player, "TimeControlDescriptionItem")).addPersistentDataContainer("timeControl", PersistentDataType.STRING, "timeControlPause").build();
             boolean hasTimePause = false;
 
             //entferne alle Items mit dem Tag "timeControl"
             for (ItemStack itemStack : player.getInventory()) {
-                if (itemStack != null && itemStack.hasItemMeta() && itemStack.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(Main.getInstance(), "timeControl"), PersistentDataType.STRING)){
-                    if (itemStack.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Main.getInstance(), "timeControl"), PersistentDataType.STRING).equals("timeControlPause") || itemStack.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Main.getInstance(), "timeControl"), PersistentDataType.STRING).equals("timeControlResume")){
+                if (itemStack != null && itemStack.hasItemMeta() && itemStack.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "timeControl"), PersistentDataType.STRING)){
+                    if (itemStack.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "timeControl"), PersistentDataType.STRING).equals("timeControlPause") || itemStack.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "timeControl"), PersistentDataType.STRING).equals("timeControlResume")){
                         itemStack.setItemMeta(timePause.getItemMeta());
                         hasTimePause = true;
                     }
@@ -73,9 +73,9 @@ public class TimeControl extends Challenge{
         //Items Tauschen von Pause zu Resume
         Bukkit.getOnlinePlayers().forEach(player -> {
             for (ItemStack itemStack : player.getInventory()) {
-                if (itemStack != null && itemStack.hasItemMeta() && itemStack.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(Main.getInstance(), "timeControl"), PersistentDataType.STRING)){
-                    if (itemStack.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Main.getInstance(), "timeControl"), PersistentDataType.STRING).equals("timeControlPause")){
-                        ItemStack timeResume = new ItemBuilder(Material.CLOCK).setDisplayName(Main.getInstance().getTranslationManager().getTranslation(player, "TimeControlResume")).setLore(Main.getInstance().getTranslationManager().getTranslation(player, "TimeControlDescriptionItem")).addPersistentDataContainer("timeControl", PersistentDataType.STRING, "timeControlResume").build();
+                if (itemStack != null && itemStack.hasItemMeta() && itemStack.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "timeControl"), PersistentDataType.STRING)){
+                    if (itemStack.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "timeControl"), PersistentDataType.STRING).equals("timeControlPause")){
+                        ItemStack timeResume = new ItemBuilder(Material.CLOCK).setDisplayName(plugin.getTranslationManager().getTranslation(player, "TimeControlResume")).setLore(plugin.getTranslationManager().getTranslation(player, "TimeControlDescriptionItem")).addPersistentDataContainer("timeControl", PersistentDataType.STRING, "timeControlResume").build();
                         itemStack.setItemMeta(timeResume.getItemMeta());
                     }
                 }
@@ -90,9 +90,9 @@ public class TimeControl extends Challenge{
         //Items Tauschen von Resume zu Pause
         Bukkit.getOnlinePlayers().forEach(player -> {
             for (ItemStack itemStack : player.getInventory()) {
-                if (itemStack != null && itemStack.hasItemMeta() && itemStack.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(Main.getInstance(), "timeControl"), PersistentDataType.STRING)){
-                    if (itemStack.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Main.getInstance(), "timeControl"), PersistentDataType.STRING).equals("timeControlResume")){
-                        ItemStack timePause = new ItemBuilder(Material.CLOCK).setDisplayName(Main.getInstance().getTranslationManager().getTranslation(player, "TimeControlPause")).setLore(Main.getInstance().getTranslationManager().getTranslation(player, "TimeControlDescriptionItem")).addPersistentDataContainer("timeControl", PersistentDataType.STRING, "timeControlPause").build();
+                if (itemStack != null && itemStack.hasItemMeta() && itemStack.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "timeControl"), PersistentDataType.STRING)){
+                    if (itemStack.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "timeControl"), PersistentDataType.STRING).equals("timeControlResume")){
+                        ItemStack timePause = new ItemBuilder(Material.CLOCK).setDisplayName(plugin.getTranslationManager().getTranslation(player, "TimeControlPause")).setLore(plugin.getTranslationManager().getTranslation(player, "TimeControlDescriptionItem")).addPersistentDataContainer("timeControl", PersistentDataType.STRING, "timeControlPause").build();
                         itemStack.setItemMeta(timePause.getItemMeta());
                     }
                 }
@@ -110,13 +110,13 @@ public class TimeControl extends Challenge{
             if (serverTickManager.isFrozen()){
                 unfreeze();
                 cooldown.add(e.getPlayer());
-                Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
                     cooldown.remove(e.getPlayer());
                 }, 5);
             }else{
                 freeze();
                 cooldown.add(e.getPlayer());
-                Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
                     cooldown.remove(e.getPlayer());
                 }, 5);
             }

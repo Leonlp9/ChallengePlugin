@@ -24,7 +24,7 @@ public class Magnet extends Challenge {
         if (!isRunning()) return;
 
         //new sync Thread because of the method is called async
-        Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
+        Bukkit.getScheduler().runTask(plugin, () -> {
             Bukkit.getOnlinePlayers().forEach(player -> {
                 player.getNearbyEntities(magnetRange, magnetRange, magnetRange).forEach(entity -> {
                     if (entity instanceof Player) return;
