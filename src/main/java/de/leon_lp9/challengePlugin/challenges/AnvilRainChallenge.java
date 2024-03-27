@@ -112,7 +112,7 @@ public class AnvilRainChallenge extends Challenge{
     }
 
     private List<Chunk> getTargetChunks(@Nonnull Chunk origin) {
-        List<Chunk> chunks = new ArrayList();
+        List<Chunk> chunks = new ArrayList<>();
         int originX = origin.getX();
         int originZ = origin.getZ();
         int range = this.getRange();
