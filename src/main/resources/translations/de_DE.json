@@ -60,6 +60,8 @@
       "switchtocountdownDescription": "Wechselt den Timer zum Countdown",
     "switchtocountup": "Zum Countup wechseln",
         "switchtocountupDescription": "Wechselt den Timer zum Countup",
+    "displayTypeChanged": "%prefix%Der §6Anzeige Typ §7wurde auf §6%displayType% §7von §6%player% §7geändert!",
+    "pleaseEnterAValidDisplayType": "%prefix%Bitte gebe einen §6gültigen Anzeige Typ §7an!",
   "status": "Status",
   "openConfiguration": "Konfiguration öffnen",
   "leftKlick": "Linksklick zum ",

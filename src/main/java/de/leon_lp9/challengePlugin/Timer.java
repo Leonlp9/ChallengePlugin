@@ -2,8 +2,13 @@ package de.leon_lp9.challengePlugin;
 
 import de.leon_lp9.challengePlugin.builder.ColorBuilder;
 import de.leon_lp9.challengePlugin.challenges.Challenge;
+import de.leon_lp9.challengePlugin.management.BossBarInformationTile;
+import de.leon_lp9.challengePlugin.management.Spacing;
 import lombok.*;
 import org.bukkit.Bukkit;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+
 import java.awt.Color;
 import java.lang.management.ManagementFactory;
 
@@ -15,10 +20,18 @@ public class Timer {
         Countup
     }
 
+    public enum DisplayType {
+        ActionBar,
+        BossBar,
+        None
+    }
+
     private int seconds;
     private transient int fadeStep = 0;
     private boolean resumed;
     private TimerState state;
+    @Getter
+    private DisplayType displayType;
 
     private transient int task;
     private transient int fadeTask;
@@ -32,6 +45,7 @@ public class Timer {
         this.seconds = seconds;
         resumed = false;
         state = TimerState.Countup;
+        displayType = DisplayType.ActionBar;
     }
 
     public void startTask() {
@@ -66,14 +80,32 @@ public class Timer {
         }, 0, 1).getTaskId();
     }
 
+    public void setDisplayType(DisplayType displayType) {
+        this.displayType = displayType;
+        if (displayType == DisplayType.BossBar){
+            if (!Main.getInstance().getBossBarInformation().hasTile("timer")) {
+                Main.getInstance().getBossBarInformation().addTile(new BossBarInformationTile("timer", getFormattedTime(), null, Spacing.POSITIVE32PIXEl, 1));
+            }
+        } else {
+            Main.getInstance().getBossBarInformation().removeTile("timer");
+        }
+    }
+
     public void sendActionBar() {
         Bukkit.getOnlinePlayers().forEach(player -> {
             ColorBuilder colorBuilder = new ColorBuilder(getFormattedTime() + (!resumed ? " | " + Main.getInstance().getTranslationManager().getTranslation(player, "paused") : "")).
             addColorGradientToString(firstColor, secondColor, fadeStep, 40, Main.getInstance().getChallengeManager().getTimer().bold);
-            if (background) {
+            if (background && displayType == DisplayType.ActionBar) {
                 colorBuilder.addBackground();
             }
-            player.sendActionBar(colorBuilder.getText());
+            if (displayType == DisplayType.ActionBar) {
+                player.sendActionBar(colorBuilder.getText());
+            }else if (displayType == DisplayType.BossBar){
+                if (!Main.getInstance().getBossBarInformation().hasTile("timer")) {
+                    setDisplayType(DisplayType.BossBar);
+                }
+                Main.getInstance().getBossBarInformation().getTile("timer").setTitle(colorBuilder.getText());
+            }
 
             //Get Server TPS, Cpu Usage, Memory Usage, and Player Count
             double tps = Bukkit.getServer().getTPS()[0];

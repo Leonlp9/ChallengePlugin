@@ -48,6 +48,13 @@ public class ChallengeKategorieMenu implements Listener {
             if (i == 9+8) {
                 i += 2;
             }
+            if (i == 9+8+9) {
+                i += 2;
+            }
+        }
+
+        for (int j = i; j < 9+8+9; j++) {
+            inventory.setItem(j, new ItemStack(Material.AIR));
         }
 
         inventory.setItem(9+9+9+4, new ItemBuilder(Material.BARRIER)

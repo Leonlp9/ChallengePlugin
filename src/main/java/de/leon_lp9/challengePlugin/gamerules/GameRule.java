@@ -20,6 +20,8 @@ public class GameRule implements Listener {
     @Setter
     private boolean enabled;
 
+    protected transient final Main plugin;
+
     @Setter
     @Getter
     private transient Collection<ConfigurableField> configurableFields;
@@ -29,6 +31,7 @@ public class GameRule implements Listener {
         this.description = this.getClass().getSimpleName() + "GameRuleDescription";
         this.icon = icon;
         this.enabled = false;
+        plugin = Main.getInstance();
     }
 
     public GameRule(Material icon, boolean enabled) {
@@ -36,6 +39,7 @@ public class GameRule implements Listener {
         this.description = this.getClass().getSimpleName() + "GameRuleDescription";
         this.icon = icon;
         this.enabled = enabled;
+        plugin = Main.getInstance();
     }
 
     public void register() {

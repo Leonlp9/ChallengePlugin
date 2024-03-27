@@ -90,6 +90,7 @@ public class GameRuleManager {
         for (GameRule gameRule : gameRules) {
             gameRule.unregister();
         }
+
         gameRules.clear();
         Main.getInstance().setGameruleManager(new GameRuleManager());
     }

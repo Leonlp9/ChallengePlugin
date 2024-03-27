@@ -129,6 +129,8 @@ public final class Main extends JavaPlugin {
         fileUtils.writeToJsonFile("GameRuleManager", data2);
 
         challengeManager.getActiveChallenges().forEach(Challenge::unload);
+
+        bossBarInformation.removeAll();
     }
 
     private void requireSpigot() {

@@ -235,6 +235,22 @@ public class TimerCommand {
             commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation((Player) commandSender, "timerHelp"));
 
             return true;
+        }else if(strings[0].equalsIgnoreCase("displaytype")){
+            if(strings.length == 2){
+                try{
+                    Timer.DisplayType displayType = Timer.DisplayType.valueOf(strings[1]);
+                    timer.setDisplayType(displayType);
+                    Bukkit.getOnlinePlayers().forEach(player -> {
+                        player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "displayTypeChanged").replace("%displayType%", displayType.toString()).replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent((Player) commandSender) + "§6" + commandSender.getName()));
+                    });
+                    timer.sendActionBar();
+                }catch (IllegalArgumentException e){
+                    commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "pleaseEnterAValidDisplayType"));
+                }
+            }else{
+                commandSender.sendMessage(Main.getInstance().getTranslationManager().getTranslation(cPlayer, "pleaseEnterAValidDisplayType"));
+            }
+            return true;
         }
 
         return false;
@@ -257,6 +273,7 @@ public class TimerCommand {
             list.add("setFirstColor");
             list.add("setSecondColor");
             list.add("bold");
+            list.add("displaytype");
             list.add("background");
             list.removeIf(string -> !string.startsWith(strings[0]));
         }
@@ -281,6 +298,11 @@ public class TimerCommand {
             }else if(strings[0].equalsIgnoreCase("bold") || strings[0].equalsIgnoreCase("background")){
                 list.add("true");
                 list.add("false");
+                list.removeIf(string -> !string.startsWith(strings[1]));
+            }else if(strings[0].equalsIgnoreCase("displaytype")){
+                for (Timer.DisplayType value : Timer.DisplayType.values()) {
+                    list.add(value.toString());
+                }
                 list.removeIf(string -> !string.startsWith(strings[1]));
             }
         }

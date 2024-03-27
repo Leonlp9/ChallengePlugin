@@ -13,12 +13,15 @@ public final class BossBarInformationTile {
     @Setter
     private String value;
     private final Spacing padding;
+    @Getter
+    private int sortIndex;
 
-    public BossBarInformationTile(String key, String title, String value, Spacing padding) {
+    public BossBarInformationTile(String key, String title, String value, Spacing padding, int sortIndex) {
         this.key = key;
         this.title = title;
         this.value = value;
         this.padding = padding;
+        this.sortIndex = sortIndex;
     }
 
 

@@ -2,6 +2,7 @@ package de.leon_lp9.challengePlugin.commands;
 
 import de.leon_lp9.challengePlugin.ChallengeManager;
 import de.leon_lp9.challengePlugin.Main;
+import de.leon_lp9.challengePlugin.Timer;
 import de.leon_lp9.challengePlugin.challenges.Challenge;
 import de.leon_lp9.challengePlugin.command.MinecraftCommand;
 import de.leon_lp9.challengePlugin.command.Run;
@@ -36,11 +37,17 @@ public class ResetCommand implements Listener {
         Main.getInstance().getGameruleManager().resetGameRules();
         Main.getInstance().getChallengeManager().getTimer().setResumed(false);
         Main.getInstance().getChallengeManager().getTimer().setSeconds(0);
+        Main.getInstance().getChallengeManager().getTimer().setState(Timer.TimerState.Countup);
 
         for (Player all : Bukkit.getOnlinePlayers()) {
+
+            //wenn tot
+            all.spigot().respawn();
+
             all.teleport(Bukkit.getWorld("world").getSpawnLocation());
             all.getInventory().clear();
             all.getInventory().setArmorContents(null);
+            all.setMaxHealth(20);
             all.setHealth(20);
             all.setFoodLevel(20);
             all.setExp(0);

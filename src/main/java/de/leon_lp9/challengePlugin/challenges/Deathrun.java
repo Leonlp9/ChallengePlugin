@@ -1,6 +1,7 @@
 package de.leon_lp9.challengePlugin.challenges;
 
 import de.leon_lp9.challengePlugin.builder.ColorBuilder;
+import de.leon_lp9.challengePlugin.challenges.config.ConfigurationValue;
 import de.leon_lp9.challengePlugin.challenges.config.LoadChallenge;
 import de.leon_lp9.challengePlugin.management.BossBarInformationTile;
 import de.leon_lp9.challengePlugin.management.Spacing;
@@ -11,9 +12,11 @@ import org.bukkit.Particle;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
 
 import org.bukkit.scoreboard.*;
@@ -26,25 +29,98 @@ import java.util.UUID;
 @LoadChallenge
 public class Deathrun extends Challenge{
 
+    public enum ChallengeWorlds {
+        CHALLENGEWORLD("ChallengeWorld"),
+        CHALLENGEWORLD_NETHER("ChallengeWorld_Nether"),
+        CHALLENGEWORLD_END("ChallengeWorld_the_end");
+
+        private final String name;
+
+        ChallengeWorlds(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
+    @ConfigurationValue(title = "ChallengeWorld", icon = Material.GRASS_BLOCK)
+    private ChallengeWorlds challengeWorld = ChallengeWorlds.CHALLENGEWORLD;
+
+    private double totaldamage = 0;
+    private List<Player> deadPlayers = new ArrayList<>();
+
     public Deathrun() {
         super(Material.LEATHER_BOOTS, ChallengeType.MINIGAME);
     }
 
+    @Override
+    public void update() {
+        super.update();
+
+        Location location = new Location(Bukkit.getWorld(challengeWorld.getName()), 0, 100, 0);
+        location.setY(location.getWorld().getHighestBlockYAt(location));
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            setupScoreboard(player);
+            player.teleport(location);
+            plugin.getBossBarInformation().updatePlayer(player);
+        });
+
+        location.getWorld().getWorldBorder().setCenter(0, 0);
+        location.getWorld().getWorldBorder().setSize(50);
+        location.getWorld().getWorldBorder().setWarningDistance(0);
+        location.getWorld().getWorldBorder().setWarningTime(0);
+    }
+
     @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
-        setupScoreboard(event.getPlayer());
+        Location location = new Location(Bukkit.getWorld(challengeWorld.getName()), 0, 100, 0);
+        location.setY(location.getWorld().getHighestBlockYAt(location));
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            setupScoreboard(player);
+            player.teleport(location);
+        });
+    }
+
+    @EventHandler
+    public void onPlayerDamage(EntityDamageEvent event) {
+        if (event.getEntity() instanceof Player) {
+            totaldamage += event.getFinalDamage();
+        }
+    }
+
+    @EventHandler
+    public void onPlayerQuitEvent(PlayerQuitEvent event) {
+
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            plugin.getBossBarInformation().removeTile(player, "distance");
+            unloadScoreboard(player);
+        });
     }
 
     @Override
     public void register() {
         super.register();
 
-        plugin.getBossBarInformation().addTile(new BossBarInformationTile("players", plugin.getPlayerHeadManager().getHeadComponent(UUID.fromString("9cb6a52c-55bc-456b-9513-f4cf19cdf9e3")), "0", Spacing.POSITIVE32PIXEl));
-        plugin.getBossBarInformation().addTile(new BossBarInformationTile("allHearts", Spacing.ZEROPIXEl.getSpacing() + "\uDAC0\uDC40" + Spacing.ZEROPIXEl.getSpacing(), "0", Spacing.POSITIVE32PIXEl));
+        plugin.getBossBarInformation().addTile(new BossBarInformationTile("players", plugin.getPlayerHeadManager().getHeadComponent(UUID.fromString("9cb6a52c-55bc-456b-9513-f4cf19cdf9e3")), "0", Spacing.POSITIVE8PIXEl, 2));
+        plugin.getBossBarInformation().addTile(new BossBarInformationTile("allHearts", Spacing.ZEROPIXEl.getSpacing() + "\uDAC0\uDC40" + Spacing.ZEROPIXEl.getSpacing(), "0", Spacing.POSITIVE8PIXEl, 0));
+        plugin.getBossBarInformation().addTile(new BossBarInformationTile("deadPlayerAmount", plugin.getPlayerHeadManager().getHeadComponent(UUID.fromString("2fa10394-1f4b-45ec-8748-52920751062d")), "0", Spacing.POSITIVE8PIXEl, 3));
 
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            setupScoreboard(player);
-        });
+        //Wenn world existiert
+        if (Bukkit.getWorld(challengeWorld.getName()) != null) {
+            Location location = new Location(Bukkit.getWorld(challengeWorld.getName()), 0, 100, 0);
+            location.setY(location.getWorld().getHighestBlockYAt(location));
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                setupScoreboard(player);
+                player.teleport(location);
+            });
+
+            location.getWorld().getWorldBorder().setCenter(0, 0);
+            location.getWorld().getWorldBorder().setSize(50);
+            location.getWorld().getWorldBorder().setWarningDistance(0);
+            location.getWorld().getWorldBorder().setWarningTime(0);
+        }
     }
 
     @Override
@@ -53,10 +129,15 @@ public class Deathrun extends Challenge{
 
         plugin.getBossBarInformation().removeTile("players");
         plugin.getBossBarInformation().removeTile("allHearts");
+        plugin.getBossBarInformation().removeTile("deadPlayerAmount");
 
         Bukkit.getOnlinePlayers().forEach(player -> {
             unloadScoreboard(player);
+            plugin.getBossBarInformation().removeTile(player, "distance");
         });
+
+        Location location = new Location(Bukkit.getWorld(challengeWorld.getName()), 0, 100, 0);
+        location.getWorld().getWorldBorder().reset();
     }
 
     @Override
@@ -65,6 +146,7 @@ public class Deathrun extends Challenge{
 
         plugin.getBossBarInformation().removeTile("players");
         plugin.getBossBarInformation().removeTile("allHearts");
+        plugin.getBossBarInformation().removeTile("deadPlayerAmount");
         plugin.getBossBarInformation().update();
     }
 
@@ -74,10 +156,12 @@ public class Deathrun extends Challenge{
 
         plugin.getBossBarInformation().getTile("players").setValue(Bukkit.getOnlinePlayers().size() + "");
         //Alle Herzen zusammen rechnen
-        plugin.getBossBarInformation().getTile("allHearts").setValue(Bukkit.getOnlinePlayers().stream().mapToInt(player -> (int) player.getHealth()).sum() + "");
+        plugin.getBossBarInformation().getTile("allHearts").setValue(String.valueOf((int) totaldamage));
+        plugin.getBossBarInformation().getTile("deadPlayerAmount").setValue(deadPlayers.size() + "");
 
-        ArrayList<Player> first = getFirst5Players();
+        ArrayList<Player> first = getSortedPlayers();
         Bukkit.getOnlinePlayers().forEach(player -> {
+            plugin.getBossBarInformation().getTile(player, "distance").setValue("§f" + player.getLocation().getBlockX());
             if (!first.isEmpty()){
                 player.getScoreboard().getTeam("line-2").setPrefix("§f1. " + plugin.getPlayerHeadManager().getHeadComponent(first.get(0).getUniqueId()) + new ColorBuilder("§l" + first.get(0).getName()).addColorToString(new Color(0, 228, 49, 255)).getText() + new ColorBuilder(" " + first.get(0).getLocation().getBlockX()).addColorToString(new Color(194, 85, 233, 255)).getText());
             }else {
@@ -103,25 +187,45 @@ public class Deathrun extends Challenge{
             }else {
                 player.getScoreboard().getTeam("line-6").setPrefix("§f5. " + plugin.getPlayerHeadManager().getHeadComponent(UUID.fromString("9cb6a52c-55bc-456b-9513-f4cf19cdf9e3")) + new ColorBuilder("Leer").addColorToString(new Color(210, 200, 198, 255)).getText() + new ColorBuilder(" 0").addColorToString(new Color(194, 85, 233, 255)).getText());
             }
+
+            //get own place
+            int ownPlace = 0;
+            for (int i = 0; i < first.size(); i++) {
+                if (first.get(i).equals(player)) {
+                    ownPlace = i + 1;
+                    break;
+                }
+            }
+
+            if (ownPlace == 1){
+                player.getScoreboard().getTeam("line-8").setPrefix("§8-----------------");
+            }else {
+                player.getScoreboard().getTeam("line-8").setPrefix("§f" + (ownPlace - 1) + ". " + plugin.getPlayerHeadManager().getHeadComponent(first.get(ownPlace - 2).getUniqueId()) + new ColorBuilder( first.get(ownPlace - 2).getName()).addColorToString(new Color(203, 189, 186, 255)).getText() + new ColorBuilder(" " + first.get(ownPlace - 2).getLocation().getBlockX()).addColorToString(new Color(194, 85, 233, 255)).getText());
+            }
+            player.getScoreboard().getTeam("line-9").setPrefix("§f" + ownPlace + ". " + plugin.getPlayerHeadManager().getHeadComponent(player.getUniqueId()) + new ColorBuilder("§l" + player.getName()).addColorToString(new Color(217, 207, 205, 255)).getText() + new ColorBuilder(" " + player.getLocation().getBlockX()).addColorToString(new Color(194, 85, 233, 255)).getText());
+            if (ownPlace == first.size()){
+                player.getScoreboard().getTeam("line-10").setPrefix("§8-----------------");
+            }else {
+                player.getScoreboard().getTeam("line-10").setPrefix("§f" + (ownPlace + 1) + ". " + plugin.getPlayerHeadManager().getHeadComponent(first.get(ownPlace).getUniqueId()) + new ColorBuilder(first.get(ownPlace).getName()).addColorToString(new Color(210, 200, 198, 255)).getText() + new ColorBuilder(" " + first.get(ownPlace).getLocation().getBlockX()).addColorToString(new Color(194, 85, 233, 255)).getText());
+            }
+
         });
 
     }
 
-    //Gibt die spieler zurück die am weitesten vorne sind auf der x coordiante
-    public ArrayList<Player> getFirst5Players(){
-        ArrayList<Player> players = new ArrayList<>();
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (players.size() < 5) {
-                players.add(player);
-            } else {
-                for (int i = 0; i < players.size(); i++) {
-                    if (player.getLocation().getX() > players.get(i).getLocation().getX()) {
-                        players.set(i, player);
-                        break;
-                    }
-                }
+    public ArrayList<Player> getSortedPlayers(){
+        ArrayList<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+
+        //order by x
+        players.sort((o1, o2) -> {
+            if (o1.getLocation().getX() > o2.getLocation().getX()) {
+                return -1;
+            } else if (o1.getLocation().getX() < o2.getLocation().getX()) {
+                return 1;
             }
-        }
+            return 0;
+        });
+
         return players;
     }
 
@@ -229,8 +333,10 @@ public class Deathrun extends Challenge{
         event.getPlayer().sendMessage("§cDu darfst während des Deathruns nicht Porten!");
     }
 
-    public static void setupScoreboard(Player p) {
+    public void setupScoreboard(Player p) {
         Objective objective = null;
+
+        plugin.getBossBarInformation().addTile(p, new BossBarInformationTile("distance", plugin.getPlayerHeadManager().getHeadComponent(UUID.fromString("fef039ef-e6cd-4987-9c84-26a3e6134277")), "0", Spacing.POSITIVE8PIXEl, -1));
 
         p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
 

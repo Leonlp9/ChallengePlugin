@@ -74,6 +74,26 @@ public class TimerMenu implements Listener {
                     .build());
         }
 
+        if (Main.getInstance().getChallengeManager().getTimer().getDisplayType().equals(Timer.DisplayType.ActionBar)) {
+            inventory.setItem(22, new ItemBuilder(Material.BLUE_CANDLE)
+                    .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "switchToBossBar"))
+                    .setLore("§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "switchToBossBarDescription"))
+                    .addPersistentDataContainer("id", PersistentDataType.STRING, "setdisplaybossbar")
+                    .build());
+        }else if (Main.getInstance().getChallengeManager().getTimer().getDisplayType().equals(Timer.DisplayType.BossBar)) {
+            inventory.setItem(22, new ItemBuilder(Material.RED_CANDLE)
+                    .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "switchToNone"))
+                    .setLore("§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "switchToNoneDescription"))
+                    .addPersistentDataContainer("id", PersistentDataType.STRING, "setdisplaynone")
+                    .build());
+        }else {
+            inventory.setItem(22, new ItemBuilder(Material.PURPLE_CANDLE)
+                    .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "switchToActionBar"))
+                    .setLore("§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "switchToActionBarDescription"))
+                    .addPersistentDataContainer("id", PersistentDataType.STRING, "setdisplayactionbar")
+                    .build());
+        }
+
         inventory.setItem(23, new ItemBuilder(Material.BARRIER)
                 .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "resetTimer"))
                 .setLore("§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "resetTimerDescription"))
@@ -181,6 +201,30 @@ public class TimerMenu implements Listener {
                             Bukkit.getOnlinePlayers().forEach(player -> {
                                 player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
                                 player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerReset").replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent(ePlayer) +  ePlayer.getName()));
+                            });
+                            break;
+                        case "setdisplaybossbar":
+                            Main.getInstance().getChallengeManager().getTimer().setDisplayType(Timer.DisplayType.BossBar);
+                            openInventory(ePlayer);
+                            Bukkit.getOnlinePlayers().forEach(player -> {
+                                player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "displayTypeChanged").replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent(ePlayer) + "§6" + ePlayer.getName()).replace("%displayType%", Main.getInstance().getTranslationManager().getTranslation(player, "bossbar")));
+                            });
+                            break;
+                        case "setdisplaynone":
+                            Main.getInstance().getChallengeManager().getTimer().setDisplayType(Timer.DisplayType.None);
+                            openInventory(ePlayer);
+                            Bukkit.getOnlinePlayers().forEach(player -> {
+                                player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "displayTypeChanged").replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent(ePlayer) + "§6" + ePlayer.getName()).replace("%displayType%", Main.getInstance().getTranslationManager().getTranslation(player, "none")));
+                            });
+                            break;
+                        case "setdisplayactionbar":
+                            Main.getInstance().getChallengeManager().getTimer().setDisplayType(Timer.DisplayType.ActionBar);
+                            openInventory(ePlayer);
+                            Bukkit.getOnlinePlayers().forEach(player -> {
+                                player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "displayTypeChanged").replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent(ePlayer) + "§6" + ePlayer.getName()).replace("%displayType%", Main.getInstance().getTranslationManager().getTranslation(player, "actionbar")));
                             });
                             break;
                     }
