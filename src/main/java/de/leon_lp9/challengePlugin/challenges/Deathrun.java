@@ -103,9 +103,9 @@ public class Deathrun extends Challenge{
     public void register() {
         super.register();
 
-        plugin.getBossBarInformation().addTile(new BossBarInformationTile("players", plugin.getPlayerHeadManager().getHeadComponent(UUID.fromString("9cb6a52c-55bc-456b-9513-f4cf19cdf9e3")), "0", Spacing.POSITIVE8PIXEl, 2));
-        plugin.getBossBarInformation().addTile(new BossBarInformationTile("allHearts", Spacing.ZEROPIXEl.getSpacing() + "\uDAC0\uDC40" + Spacing.ZEROPIXEl.getSpacing(), "0", Spacing.POSITIVE8PIXEl, 0));
-        plugin.getBossBarInformation().addTile(new BossBarInformationTile("deadPlayerAmount", plugin.getPlayerHeadManager().getHeadComponent(UUID.fromString("2fa10394-1f4b-45ec-8748-52920751062d")), "0", Spacing.POSITIVE8PIXEl, 3));
+        addGlobalBossBarInformationTile(new BossBarInformationTile("players", plugin.getPlayerHeadManager().getHeadComponent(UUID.fromString("9cb6a52c-55bc-456b-9513-f4cf19cdf9e3")), "0", Spacing.POSITIVE8PIXEl, 2));
+        addGlobalBossBarInformationTile(new BossBarInformationTile("allHearts", Spacing.ZEROPIXEl.getSpacing() + "\uDAC0\uDC40" + Spacing.ZEROPIXEl.getSpacing(), "0", Spacing.POSITIVE8PIXEl, 0));
+        addGlobalBossBarInformationTile(new BossBarInformationTile("deadPlayerAmount", plugin.getPlayerHeadManager().getHeadComponent(UUID.fromString("2fa10394-1f4b-45ec-8748-52920751062d")), "0", Spacing.POSITIVE8PIXEl, 3));
 
         //Wenn world existiert
         if (Bukkit.getWorld(challengeWorld.getName()) != null) {
@@ -127,13 +127,8 @@ public class Deathrun extends Challenge{
     public void unregister() {
         super.unregister();
 
-        plugin.getBossBarInformation().removeTile("players");
-        plugin.getBossBarInformation().removeTile("allHearts");
-        plugin.getBossBarInformation().removeTile("deadPlayerAmount");
-
         Bukkit.getOnlinePlayers().forEach(player -> {
             unloadScoreboard(player);
-            plugin.getBossBarInformation().removeTile(player, "distance");
         });
 
         Location location = new Location(Bukkit.getWorld(challengeWorld.getName()), 0, 100, 0);
@@ -141,27 +136,18 @@ public class Deathrun extends Challenge{
     }
 
     @Override
-    public void unload() {
-        super.unload();
-
-        plugin.getBossBarInformation().removeTile("players");
-        plugin.getBossBarInformation().removeTile("allHearts");
-        plugin.getBossBarInformation().removeTile("deadPlayerAmount");
-        plugin.getBossBarInformation().update();
-    }
-
-    @Override
     public void tick() {
         super.tick();
 
-        plugin.getBossBarInformation().getTile("players").setValue(Bukkit.getOnlinePlayers().size() + "");
-        //Alle Herzen zusammen rechnen
-        plugin.getBossBarInformation().getTile("allHearts").setValue(String.valueOf((int) totaldamage));
-        plugin.getBossBarInformation().getTile("deadPlayerAmount").setValue(deadPlayers.size() + "");
+        getGlobalBossBarInformationTile("players").setValue(Bukkit.getOnlinePlayers().size() + "");
+        getGlobalBossBarInformationTile("allHearts").setValue(String.valueOf((int) totaldamage));
+        getGlobalBossBarInformationTile("deadPlayerAmount").setValue(deadPlayers.size() + "");
 
         ArrayList<Player> first = getSortedPlayers();
         Bukkit.getOnlinePlayers().forEach(player -> {
-            plugin.getBossBarInformation().getTile(player, "distance").setValue("§f" + player.getLocation().getBlockX());
+
+            getPlayerBossBarInformationTile(player, "distance").setValue("§f" + player.getLocation().getBlockX());
+
             if (!first.isEmpty()){
                 player.getScoreboard().getTeam("line-2").setPrefix("§f1. " + plugin.getPlayerHeadManager().getHeadComponent(first.get(0).getUniqueId()) + new ColorBuilder("§l" + first.get(0).getName()).addColorToString(new Color(0, 228, 49, 255)).getText() + new ColorBuilder(" " + first.get(0).getLocation().getBlockX()).addColorToString(new Color(194, 85, 233, 255)).getText());
             }else {
@@ -336,7 +322,7 @@ public class Deathrun extends Challenge{
     public void setupScoreboard(Player p) {
         Objective objective = null;
 
-        plugin.getBossBarInformation().addTile(p, new BossBarInformationTile("distance", plugin.getPlayerHeadManager().getHeadComponent(UUID.fromString("fef039ef-e6cd-4987-9c84-26a3e6134277")), "0", Spacing.POSITIVE8PIXEl, -1));
+        addPlayerBossBarInformationTile(p, new BossBarInformationTile("distance", plugin.getPlayerHeadManager().getHeadComponent(UUID.fromString("fef039ef-e6cd-4987-9c84-26a3e6134277")), "0", Spacing.POSITIVE8PIXEl, -1));
 
         p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
 

@@ -23,12 +23,13 @@ public class BossBarInformation {
         this.playerBossBars = new java.util.HashMap<>();
     }
 
-    public void addTile(BossBarInformationTile tile) {
-        this.tiles.add(tile);
-    }
-
     public boolean hasTile(String key) {
         return this.tiles.stream().anyMatch(tile -> tile.getKey().equals(key));
+    }
+
+    public void addTile(BossBarInformationTile tile) {
+        this.tiles.add(tile);
+        update();
     }
 
     public void addTile(Player player, BossBarInformationTile tile) {
@@ -36,15 +37,18 @@ public class BossBarInformation {
             this.playerTiles.put(player, new ArrayList<>());
         }
         this.playerTiles.get(player).add(tile);
+        updatePlayer(player);
     }
 
     public void removeTile(String key) {
         this.tiles.removeIf(tile -> tile.getKey().equals(key));
+        update();
     }
 
     public void removeTile(Player player, String key) {
         if (this.playerTiles.containsKey(player)) {
             this.playerTiles.get(player).removeIf(tile -> tile.getKey().equals(key));
+            updatePlayer(player);
         }
     }
 
@@ -80,8 +84,8 @@ public class BossBarInformation {
             this.playerBossBars.get(player).addPlayer(player);
             this.playerBossBars.get(player).setProgress(0);
 
-            this.playerBossBars.get(player).setVisible(!tiles.isEmpty());
         }
+        this.playerBossBars.get(player).setVisible(!tiles.isEmpty());
 
         this.playerBossBars.get(player).setTitle(title.toString());
     }

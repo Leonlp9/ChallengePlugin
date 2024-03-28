@@ -3,6 +3,7 @@ package de.leon_lp9.challengePlugin.challenges;
 import de.leon_lp9.challengePlugin.Main;
 import de.leon_lp9.challengePlugin.Timer;
 import de.leon_lp9.challengePlugin.challenges.config.ConfigurableField;
+import de.leon_lp9.challengePlugin.management.BossBarInformationTile;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -11,7 +12,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Collection;
+import java.util.*;
 
 @Getter
 public class Challenge implements Listener {
@@ -53,6 +54,9 @@ public class Challenge implements Listener {
     private final transient ChallengeType type;
     protected transient final Main plugin;
 
+    private transient List<BossBarInformationTile> globalBossBarInformationTiles = new ArrayList<>();
+    private transient Map<Player, ArrayList<BossBarInformationTile>> playerBossBarInformationTiles = new HashMap<>();
+
     @Setter
     @Getter
     private transient Collection<ConfigurableField> configurableFields;
@@ -73,6 +77,10 @@ public class Challenge implements Listener {
 
     public void unregister() {
         HandlerList.unregisterAll(this);
+
+        globalBossBarInformationTiles.forEach(tile -> plugin.getBossBarInformation().removeTile(tile.getKey()));
+        playerBossBarInformationTiles.forEach((player, tiles) -> tiles.forEach(tile -> plugin.getBossBarInformation().removeTile(player, tile.getKey())));
+
     }
 
     public boolean isRunning() {
@@ -92,6 +100,43 @@ public class Challenge implements Listener {
 
     public String getTranslationName(Player player) {
         return Main.getInstance().getTranslationManager().getTranslation(player, name);
+    }
+
+    public void addGlobalBossBarInformationTile(BossBarInformationTile tile) {
+        globalBossBarInformationTiles.add(tile);
+        plugin.getBossBarInformation().addTile(tile);
+        plugin.getBossBarInformation().update();
+    }
+
+    public void addPlayerBossBarInformationTile(Player player, BossBarInformationTile tile) {
+        if (!playerBossBarInformationTiles.containsKey(player)) {
+            playerBossBarInformationTiles.put(player, new ArrayList<>());
+        }
+        playerBossBarInformationTiles.get(player).add(tile);
+        plugin.getBossBarInformation().addTile(player, tile);
+    }
+
+    public void removeGlobalBossBarInformationTile(String key) {
+        globalBossBarInformationTiles.removeIf(tile -> tile.getKey().equals(key));
+        plugin.getBossBarInformation().removeTile(key);
+    }
+
+    public void removePlayerBossBarInformationTile(Player player, String key) {
+        if (playerBossBarInformationTiles.containsKey(player)) {
+            playerBossBarInformationTiles.get(player).removeIf(tile -> tile.getKey().equals(key));
+            plugin.getBossBarInformation().removeTile(player, key);
+        }
+    }
+
+    public BossBarInformationTile getGlobalBossBarInformationTile(String key) {
+        return globalBossBarInformationTiles.stream().filter(tile -> tile.getKey().equals(key)).findFirst().orElse(null);
+    }
+
+    public BossBarInformationTile getPlayerBossBarInformationTile(Player player, String key) {
+        if (playerBossBarInformationTiles.containsKey(player)) {
+            return playerBossBarInformationTiles.get(player).stream().filter(tile -> tile.getKey().equals(key)).findFirst().orElse(null);
+        }
+        return null;
     }
 
 }

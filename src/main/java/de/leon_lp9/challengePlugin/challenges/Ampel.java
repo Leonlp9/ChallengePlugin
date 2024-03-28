@@ -116,7 +116,7 @@ public class Ampel extends Challenge {
         if (!isRunning()){
             return;
         }
-        if (status == AmpelStatus.ROT && (event.getFrom().getX() != event.getTo().getX() || event.getFrom().getZ() != event.getTo().getZ() || event.getFrom().getY() != event.getTo().getY())){
+        if (status == AmpelStatus.ROT && (event.getFrom().getX() != event.getTo().getX() || event.getFrom().getZ() != event.getTo().getZ())){
             event.getPlayer().setHealth(0);
         }
     }
