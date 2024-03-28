@@ -45,10 +45,16 @@ public class HubMenu implements Listener {
                 .addPersistentDataContainer("id", PersistentDataType.STRING, "challenges")
                 .build());
 
-        inventory.setItem(13, new ItemBuilder(Material.COMMAND_BLOCK)
+        inventory.setItem(12, new ItemBuilder(Material.COMMAND_BLOCK)
                 .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "gamerules"))
                 .setLore("§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "gamerulesDescription"))
                 .addPersistentDataContainer("id", PersistentDataType.STRING, "gamerules")
+                .build());
+
+        inventory.setItem(14, new ItemBuilder(Material.GRASS_BLOCK)
+                .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "worldGeneration"))
+                .setLore("§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "worldGenerationDescription"))
+                .addPersistentDataContainer("id", PersistentDataType.STRING, "worldGeneration")
                 .build());
 
         inventory.setItem(16, new ItemBuilder(Material.CLOCK)
@@ -82,6 +88,9 @@ public class HubMenu implements Listener {
                             break;
                         case "timer":
                             Main.getInstance().getMenus().getTimerMenu().openInventory(ePlayer);
+                            break;
+                        case "worldGeneration":
+                            Main.getInstance().getMenus().getWorldGenerationMenu().openInventory(ePlayer);
                             break;
                     }
                 }

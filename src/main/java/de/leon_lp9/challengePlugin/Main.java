@@ -15,6 +15,7 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
+import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 
@@ -42,6 +43,8 @@ public final class Main extends JavaPlugin {
     @Getter
     private TranslationManager translationManager;
     @Getter
+    private WorldGenerationManager worldGenerationManager;
+    @Getter
     private PlayerListManager playerListManager;
     @Getter
     private BossBarInformation bossBarInformation;
@@ -66,9 +69,10 @@ public final class Main extends JavaPlugin {
         playerHeadManager = new PlayerHeadManager();
         getServer().getPluginManager().registerEvents(translationManager, this);
         getServer().getPluginManager().registerEvents(new GlobalEvents(), this);
-
         loadChallengeManagerFromConfig();
         loadGameRuleManagerFromConfig();
+        loadWorldGenerationManagerFromConfig();
+        getServer().getPluginManager().registerEvents(worldGenerationManager, this);
         addChallenges();
         challengeManager.getTimer().startTask();
         challengeManager.getTimer().setResumed(false);
@@ -127,6 +131,8 @@ public final class Main extends JavaPlugin {
         data2.put("activeGameRules", activeGameRules);
 
         fileUtils.writeToJsonFile("GameRuleManager", data2);
+
+        fileUtils.writeToJsonFile("WorldGenerationManager", worldGenerationManager);
 
         challengeManager.getActiveChallenges().forEach(Challenge::unload);
 
@@ -209,6 +215,14 @@ public final class Main extends JavaPlugin {
             gameruleManager = new GameRuleManager(activeGamerules);
         }else{
             gameruleManager = new GameRuleManager();
+        }
+    }
+
+    private void loadWorldGenerationManagerFromConfig() {
+        if (fileUtils.fileExists("WorldGenerationManager")) {
+            worldGenerationManager = fileUtils.readFromJsonFile("WorldGenerationManager", WorldGenerationManager.class);
+        }else {
+            worldGenerationManager = new WorldGenerationManager();
         }
     }
 

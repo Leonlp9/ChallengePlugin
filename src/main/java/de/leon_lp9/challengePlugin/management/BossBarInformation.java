@@ -80,6 +80,7 @@ public class BossBarInformation {
         });
 
         if (!this.playerBossBars.containsKey(player)) {
+            System.out.println("Create new BossBar for " + player.getName());
             this.playerBossBars.put(player, Bukkit.createBossBar(title.toString(), BarColor.WHITE, BarStyle.SOLID));
             this.playerBossBars.get(player).addPlayer(player);
             this.playerBossBars.get(player).setProgress(0);

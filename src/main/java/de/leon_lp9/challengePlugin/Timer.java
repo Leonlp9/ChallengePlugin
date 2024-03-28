@@ -2,12 +2,13 @@ package de.leon_lp9.challengePlugin;
 
 import de.leon_lp9.challengePlugin.builder.ColorBuilder;
 import de.leon_lp9.challengePlugin.challenges.Challenge;
+import de.leon_lp9.challengePlugin.gamerules.GameRule;
 import de.leon_lp9.challengePlugin.management.BossBarInformationTile;
 import de.leon_lp9.challengePlugin.management.Spacing;
 import lombok.*;
 import org.bukkit.Bukkit;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 
 import java.awt.Color;
 import java.lang.management.ManagementFactory;
@@ -80,12 +81,181 @@ public class Timer {
         }, 0, 1).getTaskId();
     }
 
-    public void setDisplayType(DisplayType displayType) {
+    public void resetTimer(Player executor){
+        seconds = 0;
+        resumed = false;
+        if (executor != null) {
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerResetBy").replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent(executor) + "§6" + executor.getName()));
+            });
+        }else {
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerReset"));
+            });
+        }
+        sendActionBar();
+    }
+
+    public void setBackground(boolean background, Player executor) {
+        this.background = background;
+        if (executor != null) {
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerBackgroundChangedBy").replace("%background%", String.valueOf(background)).replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent(executor) + "§6" + executor.getName()));
+            });
+        }else {
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerBackgroundChanged").replace("%background%", String.valueOf(background)));
+            });
+        }
+        sendActionBar();
+    }
+
+    public void startTimer(Player executor) {
+        if (Main.getInstance().getChallengeManager().getTimer().getSeconds() == 0) {
+            Main.getInstance().getChallengeManager().getActiveChallenges().forEach(Challenge::timerFirstTimeResume);
+            Main.getInstance().getGameruleManager().getGameRules().forEach(GameRule::timerFirstTimeResume);
+        }
+
+        resumed = true;
+        if (executor != null) {
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerStartedBy").replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent(executor) + "§6" + executor.getName()));
+            });
+        }else {
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerStarted"));
+            });
+        }
+        sendActionBar();
+    }
+
+    public void stopTimer(Player executor) {
+        resumed = false;
+        if (executor != null) {
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerStoppedBy").replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent(executor) + "§6" + executor.getName()));
+            });
+        }else {
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerStopped"));
+            });
+        }
+        sendActionBar();
+    }
+
+    public void setFirstColor(Color firstColor, Player executor) {
+        this.firstColor = firstColor;
+        if (executor != null) {
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerFirstColorChangedBy").replace("%color%", firstColor.toString()).replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent(executor) + "§6" + executor.getName()));
+            });
+        }else {
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerFirstColorChanged").replace("%color%", firstColor.toString()));
+            });
+        }
+        sendActionBar();
+    }
+
+    public void setSecondColor(Color secondColor, Player executor) {
+        this.secondColor = secondColor;
+        if (executor != null) {
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerSecondColorChangedBy").replace("%color%", secondColor.toString()).replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent(executor) + "§6" + executor.getName()));
+            });
+        }else {
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerSecondColorChanged").replace("%color%", secondColor.toString()));
+            });
+        }
+        sendActionBar();
+    }
+
+    public void setDisplayType(DisplayType displayType, Player executor) {
         this.displayType = displayType;
+        setBosbarIfDisplayType(displayType);
+
+        if (executor != null) {
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerDisplayTypeChangedBy").replace("%displayType%", displayType.name()).replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent(executor) + "§6" + executor.getName()));
+            });
+        }else {
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerDisplayTypeChanged").replace("%displayType%", displayType.name()));
+            });
+        }
+        sendActionBar();
+    }
+
+    public void setSeconds(int seconds, Player executor) {
+        this.seconds = seconds;
+        if (executor != null) {
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerSetBy").replace("%time%", getFormattedTime()).replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent(executor) + "§6" + executor.getName()));
+            });
+        }else {
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerSet").replace("%time%", getFormattedTime()));
+            });
+        }
+        sendActionBar();
+    }
+
+    public void setState(TimerState state, Player executor) {
+        this.state = state;
+        if (executor != null) {
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerModeChangedBy").replace("%mode%", state.name()).replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent(executor) + "§6" + executor.getName()));
+            });
+        }else {
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerModeChanged").replace("%mode%", state.name()));
+            });
+        }
+        sendActionBar();
+    }
+
+    public void setBold(boolean bold, Player executor) {
+        this.bold = bold;
+        if (executor != null) {
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerBoldChangedBy").replace("%bold%", String.valueOf(bold)).replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent(executor) + "§6" + executor.getName()));
+            });
+        }else {
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerBoldChanged").replace("%bold%", String.valueOf(bold)));
+            });
+        }
+        sendActionBar();
+    }
+    private void setBosbarIfDisplayType(DisplayType displayType) {
         if (displayType == DisplayType.BossBar){
             if (!Main.getInstance().getBossBarInformation().hasTile("timer")) {
                 Main.getInstance().getBossBarInformation().addTile(new BossBarInformationTile("timer", getFormattedTime(), null, Spacing.POSITIVE32PIXEl, 1));
             }
+            Bukkit.getOnlinePlayers().forEach(player -> {
+               player.sendActionBar("");
+            });
         } else {
             Main.getInstance().getBossBarInformation().removeTile("timer");
         }
@@ -102,7 +272,7 @@ public class Timer {
                 player.sendActionBar(colorBuilder.getText());
             }else if (displayType == DisplayType.BossBar){
                 if (!Main.getInstance().getBossBarInformation().hasTile("timer")) {
-                    setDisplayType(DisplayType.BossBar);
+                    setBosbarIfDisplayType(DisplayType.BossBar);
                 }
                 Main.getInstance().getBossBarInformation().getTile("timer").setTitle(colorBuilder.getText());
             }
