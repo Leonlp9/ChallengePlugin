@@ -10,13 +10,18 @@ import de.leon_lp9.challengePlugin.command.CommandManager;
 import de.leon_lp9.challengePlugin.commands.gui.Menus;
 import de.leon_lp9.challengePlugin.gamerules.GameRule;
 import de.leon_lp9.challengePlugin.management.*;
+import de.leon_lp9.challengePlugin.worldgeneration.biomeProvider.SingleBiomeProvider;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
+import org.bukkit.block.Biome;
+import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.reflections.Reflections;
 
 import java.io.IOException;
@@ -66,6 +71,11 @@ public final class Main extends JavaPlugin {
         configurationReader = new ConfigurationReader();
         translationManager = new TranslationManager(this);
         bossBarInformation = new BossBarInformation();
+
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            bossBarInformation.createPlayerBossBar(player, new StringBuilder(), false);
+        });
+
         playerHeadManager = new PlayerHeadManager();
         getServer().getPluginManager().registerEvents(translationManager, this);
         getServer().getPluginManager().registerEvents(new GlobalEvents(), this);
@@ -138,7 +148,6 @@ public final class Main extends JavaPlugin {
 
         bossBarInformation.removeAll();
     }
-
     private void requireSpigot() {
         try {
             Bukkit.spigot();

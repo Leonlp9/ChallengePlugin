@@ -9,7 +9,10 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.ServerTickManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -50,7 +53,7 @@ public class TimeControl extends Challenge{
 
         Bukkit.getOnlinePlayers().forEach(player -> {
 
-            ItemStack timePause = new ItemBuilder(Material.CLOCK).setDisplayName(plugin.getTranslationManager().getTranslation(player, "TimeControlPause")).setLore(plugin.getTranslationManager().getTranslation(player, "TimeControlDescriptionItem")).addPersistentDataContainer("timeControl", PersistentDataType.STRING, "timeControlPause").build();
+            ItemStack timePause = getItem(player);
             boolean hasTimePause = false;
 
             //entferne alle Items mit dem Tag "timeControl"
@@ -75,8 +78,7 @@ public class TimeControl extends Challenge{
             for (ItemStack itemStack : player.getInventory()) {
                 if (itemStack != null && itemStack.hasItemMeta() && itemStack.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "timeControl"), PersistentDataType.STRING)){
                     if (itemStack.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "timeControl"), PersistentDataType.STRING).equals("timeControlPause")){
-                        ItemStack timeResume = new ItemBuilder(Material.CLOCK).setDisplayName(plugin.getTranslationManager().getTranslation(player, "TimeControlResume")).setLore(plugin.getTranslationManager().getTranslation(player, "TimeControlDescriptionItem")).addPersistentDataContainer("timeControl", PersistentDataType.STRING, "timeControlResume").build();
-                        itemStack.setItemMeta(timeResume.getItemMeta());
+                        itemStack.setItemMeta(getItem(player).getItemMeta());
                     }
                 }
             }
@@ -92,8 +94,7 @@ public class TimeControl extends Challenge{
             for (ItemStack itemStack : player.getInventory()) {
                 if (itemStack != null && itemStack.hasItemMeta() && itemStack.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "timeControl"), PersistentDataType.STRING)){
                     if (itemStack.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "timeControl"), PersistentDataType.STRING).equals("timeControlResume")){
-                        ItemStack timePause = new ItemBuilder(Material.CLOCK).setDisplayName(plugin.getTranslationManager().getTranslation(player, "TimeControlPause")).setLore(plugin.getTranslationManager().getTranslation(player, "TimeControlDescriptionItem")).addPersistentDataContainer("timeControl", PersistentDataType.STRING, "timeControlPause").build();
-                        itemStack.setItemMeta(timePause.getItemMeta());
+                        itemStack.setItemMeta(getItem(player).getItemMeta());
                     }
                 }
             }
@@ -106,7 +107,7 @@ public class TimeControl extends Challenge{
         if (cooldown.contains(e.getPlayer())){
             return;
         }
-        if (e.getItem() != null && e.getItem().getType().equals(Material.CLOCK)){
+        if (e.getItem() != null && e.getItem().getType().equals(Material.PAPER) && e.getItem().hasItemMeta() && e.getItem().getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "timeControl"), PersistentDataType.STRING)){
             if (serverTickManager.isFrozen()){
                 unfreeze();
                 cooldown.add(e.getPlayer());
@@ -120,6 +121,33 @@ public class TimeControl extends Challenge{
                     cooldown.remove(e.getPlayer());
                 }, 5);
             }
+        }
+    }
+
+    @EventHandler
+    public void onDeath(PlayerDeathEvent event) {
+        event.getDrops().removeIf(itemStack -> itemStack.hasItemMeta() && itemStack.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "timeControl"), PersistentDataType.STRING));
+    }
+
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent event) {
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            event.getPlayer().getInventory().addItem(getItem(event.getPlayer()));
+        }, 1);
+    }
+
+    @EventHandler
+    public void onDrop(PlayerDropItemEvent event) {
+        if (event.getItemDrop().getItemStack().hasItemMeta() && event.getItemDrop().getItemStack().getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "timeControl"), PersistentDataType.STRING)){
+            event.setCancelled(true);
+        }
+    }
+
+    public ItemStack getItem(Player player){
+        if (serverTickManager.isFrozen()){
+            return new ItemBuilder(Material.PAPER).setCustomModelData(3).setDisplayName(plugin.getTranslationManager().getTranslation(player, "TimeControlResume")).setLore(plugin.getTranslationManager().getTranslation(player, "TimeControlDescriptionItem")).addPersistentDataContainer("timeControl", PersistentDataType.STRING, "timeControlResume").build();
+        }else{
+            return new ItemBuilder(Material.PAPER).setCustomModelData(2).setDisplayName(plugin.getTranslationManager().getTranslation(player, "TimeControlPause")).setLore(plugin.getTranslationManager().getTranslation(player, "TimeControlDescriptionItem")).addPersistentDataContainer("timeControl", PersistentDataType.STRING, "timeControlPause").build();
         }
     }
 

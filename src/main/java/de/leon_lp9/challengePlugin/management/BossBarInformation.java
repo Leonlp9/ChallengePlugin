@@ -79,16 +79,21 @@ public class BossBarInformation {
             title.append(tile.getPadding().getSpacing());
         });
 
+        if (this.playerBossBars.containsKey(player)) {
+            this.playerBossBars.get(player).setVisible(!tiles.isEmpty());
+
+            this.playerBossBars.get(player).setTitle(title.toString());
+        }
+    }
+
+    public void createPlayerBossBar(Player player, StringBuilder title, boolean visible) {
         if (!this.playerBossBars.containsKey(player)) {
             System.out.println("Create new BossBar for " + player.getName());
             this.playerBossBars.put(player, Bukkit.createBossBar(title.toString(), BarColor.WHITE, BarStyle.SOLID));
             this.playerBossBars.get(player).addPlayer(player);
             this.playerBossBars.get(player).setProgress(0);
-
+            this.playerBossBars.get(player).setVisible(visible);
         }
-        this.playerBossBars.get(player).setVisible(!tiles.isEmpty());
-
-        this.playerBossBars.get(player).setTitle(title.toString());
     }
 
     public void removeAll() {

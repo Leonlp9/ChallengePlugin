@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.persistence.PersistentDataType;
 
 public class WorldGenerationMenu implements Listener {
@@ -26,16 +27,23 @@ public class WorldGenerationMenu implements Listener {
                     .build());
         }
 
-        inventory.setItem(12, new ItemBuilder(Material.BRICKS)
+        inventory.setItem(11, new ItemBuilder(Material.BRICKS)
                 .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "worldGenerators"))
                 .setLore("§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "worldGeneratorsDescription"), "", "§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "worldGeneratorsDescription2").replace("%activeWorldGenerator%", Main.getInstance().getWorldGenerationManager().getActiveWorldGenerator().name()))
                 .addPersistentDataContainer("id", PersistentDataType.STRING, "worldGenerators")
                 .build());
 
-        inventory.setItem(14, new ItemBuilder(Material.DIAMOND_PICKAXE)
+        inventory.setItem(13, new ItemBuilder(Material.DIAMOND_PICKAXE)
                 .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "worldPopulators"))
                 .setLore("§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "worldPopulatorsDescription"), "", "§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "worldPopulatorsDescription2").replace("%activeWorldPopulator%", Main.getInstance().getWorldGenerationManager().getActiveWorldPopulator().name()))
                 .addPersistentDataContainer("id", PersistentDataType.STRING, "worldPopulators")
+                        .addFlag(ItemFlag.HIDE_ATTRIBUTES)
+                .build());
+
+        inventory.setItem(15, new ItemBuilder(Material.MYCELIUM)
+                .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "worldBiomeProvider"))
+                .setLore("§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "worldBiomeProviderDescription"), "", "§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "worldBiomeProviderDescription2").replace("%activeWorldBiome%", (Main.getInstance().getWorldGenerationManager().getSingleBiome() == null ? "ALL_BIOMES" : Main.getInstance().getWorldGenerationManager().getSingleBiome().name())))
+                .addPersistentDataContainer("id", PersistentDataType.STRING, "worldBiomeProvider")
                 .build());
 
         inventory.setItem(18, new ItemBuilder(Material.RED_DYE)
@@ -69,6 +77,8 @@ public class WorldGenerationMenu implements Listener {
                             Main.getInstance().getMenus().getHubMenu().openInventory(((Player) event.getWhoClicked()));
                         } else if (id.equals("regenerateWorlds")) {
                             Main.getInstance().getWorldGenerationManager().regenerateWorlds(null);
+                        } else if (id.equals("worldBiomeProvider")) {
+                            Main.getInstance().getMenus().getWorldBiomProviderMenu().openInventory(((Player) event.getWhoClicked()), 0);
                         }
                     }
                 }

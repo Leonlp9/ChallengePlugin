@@ -39,7 +39,8 @@
             </goals>
               <configuration>
                   <createDependencyReducedPom>false</createDependencyReducedPom>
-                  <outputDirectory>D:\MinecraftServer\1.20.4\plugins</outputDirectory>
+<!--                  <outputDirectory>D:\MinecraftServer\1.20.4\plugins</outputDirectory>-->
+                  <outputDirectory>C:\Users\leonm\AppData\Roaming\.feather\player-server\servers\205df2b7-a26e-46c6-83ed-b768a0a5c782\plugins</outputDirectory>
                   <shadedArtifactAttached>true</shadedArtifactAttached>
               </configuration>
           </execution>

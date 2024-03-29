@@ -1,5 +1,6 @@
 package de.leon_lp9.challengePlugin;
 
+import de.leon_lp9.challengePlugin.worldgeneration.biomeProvider.SingleBiomeProvider;
 import de.leon_lp9.challengePlugin.worldgeneration.populators.*;
 import de.leon_lp9.challengePlugin.worldgeneration.worldGenerators.CustomChunkGenerator;
 import lombok.Getter;
@@ -8,12 +9,14 @@ import lombok.SneakyThrows;
 import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.advancement.AdvancementProgress;
+import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPortalEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
+import org.bukkit.event.world.ChunkPopulateEvent;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 
@@ -59,10 +62,14 @@ public class WorldGenerationManager implements Listener {
     @Getter
     @Setter
     private WorldPopulators activeWorldPopulator;
+    @Getter
+    @Setter
+    private Biome singleBiome;
 
     public WorldGenerationManager(){
         this.activeWorldGenerator = WorldGenerators.DEFAULT;
         this.activeWorldPopulator = WorldPopulators.NONE;
+        this.singleBiome = null;
     }
 
     @SneakyThrows
@@ -131,6 +138,11 @@ public class WorldGenerationManager implements Listener {
             overworldCreator.seed(seed);
         } else {
             overworldCreator.seed(System.currentTimeMillis());
+        }
+
+        if (singleBiome != null) {
+            SingleBiomeProvider singleBiomeProvider = new SingleBiomeProvider(singleBiome);
+            overworldCreator.biomeProvider(singleBiomeProvider);
         }
 
         if (getActiveWorldGenerator().getGeneratorClass() != null) {
@@ -217,5 +229,4 @@ public class WorldGenerationManager implements Listener {
             }
         }
     }
-
 }

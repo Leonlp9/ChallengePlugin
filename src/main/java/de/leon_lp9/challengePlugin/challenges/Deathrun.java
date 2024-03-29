@@ -77,10 +77,8 @@ public class Deathrun extends Challenge{
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         Location location = new Location(Bukkit.getWorld(challengeWorld.getName()), 0, 100, 0);
         location.setY(location.getWorld().getHighestBlockYAt(location));
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            setupScoreboard(player);
-            player.teleport(location);
-        });
+            setupScoreboard(event.getPlayer());
+            event.getPlayer().teleport(location);
     }
 
     @EventHandler
@@ -93,10 +91,19 @@ public class Deathrun extends Challenge{
     @EventHandler
     public void onPlayerQuitEvent(PlayerQuitEvent event) {
 
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            plugin.getBossBarInformation().removeTile(player, "distance");
-            unloadScoreboard(player);
-        });
+        plugin.getBossBarInformation().removeTile(event.getPlayer(), "distance");
+        unloadScoreboard(event.getPlayer());
+    }
+
+    @Override
+    public void timerFirstTimeResume() {
+        super.timerFirstTimeResume();
+
+        if (Bukkit.getWorld(challengeWorld.getName()) != null) {
+            Location location = new Location(Bukkit.getWorld(challengeWorld.getName()), 0, 100, 0);
+
+            location.getWorld().getWorldBorder().reset();
+        }
     }
 
     @Override
@@ -164,12 +171,12 @@ public class Deathrun extends Challenge{
                 player.getScoreboard().getTeam("line-4").setPrefix("§f3. " + plugin.getPlayerHeadManager().getHeadComponent(UUID.fromString("9cb6a52c-55bc-456b-9513-f4cf19cdf9e3")) + new ColorBuilder("§lLeer").addColorToString(new Color(87, 246, 128, 255)).getText() + new ColorBuilder(" 0").addColorToString(new Color(194, 85, 233, 255)).getText());
             }
             if (first.size() > 3){
-                player.getScoreboard().getTeam("line-5").setPrefix("§f4. " + plugin.getPlayerHeadManager().getHeadComponent(first.get(3).getUniqueId()) + new ColorBuilder("§l" + first.get(3).getName()).addColorToString(new Color(203, 189, 186, 255)).getText() + new ColorBuilder(" " + first.get(3).getLocation().getBlockX()).addColorToString(new Color(194, 85, 233, 255)).getText());
+                player.getScoreboard().getTeam("line-5").setPrefix("§f4. " + plugin.getPlayerHeadManager().getHeadComponent(first.get(3).getUniqueId()) + new ColorBuilder(first.get(3).getName()).addColorToString(new Color(203, 189, 186, 255)).getText() + new ColorBuilder(" " + first.get(3).getLocation().getBlockX()).addColorToString(new Color(194, 85, 233, 255)).getText());
             }else {
                 player.getScoreboard().getTeam("line-5").setPrefix("§f4. " + plugin.getPlayerHeadManager().getHeadComponent(UUID.fromString("9cb6a52c-55bc-456b-9513-f4cf19cdf9e3")) + new ColorBuilder("Leer").addColorToString(new Color(203, 189, 186, 255)).getText() + new ColorBuilder(" 0").addColorToString(new Color(194, 85, 233, 255)).getText());
             }
             if (first.size() > 4){
-                player.getScoreboard().getTeam("line-6").setPrefix("§f5. " + plugin.getPlayerHeadManager().getHeadComponent(first.get(4).getUniqueId()) + new ColorBuilder("§l" + first.get(4).getName()).addColorToString(new Color(210, 200, 198, 255)).getText() + new ColorBuilder(" " + first.get(4).getLocation().getBlockX()).addColorToString(new Color(194, 85, 233, 255)).getText());
+                player.getScoreboard().getTeam("line-6").setPrefix("§f5. " + plugin.getPlayerHeadManager().getHeadComponent(first.get(4).getUniqueId()) + new ColorBuilder(first.get(4).getName()).addColorToString(new Color(210, 200, 198, 255)).getText() + new ColorBuilder(" " + first.get(4).getLocation().getBlockX()).addColorToString(new Color(194, 85, 233, 255)).getText());
             }else {
                 player.getScoreboard().getTeam("line-6").setPrefix("§f5. " + plugin.getPlayerHeadManager().getHeadComponent(UUID.fromString("9cb6a52c-55bc-456b-9513-f4cf19cdf9e3")) + new ColorBuilder("Leer").addColorToString(new Color(210, 200, 198, 255)).getText() + new ColorBuilder(" 0").addColorToString(new Color(194, 85, 233, 255)).getText());
             }
