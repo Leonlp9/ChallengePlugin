@@ -3,9 +3,7 @@ package de.leon_lp9.challengePlugin.challenges;
 import de.leon_lp9.challengePlugin.Main;
 import de.leon_lp9.challengePlugin.builder.ItemBuilder;
 import de.leon_lp9.challengePlugin.challenges.config.LoadChallenge;
-import de.leon_lp9.challengePlugin.enchantments.EnchantmentWrapper;
 import org.bukkit.*;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -13,9 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
-
-import java.lang.reflect.Field;
-import java.util.Map;
 
 @LoadChallenge
 public class MaceChallenge extends Challenge{
