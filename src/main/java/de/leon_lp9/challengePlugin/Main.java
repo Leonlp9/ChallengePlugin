@@ -10,25 +10,18 @@ import de.leon_lp9.challengePlugin.command.CommandManager;
 import de.leon_lp9.challengePlugin.commands.gui.Menus;
 import de.leon_lp9.challengePlugin.gamerules.GameRule;
 import de.leon_lp9.challengePlugin.management.*;
-import de.leon_lp9.challengePlugin.worldgeneration.biomeProvider.SingleBiomeProvider;
+import de.leon_lp9.challengePlugin.worldgeneration.WorldGenerationManager;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
-import org.bukkit.block.Biome;
-import org.bukkit.generator.BiomeProvider;
-import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.reflections.Reflections;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 public final class Main extends JavaPlugin {
@@ -105,14 +98,15 @@ public final class Main extends JavaPlugin {
             }
         });
 
+        long seed = System.currentTimeMillis();
         if (Bukkit.getWorld("ChallengeWorld") == null) {
-            Bukkit.createWorld(new org.bukkit.WorldCreator("ChallengeWorld"));
+            worldGenerationManager.generateWorld(seed, "ChallengeWorld", World.Environment.NORMAL);
         }
         if (Bukkit.getWorld("ChallengeWorld_nether") == null) {
-            Bukkit.createWorld(new WorldCreator("ChallengeWorld_nether").environment(World.Environment.NETHER));
+            worldGenerationManager.generateWorld(seed, "ChallengeWorld_nether", World.Environment.NETHER);
         }
         if (Bukkit.getWorld("ChallengeWorld_the_end") == null) {
-            Bukkit.createWorld(new WorldCreator("ChallengeWorld_the_end").environment(World.Environment.THE_END));
+            worldGenerationManager.generateWorld(seed, "ChallengeWorld_the_end", World.Environment.THE_END);
         }
     }
 

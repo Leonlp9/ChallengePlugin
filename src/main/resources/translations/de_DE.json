@@ -11,6 +11,8 @@
   "AmpelName": "Ampel",
   "AmpelRotPhaseMillisName": "Rot Phase",
   "AmpelRotPhaseMillisNameDescription": "Die Zeit in Millisekunden die die Rot Phase andauert",
+  "AnvilRainChallengeName": "Amboss Regen",
+    "AnvilRainDescription": "Es regnet Ambosse",
   "BLOCKS_ChallengeTypeDescription": "Challenges die sich um Blöcke drehen",
   "BLOCKS_ChallengeTypeName": "Block Challenges",
   "BackPackGameRuleDescription": "Ob der /backpack Command aktiviert ist",

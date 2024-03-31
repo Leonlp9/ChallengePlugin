@@ -125,11 +125,13 @@ public class Timer {
             Bukkit.getOnlinePlayers().forEach(player -> {
                 player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
                 player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerStartedBy").replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent(executor) + "§6" + executor.getName()));
+                player.sendTitle(Main.getInstance().getTranslationManager().getTranslation(player, "timerStartedTitle"), "", 10, 40, 10);
             });
         }else {
             Bukkit.getOnlinePlayers().forEach(player -> {
                 player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
                 player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerStarted"));
+                player.sendTitle(Main.getInstance().getTranslationManager().getTranslation(player, "timerStartedTitle"), "", 10, 40, 10);
             });
         }
         sendActionBar();
@@ -141,11 +143,13 @@ public class Timer {
             Bukkit.getOnlinePlayers().forEach(player -> {
                 player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
                 player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerStoppedBy").replace("%player%", Main.getInstance().getPlayerHeadManager().getHeadComponent(executor) + "§6" + executor.getName()));
+                player.sendTitle(Main.getInstance().getTranslationManager().getTranslation(player, "timerStoppedTitle"), "", 10, 40, 10);
             });
         }else {
             Bukkit.getOnlinePlayers().forEach(player -> {
                 player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
                 player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "timerStopped"));
+                player.sendTitle(Main.getInstance().getTranslationManager().getTranslation(player, "timerStoppedTitle"), "", 10, 40, 10);
             });
         }
         sendActionBar();

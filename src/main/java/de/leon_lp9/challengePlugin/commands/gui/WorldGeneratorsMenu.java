@@ -1,7 +1,7 @@
 package de.leon_lp9.challengePlugin.commands.gui;
 
 import de.leon_lp9.challengePlugin.Main;
-import de.leon_lp9.challengePlugin.WorldGenerationManager;
+import de.leon_lp9.challengePlugin.worldgeneration.WorldGenerationManager;
 import de.leon_lp9.challengePlugin.builder.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

@@ -1,5 +1,7 @@
-package de.leon_lp9.challengePlugin;
+package de.leon_lp9.challengePlugin.worldgeneration;
 
+import de.leon_lp9.challengePlugin.Main;
+import de.leon_lp9.challengePlugin.Timer;
 import de.leon_lp9.challengePlugin.worldgeneration.biomeProvider.SingleBiomeProvider;
 import de.leon_lp9.challengePlugin.worldgeneration.populators.*;
 import de.leon_lp9.challengePlugin.worldgeneration.worldGenerators.CustomChunkGenerator;
@@ -20,6 +22,7 @@ import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.world.ChunkPopulateEvent;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 
@@ -107,6 +110,10 @@ public class WorldGenerationManager implements Listener {
             all.setTotalExperience(0);
             all.setExhaustion(0);
             all.getEnderChest().clear();
+            all.getActivePotionEffects().forEach(potionEffect -> all.removePotionEffect(potionEffect.getType()));
+            all.setGameMode(GameMode.SURVIVAL);
+            all.setFlying(false);
+            all.setAllowFlight(false);
 
             Iterator<Advancement> iterator = Bukkit.getServer().advancementIterator();
             while (iterator.hasNext())
@@ -118,23 +125,41 @@ public class WorldGenerationManager implements Listener {
         }
 
         //Welten löschen
-        World world = Bukkit.getWorld("ChallengeWorld");
+        deleteWorld("ChallengeWorld");
+
+        deleteWorld("ChallengeWorld_nether");
+
+        deleteWorld("ChallengeWorld_the_end");
+
+        Long finalSeed = seed;
+        if (seed == null) {
+            finalSeed = System.currentTimeMillis();
+        }
+
+        generateWorld(finalSeed, "ChallengeWorld", World.Environment.NORMAL);
+
+        generateWorld(finalSeed, "ChallengeWorld_nether", World.Environment.NETHER);
+
+        generateWorld(finalSeed, "ChallengeWorld_the_end", World.Environment.THE_END);
+
+        //Spieler teleportieren
+        for (Player all : Bukkit.getOnlinePlayers()) {
+            all.teleport(Bukkit.getWorld("ChallengeWorld").getSpawnLocation());
+        }
+    }
+
+    private static void deleteWorld(String ChallengeWorld) {
+        World world = Bukkit.getWorld(ChallengeWorld);
         world.setKeepSpawnInMemory(false);
         Bukkit.unloadWorld(world, false);
         Main.getInstance().getFileUtils().deleteDirectory(world.getWorldFolder());
+    }
 
-        World nether = Bukkit.getWorld("ChallengeWorld_nether");
-        nether.setKeepSpawnInMemory(false);
-        Bukkit.unloadWorld(nether, false);
-        Main.getInstance().getFileUtils().deleteDirectory(nether.getWorldFolder());
-
-        World end = Bukkit.getWorld("ChallengeWorld_the_end");
-        end.setKeepSpawnInMemory(false);
-        Bukkit.unloadWorld(end, false);
-        Main.getInstance().getFileUtils().deleteDirectory(end.getWorldFolder());
-
+    @SneakyThrows
+    public void generateWorld(Long seed, String worldName, World.Environment environment) {
         //Welten erstellen
-        WorldCreator overworldCreator = new WorldCreator("ChallengeWorld");
+        WorldCreator overworldCreator = new WorldCreator(worldName);
+        overworldCreator.environment(environment);
 
         if (seed != null) {
             overworldCreator.seed(seed);
@@ -154,45 +179,6 @@ public class WorldGenerationManager implements Listener {
         }
 
         Bukkit.createWorld(overworldCreator);
-
-        WorldCreator netherCreator = new WorldCreator("ChallengeWorld_nether");
-        netherCreator.environment(World.Environment.NETHER);
-        netherCreator.seed(overworldCreator.seed());
-
-        if (singleBiome != null) {
-            SingleBiomeProvider singleBiomeProvider = new SingleBiomeProvider(singleBiome);
-            netherCreator.biomeProvider(singleBiomeProvider);
-        }
-
-        if (getActiveWorldGenerator().getGeneratorClass() != null) {
-            netherCreator.generator(activeWorldGenerator.getGeneratorClass().newInstance());
-        }else if (getActiveWorldGenerator() == WorldGenerators.FLAT){
-            netherCreator.type(WorldType.FLAT);
-        }
-
-        netherCreator.createWorld();
-
-        WorldCreator theEndCreator = new WorldCreator("ChallengeWorld_the_end");
-        theEndCreator.environment(World.Environment.THE_END);
-        theEndCreator.seed(overworldCreator.seed());
-
-        if (singleBiome != null) {
-            SingleBiomeProvider singleBiomeProvider = new SingleBiomeProvider(singleBiome);
-            theEndCreator.biomeProvider(singleBiomeProvider);
-        }
-
-        if (getActiveWorldGenerator().getGeneratorClass() != null) {
-            theEndCreator.generator(activeWorldGenerator.getGeneratorClass().newInstance());
-        }else if (getActiveWorldGenerator() == WorldGenerators.FLAT){
-            theEndCreator.type(WorldType.FLAT);
-        }
-
-        theEndCreator.createWorld();
-
-        //Spieler teleportieren
-        for (Player all : Bukkit.getOnlinePlayers()) {
-            all.teleport(Bukkit.getWorld("ChallengeWorld").getSpawnLocation());
-        }
     }
 
 

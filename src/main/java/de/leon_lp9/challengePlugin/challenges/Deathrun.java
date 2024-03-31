@@ -48,6 +48,12 @@ public class Deathrun extends Challenge{
     @ConfigurationValue(title = "ChallengeWorld", icon = Material.GRASS_BLOCK)
     private ChallengeWorlds challengeWorld = ChallengeWorlds.CHALLENGEWORLD;
 
+    @ConfigurationValue(title = "ZoneWidth", icon = Material.BARRIER, min = 2, max = 150)
+    private int zoneWidth = 50;
+
+    @ConfigurationValue(title = "BorderStartSize", icon = Material.BARRIER, min = 2, max = 150)
+    private int borderStartSize = 50;
+
     private double totaldamage = 0;
     private List<Player> deadPlayers = new ArrayList<>();
 
@@ -63,12 +69,14 @@ public class Deathrun extends Challenge{
         location.setY(location.getWorld().getHighestBlockYAt(location));
         Bukkit.getOnlinePlayers().forEach(player -> {
             setupScoreboard(player);
-            player.teleport(location);
+            if (!player.getWorld().getName().equals(location.getWorld().getName())) {
+                player.teleport(location);
+            }
             plugin.getBossBarInformation().updatePlayer(player);
         });
 
-        location.getWorld().getWorldBorder().setCenter(0, 0);
-        location.getWorld().getWorldBorder().setSize(50);
+        location.getWorld().getWorldBorder().setCenter(0.5, 0.5);
+        location.getWorld().getWorldBorder().setSize(borderStartSize * 2 - 1);
         location.getWorld().getWorldBorder().setWarningDistance(0);
         location.getWorld().getWorldBorder().setWarningTime(0);
     }
@@ -123,8 +131,8 @@ public class Deathrun extends Challenge{
                 player.teleport(location);
             });
 
-            location.getWorld().getWorldBorder().setCenter(0, 0);
-            location.getWorld().getWorldBorder().setSize(50);
+            location.getWorld().getWorldBorder().setCenter(0.5, 0.5);
+            location.getWorld().getWorldBorder().setSize(borderStartSize * 2 - 1);
             location.getWorld().getWorldBorder().setWarningDistance(0);
             location.getWorld().getWorldBorder().setWarningTime(0);
         }
@@ -190,16 +198,22 @@ public class Deathrun extends Challenge{
                 }
             }
 
-            if (ownPlace == 1){
+            if (isPlayerInChallenge(player)) {
+                if (ownPlace == 1) {
+                    player.getScoreboard().getTeam("line-8").setPrefix("§8-----------------");
+                } else {
+                    player.getScoreboard().getTeam("line-8").setPrefix("§f" + (ownPlace - 1) + ". " + plugin.getPlayerHeadManager().getHeadComponent(first.get(ownPlace - 2).getUniqueId()) + new ColorBuilder(first.get(ownPlace - 2).getName()).addColorToString(new Color(203, 189, 186, 255)).getText() + new ColorBuilder(" " + first.get(ownPlace - 2).getLocation().getBlockX()).addColorToString(new Color(194, 85, 233, 255)).getText());
+                }
+                player.getScoreboard().getTeam("line-9").setPrefix("§f" + ownPlace + ". " + plugin.getPlayerHeadManager().getHeadComponent(player.getUniqueId()) + new ColorBuilder("§l" + player.getName()).addColorToString(new Color(217, 207, 205, 255)).getText() + new ColorBuilder(" " + player.getLocation().getBlockX()).addColorToString(new Color(194, 85, 233, 255)).getText());
+                if (ownPlace == first.size()) {
+                    player.getScoreboard().getTeam("line-10").setPrefix("§8-----------------");
+                } else {
+                    player.getScoreboard().getTeam("line-10").setPrefix("§f" + (ownPlace + 1) + ". " + plugin.getPlayerHeadManager().getHeadComponent(first.get(ownPlace).getUniqueId()) + new ColorBuilder(first.get(ownPlace).getName()).addColorToString(new Color(210, 200, 198, 255)).getText() + new ColorBuilder(" " + first.get(ownPlace).getLocation().getBlockX()).addColorToString(new Color(194, 85, 233, 255)).getText());
+                }
+            }else {
                 player.getScoreboard().getTeam("line-8").setPrefix("§8-----------------");
-            }else {
-                player.getScoreboard().getTeam("line-8").setPrefix("§f" + (ownPlace - 1) + ". " + plugin.getPlayerHeadManager().getHeadComponent(first.get(ownPlace - 2).getUniqueId()) + new ColorBuilder( first.get(ownPlace - 2).getName()).addColorToString(new Color(203, 189, 186, 255)).getText() + new ColorBuilder(" " + first.get(ownPlace - 2).getLocation().getBlockX()).addColorToString(new Color(194, 85, 233, 255)).getText());
-            }
-            player.getScoreboard().getTeam("line-9").setPrefix("§f" + ownPlace + ". " + plugin.getPlayerHeadManager().getHeadComponent(player.getUniqueId()) + new ColorBuilder("§l" + player.getName()).addColorToString(new Color(217, 207, 205, 255)).getText() + new ColorBuilder(" " + player.getLocation().getBlockX()).addColorToString(new Color(194, 85, 233, 255)).getText());
-            if (ownPlace == first.size()){
+                player.getScoreboard().getTeam("line-9").setPrefix("§6Du bist Zuschauer!");
                 player.getScoreboard().getTeam("line-10").setPrefix("§8-----------------");
-            }else {
-                player.getScoreboard().getTeam("line-10").setPrefix("§f" + (ownPlace + 1) + ". " + plugin.getPlayerHeadManager().getHeadComponent(first.get(ownPlace).getUniqueId()) + new ColorBuilder(first.get(ownPlace).getName()).addColorToString(new Color(210, 200, 198, 255)).getText() + new ColorBuilder(" " + first.get(ownPlace).getLocation().getBlockX()).addColorToString(new Color(194, 85, 233, 255)).getText());
             }
 
         });
@@ -227,18 +241,18 @@ public class Deathrun extends Challenge{
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         if (isPlayerInChallenge(event.getPlayer())) {
-            if (event.getTo().getX() < -50) {
-                if (event.getFrom().getX() < -50) {
+            if (event.getTo().getX() < -zoneWidth) {
+                if (event.getFrom().getX() < -zoneWidth) {
                     Location location = event.getPlayer().getLocation().clone();
-                    location.setX(-49);
+                    location.setX(-zoneWidth+1);
                     event.getPlayer().teleport(location);
                 }
             }
-            if (event.getTo().getX() < -45) {
+            if (event.getTo().getX() < -zoneWidth+5) {
                 for (int i = -8; i < 8; i++) {
                     for (int j = -8; j < 8; j++) {
                         Location location = event.getTo().clone();
-                        location.setX(-50);
+                        location.setX(-zoneWidth);
                         location.add(0, j, i);
                         location.add(0.5, 0.5, 0.5);
 
@@ -256,18 +270,18 @@ public class Deathrun extends Challenge{
                     }
                 }
             }
-            if (event.getTo().getZ() < -50) {
-                if (event.getFrom().getZ() < -50) {
+            if (event.getTo().getZ() < -zoneWidth) {
+                if (event.getFrom().getZ() < -zoneWidth) {
                     Location location = event.getPlayer().getLocation().clone();
-                    location.setZ(-49);
+                    location.setZ(-zoneWidth+1);
                     event.getPlayer().teleport(location);
                 }
             }
-            if (event.getTo().getZ() < -45) {
+            if (event.getTo().getZ() < -zoneWidth+5) {
                 for (int i = -8; i < 8; i++) {
                     for (int j = -8; j < 8; j++) {
                         Location location = event.getTo().clone();
-                        location.setZ(-50);
+                        location.setZ(-zoneWidth);
                         location.add(j, i, 0);
                         location.add(0.5, 0.5, 0.5);
 
@@ -285,18 +299,18 @@ public class Deathrun extends Challenge{
                     }
                 }
             }
-            if (event.getTo().getZ() > 50) {
-                if (event.getFrom().getZ() > 50) {
+            if (event.getTo().getZ() > zoneWidth) {
+                if (event.getFrom().getZ() > zoneWidth) {
                     Location location = event.getPlayer().getLocation().clone();
-                    location.setZ(49);
+                    location.setZ(zoneWidth-1);
                     event.getPlayer().teleport(location);
                 }
             }
-            if (event.getTo().getZ() > 45) {
+            if (event.getTo().getZ() > zoneWidth-5) {
                 for (int i = -8; i < 8; i++) {
                     for (int j = -8; j < 8; j++) {
                         Location location = event.getTo().clone();
-                        location.setZ(50);
+                        location.setZ(zoneWidth);
                         location.add(j, i, 0);
                         location.add(0.5, 0.5, 0.5);
 
@@ -319,7 +333,7 @@ public class Deathrun extends Challenge{
 
     @EventHandler
     public void onVehicleMove(VehicleMoveEvent event){
-        if (event.getTo().getX() < -50 || event.getTo().getZ() < -50 || event.getTo().getZ() > 50) {
+        if (event.getTo().getX() < -zoneWidth || event.getTo().getZ() < -zoneWidth || event.getTo().getZ() > zoneWidth) {
             event.getVehicle().remove();
         }
     }
@@ -333,6 +347,7 @@ public class Deathrun extends Challenge{
     public void setupScoreboard(Player p) {
         Objective objective = null;
 
+        removePlayerBossBarInformationTile(p, "distance");
         addPlayerBossBarInformationTile(p, new BossBarInformationTile("distance", plugin.getPlayerHeadManager().getHeadComponent(UUID.fromString("fef039ef-e6cd-4987-9c84-26a3e6134277")), "0", Spacing.POSITIVE8PIXEl, -1));
 
         p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
