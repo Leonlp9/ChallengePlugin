@@ -28,28 +28,32 @@ public class EveryBlockDisappears extends Challenge {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event){
-        if (!isRunning()){
-            return;
-        }
-        if (blockPlace){
-            //Block an den drann geklickt wurde von dem den Type alle aus dem Chunk entfernen
-            Block block = event.getBlockAgainst();
+        if (isPlayerInChallenge(event.getPlayer())) {
+            if (!isRunning()) {
+                return;
+            }
+            if (blockPlace) {
+                //Block an den drann geklickt wurde von dem den Type alle aus dem Chunk entfernen
+                Block block = event.getBlockAgainst();
 
-            removeBlockFromChunk(block, blockDropByPlace);
+                removeBlockFromChunk(block, blockDropByPlace);
 
+            }
         }
     }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event){
-        if (!isRunning()){
-            return;
-        }
-        if (blockBreak){
-            //Block der abgebaut wurde von dem den Type alle aus dem Chunk entfernen
-            Block block = event.getBlock();
+        if (isPlayerInChallenge(event.getPlayer())) {
+            if (!isRunning()) {
+                return;
+            }
+            if (blockBreak) {
+                //Block der abgebaut wurde von dem den Type alle aus dem Chunk entfernen
+                Block block = event.getBlock();
 
-            removeBlockFromChunk(block, blockDropByBreak);
+                removeBlockFromChunk(block, blockDropByBreak);
+            }
         }
     }
 

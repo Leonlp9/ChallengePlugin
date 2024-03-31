@@ -113,11 +113,13 @@ public class Ampel extends Challenge {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event){
-        if (!isRunning()){
-            return;
-        }
-        if (status == AmpelStatus.ROT && (event.getFrom().getX() != event.getTo().getX() || event.getFrom().getZ() != event.getTo().getZ())){
-            event.getPlayer().setHealth(0);
+        if (isPlayerInChallenge(event.getPlayer())) {
+            if (!isRunning()) {
+                return;
+            }
+            if (status == AmpelStatus.ROT && (event.getFrom().getX() != event.getTo().getX() || event.getFrom().getZ() != event.getTo().getZ())) {
+                event.getPlayer().setHealth(0);
+            }
         }
     }
 

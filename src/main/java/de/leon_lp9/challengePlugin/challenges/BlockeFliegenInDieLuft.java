@@ -23,14 +23,16 @@ public class BlockeFliegenInDieLuft extends Challenge {
 
     @EventHandler()
     public void onMove(PlayerMoveEvent event) {
-        if (isRunning()) {
-            if (event.getTo() != null) {
-                Block blockBelow = event.getTo().getBlock().getRelative(0, -1, 0);
-                if (blockBelow != null) {
-                    if (blockBelow.getType().isSolid()) {
-                        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                            this.boostBlockInAir(blockBelow);
-                        }, this.zeitBisBlockFliegt);
+        if (isPlayerInChallenge(event.getPlayer())) {
+            if (isRunning()) {
+                if (event.getTo() != null) {
+                    Block blockBelow = event.getTo().getBlock().getRelative(0, -1, 0);
+                    if (blockBelow != null) {
+                        if (blockBelow.getType().isSolid()) {
+                            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                this.boostBlockInAir(blockBelow);
+                            }, this.zeitBisBlockFliegt);
+                        }
                     }
                 }
             }

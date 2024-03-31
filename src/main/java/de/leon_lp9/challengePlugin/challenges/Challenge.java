@@ -6,6 +6,7 @@ import de.leon_lp9.challengePlugin.challenges.config.ConfigurableField;
 import de.leon_lp9.challengePlugin.management.BossBarInformationTile;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -101,11 +102,15 @@ public class Challenge implements Listener {
     public ArrayList<Player> getAllSurvivalPlayers() {
         ArrayList<Player> players = new ArrayList<>();
         for (Player player : plugin.getServer().getOnlinePlayers()) {
-            if (!player.getGameMode().equals(org.bukkit.GameMode.SPECTATOR)) {
+            if (isPlayerInChallenge(player)) {
                 players.add(player);
             }
         }
         return players;
+    }
+
+    public boolean isPlayerInChallenge(Player player) {
+        return !player.getGameMode().equals(GameMode.SPECTATOR) && !player.isDead();
     }
 
     public String getTranslationName(Player player) {

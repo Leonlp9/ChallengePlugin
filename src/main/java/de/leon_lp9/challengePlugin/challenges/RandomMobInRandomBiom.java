@@ -110,12 +110,15 @@ public class RandomMobInRandomBiom extends Challenge {
     //Wenn Entitys mit dem Pokéball abgeworfen werden, dann soll derren Spawn Eggs an der stelle erscheinen und das Entity soll verschwinden
     @EventHandler
     public void onPlayerDropItem(PlayerEggThrowEvent event) {
-        if (event.getEgg().getItem().getItemMeta() == null || !event.getEgg().getItem().getItemMeta().hasDisplayName()) return;
-        if (event.getEgg().getItem().getItemMeta().getDisplayName().equals("§cPoké§fball")) {
-            event.setHatching(false);
+        if (isPlayerInChallenge(event.getPlayer())) {
+            if (event.getEgg().getItem().getItemMeta() == null || !event.getEgg().getItem().getItemMeta().hasDisplayName())
+                return;
+            if (event.getEgg().getItem().getItemMeta().getDisplayName().equals("§cPoké§fball")) {
+                event.setHatching(false);
 
-            //get Nearby Entities and remove them
-            event.getEgg().getWorld().getNearbyEntities(event.getEgg().getLocation(), 1, 1, 1).forEach(this::dropSpawnEgg);
+                //get Nearby Entities and remove them
+                event.getEgg().getWorld().getNearbyEntities(event.getEgg().getLocation(), 1, 1, 1).forEach(this::dropSpawnEgg);
+            }
         }
     }
 

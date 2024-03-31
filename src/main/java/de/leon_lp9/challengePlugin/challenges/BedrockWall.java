@@ -26,24 +26,26 @@ public class BedrockWall extends Challenge {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event){
-        if (!isRunning()){
-            return;
-        }
-        Location location = event.getPlayer().getLocation();
-        location.setY(0);
+        if (isPlayerInChallenge(event.getPlayer())) {
+            if (!isRunning()) {
+                return;
+            }
+            Location location = event.getPlayer().getLocation();
+            location.setY(0);
 
-        if (!blocks.contains(location.hashCode())){
-            blocks.add(location.hashCode());
-            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            if (!blocks.contains(location.hashCode())) {
+                blocks.add(location.hashCode());
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
 
-                //Bedrock von 0 bis Max Y setzen
-                for (int y = -64; y < 256; y++) {
-                    location.setY(y);
-                    location.getBlock().setType(Material.BEDROCK);
-                }
+                    //Bedrock von 0 bis Max Y setzen
+                    for (int y = -64; y < 256; y++) {
+                        location.setY(y);
+                        location.getBlock().setType(Material.BEDROCK);
+                    }
 
-                blocks.remove(location.hashCode());
-            }, 20L * sekundenBisBedrock);
+                    blocks.remove(location.hashCode());
+                }, 20L * sekundenBisBedrock);
+            }
         }
     }
 

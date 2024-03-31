@@ -21,10 +21,12 @@ public class FoodLaunchChallenge extends Challenge{
 
     @EventHandler
     public void onPlayerItemConsume(@Nonnull PlayerItemConsumeEvent event) {
-        Vector velocityToAdd = new Vector(0, value / 2, 0);
+        if (isPlayerInChallenge(event.getPlayer())) {
+            Vector velocityToAdd = new Vector(0, value / 2, 0);
 
-        Vector currentVelocity = new Vector(event.getPlayer().getVelocity().getX(), 0.98 * (event.getPlayer().getVelocity().getY() - 0.08), event.getPlayer().getVelocity().getZ());
-        Vector newVelocity = currentVelocity.add(velocityToAdd);
-        event.getPlayer().setVelocity(newVelocity);
+            Vector currentVelocity = new Vector(event.getPlayer().getVelocity().getX(), 0.98 * (event.getPlayer().getVelocity().getY() - 0.08), event.getPlayer().getVelocity().getZ());
+            Vector newVelocity = currentVelocity.add(velocityToAdd);
+            event.getPlayer().setVelocity(newVelocity);
+        }
     }
 }

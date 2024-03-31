@@ -31,25 +31,27 @@ public class TheFloorIsLava extends Challenge {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event){
-        if (!isRunning()){
-            return;
-        }
-        Location location = event.getPlayer().getLocation().clone().add(0, -1, 0);
-        if (location.getBlock().getType() != Material.AIR && location.getBlock().getType() != Material.LAVA && location.getBlock().getType() != Material.MAGMA_BLOCK && !blocks.contains(location.hashCode())){
-            blocks.add(location.hashCode());
-            Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                location.getBlock().setType(Material.MAGMA_BLOCK);
-                if (sekundenBisLava < sekundenBisMagma){
-                    blocks.remove(location.hashCode());
-                }
-            }, 20L * sekundenBisMagma);
+        if (isPlayerInChallenge(event.getPlayer())) {
+            if (!isRunning()) {
+                return;
+            }
+            Location location = event.getPlayer().getLocation().clone().add(0, -1, 0);
+            if (location.getBlock().getType() != Material.AIR && location.getBlock().getType() != Material.LAVA && location.getBlock().getType() != Material.MAGMA_BLOCK && !blocks.contains(location.hashCode())) {
+                blocks.add(location.hashCode());
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    location.getBlock().setType(Material.MAGMA_BLOCK);
+                    if (sekundenBisLava < sekundenBisMagma) {
+                        blocks.remove(location.hashCode());
+                    }
+                }, 20L * sekundenBisMagma);
 
-            Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                location.getBlock().setType(Material.LAVA);
-                if (sekundenBisLava >= sekundenBisMagma){
-                    blocks.remove(location.hashCode());
-                }
-            }, 20L * sekundenBisLava);
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    location.getBlock().setType(Material.LAVA);
+                    if (sekundenBisLava >= sekundenBisMagma) {
+                        blocks.remove(location.hashCode());
+                    }
+                }, 20L * sekundenBisLava);
+            }
         }
     }
 

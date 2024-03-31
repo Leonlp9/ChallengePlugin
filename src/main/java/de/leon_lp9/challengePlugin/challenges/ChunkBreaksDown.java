@@ -42,14 +42,16 @@ public class ChunkBreaksDown extends Challenge {
                 return;
             }
             Bukkit.getOnlinePlayers().forEach(player -> {
-                //bei jedem Spieler den obersten block des chunks entfernen
+                if (isPlayerInChallenge(player)) {
+                    //bei jedem Spieler den obersten block des chunks entfernen
 
-                for (int x = player.getLocation().getChunk().getX() * 16; x < player.getLocation().getChunk().getX() * 16 + 16; x++) {
-                    for (int z = player.getLocation().getChunk().getZ() * 16; z < player.getLocation().getChunk().getZ() * 16 + 16; z++) {
-                        if (player.getWorld().getBlockAt(x, player.getWorld().getHighestBlockYAt(x, z), z).getType() == Material.BEDROCK) {
-                            continue;
+                    for (int x = player.getLocation().getChunk().getX() * 16; x < player.getLocation().getChunk().getX() * 16 + 16; x++) {
+                        for (int z = player.getLocation().getChunk().getZ() * 16; z < player.getLocation().getChunk().getZ() * 16 + 16; z++) {
+                            if (player.getWorld().getBlockAt(x, player.getWorld().getHighestBlockYAt(x, z), z).getType() == Material.BEDROCK) {
+                                continue;
+                            }
+                            player.getWorld().getBlockAt(x, player.getWorld().getHighestBlockYAt(x, z), z).setType(Material.AIR);
                         }
-                        player.getWorld().getBlockAt(x, player.getWorld().getHighestBlockYAt(x, z), z).setType(Material.AIR);
                     }
                 }
             });

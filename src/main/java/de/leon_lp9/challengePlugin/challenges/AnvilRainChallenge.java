@@ -87,6 +87,10 @@ public class AnvilRainChallenge extends Challenge{
 
             player = (Player)var2.next();
 
+            if (!isPlayerInChallenge(player)) {
+                return;
+            }
+
             List<Chunk> targetChunks = this.getTargetChunks(player.getLocation().getChunk());
             Iterator var5 = targetChunks.iterator();
 

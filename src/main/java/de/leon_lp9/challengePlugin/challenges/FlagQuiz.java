@@ -112,12 +112,7 @@ public class FlagQuiz extends Challenge {
 
         //Get Random Player that is in Survival
         Player selectedPlayer = null;
-        ArrayList<Player> players = new ArrayList<>();
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            if (!player.getGameMode().equals(GameMode.SPECTATOR)){
-                players.add(player);
-            }
-        });
+        ArrayList<Player> players = new ArrayList<>(getAllSurvivalPlayers());
         selectedPlayer = players.get(new Random().nextInt(players.size()));
 
         if (selectedPlayer == null) return;

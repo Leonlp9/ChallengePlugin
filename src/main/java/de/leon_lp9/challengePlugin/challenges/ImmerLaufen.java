@@ -19,7 +19,7 @@ public class ImmerLaufen extends Challenge {
         if (!isRunning()){
             return;
         }
-        for (Player player : Bukkit.getOnlinePlayers()) {
+        for (Player player : getAllSurvivalPlayers()) {
             if (!player.isSprinting()) {
                 Location location = player.getLocation();
                 Vector velocity = new Vector();

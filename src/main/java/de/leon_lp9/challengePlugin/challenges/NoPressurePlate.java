@@ -75,16 +75,18 @@ public class NoPressurePlate extends Challenge{
     }
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e){
-        if (isRunning()) {
-            Player player = e.getPlayer();
-            List<Chunk> targetChunks = this.getTargetChunks(player.getLocation().getChunk());
-            Iterator var5 = targetChunks.iterator();
+        if (isPlayerInChallenge(e.getPlayer())) {
+            if (isRunning()) {
+                Player player = e.getPlayer();
+                List<Chunk> targetChunks = this.getTargetChunks(player.getLocation().getChunk());
+                Iterator var5 = targetChunks.iterator();
 
-            while (var5.hasNext()) {
-                Chunk targetChunk = (Chunk) var5.next();
-                if (!chunks.contains(targetChunk)) {
-                    chunks.add(targetChunk);
-                    this.spawnPressurePlates(targetChunk, 5);
+                while (var5.hasNext()) {
+                    Chunk targetChunk = (Chunk) var5.next();
+                    if (!chunks.contains(targetChunk)) {
+                        chunks.add(targetChunk);
+                        this.spawnPressurePlates(targetChunk, 5);
+                    }
                 }
             }
         }
@@ -157,16 +159,18 @@ public class NoPressurePlate extends Challenge{
     
     @EventHandler
     public void onPressurePlate(PlayerInteractEvent event) {
-        if (isRunning()) {
-            if (event.getAction().equals(Action.PHYSICAL)) {
-                if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.HEAVY_WEIGHTED_PRESSURE_PLATE) {
-                    event.setCancelled(true);
-                    Vector vector = event.getPlayer().getLocation().getDirection().multiply(-2);
-                    vector.setY(1);
-                    event.getPlayer().setVelocity(vector);
-                    event.getPlayer().setHealth(0.0);
-                    event.getClickedBlock().getWorld().createExplosion(event.getClickedBlock().getLocation().clone().add(0.5, 0.5, 0.5), 4, false, true);
-                    event.getClickedBlock().setType(Material.AIR);
+        if (isPlayerInChallenge(event.getPlayer())) {
+            if (isRunning()) {
+                if (event.getAction().equals(Action.PHYSICAL)) {
+                    if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.HEAVY_WEIGHTED_PRESSURE_PLATE) {
+                        event.setCancelled(true);
+                        Vector vector = event.getPlayer().getLocation().getDirection().multiply(-2);
+                        vector.setY(1);
+                        event.getPlayer().setVelocity(vector);
+                        event.getPlayer().setHealth(0.0);
+                        event.getClickedBlock().getWorld().createExplosion(event.getClickedBlock().getLocation().clone().add(0.5, 0.5, 0.5), 4, false, true);
+                        event.getClickedBlock().setType(Material.AIR);
+                    }
                 }
             }
         }
@@ -175,28 +179,31 @@ public class NoPressurePlate extends Challenge{
     @EventHandler
     public void onEntityInteract(EntityInteractEvent event) {
         if (isRunning()) {
-            if (event.getEntity().getType() == EntityType.FALLING_BLOCK || event.getEntity().getType() == EntityType.PLAYER || event.getEntity().getType() == EntityType.ENDER_DRAGON) return;
+            if (event.getEntity().getType() == EntityType.FALLING_BLOCK || event.getEntity().getType() == EntityType.PLAYER || event.getEntity().getType() == EntityType.ENDER_DRAGON)
+                return;
             if (event.getBlock() != null && event.getBlock().getType() == Material.HEAVY_WEIGHTED_PRESSURE_PLATE) {
                 event.setCancelled(true);
                 event.getBlock().setType(Material.AIR);
-                event.getBlock().getWorld().createExplosion(event.getBlock().getLocation().clone().add(0.5,0.5,0.5), 2, false, false);
+                event.getBlock().getWorld().createExplosion(event.getBlock().getLocation().clone().add(0.5, 0.5, 0.5), 2, false, false);
                 event.getEntity().remove();
             }
         }
+
     }
 
     @EventHandler
     public void onBlockBreakEvent(BlockBreakEvent event) {
-        if (isRunning()) {
-            if (event.getBlock().getType() == Material.HEAVY_WEIGHTED_PRESSURE_PLATE) {
-                event.setCancelled(true);
-                event.getBlock().setType(Material.AIR);
-                event.getBlock().getWorld().createExplosion(event.getBlock().getLocation().clone().add(0.5,0.5,0.5), 4, false, false);
-            }
-            else if (event.getBlock().getLocation().add(0,1,0).getBlock().getType() == Material.HEAVY_WEIGHTED_PRESSURE_PLATE) {
-                event.setCancelled(true);
-                event.getBlock().setType(Material.AIR);
-                event.getBlock().getWorld().createExplosion(event.getBlock().getLocation().clone().add(0.5,0.5,0.5), 2, false, false);
+        if (isPlayerInChallenge(event.getPlayer())) {
+            if (isRunning()) {
+                if (event.getBlock().getType() == Material.HEAVY_WEIGHTED_PRESSURE_PLATE) {
+                    event.setCancelled(true);
+                    event.getBlock().setType(Material.AIR);
+                    event.getBlock().getWorld().createExplosion(event.getBlock().getLocation().clone().add(0.5, 0.5, 0.5), 4, false, false);
+                } else if (event.getBlock().getLocation().add(0, 1, 0).getBlock().getType() == Material.HEAVY_WEIGHTED_PRESSURE_PLATE) {
+                    event.setCancelled(true);
+                    event.getBlock().setType(Material.AIR);
+                    event.getBlock().getWorld().createExplosion(event.getBlock().getLocation().clone().add(0.5, 0.5, 0.5), 2, false, false);
+                }
             }
         }
     }

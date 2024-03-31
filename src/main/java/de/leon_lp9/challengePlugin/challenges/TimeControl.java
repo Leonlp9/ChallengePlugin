@@ -103,22 +103,24 @@ public class TimeControl extends Challenge{
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e){
-        if (cooldown.contains(e.getPlayer())){
-            return;
-        }
-        if (e.getItem() != null && e.getItem().getType().equals(Material.PAPER) && e.getItem().hasItemMeta() && e.getItem().getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "timeControl"), PersistentDataType.STRING)){
-            if (serverTickManager.isFrozen()){
-                unfreeze();
-                cooldown.add(e.getPlayer());
-                Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                    cooldown.remove(e.getPlayer());
-                }, 5);
-            }else{
-                freeze();
-                cooldown.add(e.getPlayer());
-                Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                    cooldown.remove(e.getPlayer());
-                }, 5);
+        if (isPlayerInChallenge(e.getPlayer())) {
+            if (cooldown.contains(e.getPlayer())) {
+                return;
+            }
+            if (e.getItem() != null && e.getItem().getType().equals(Material.PAPER) && e.getItem().hasItemMeta() && e.getItem().getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "timeControl"), PersistentDataType.STRING)) {
+                if (serverTickManager.isFrozen()) {
+                    unfreeze();
+                    cooldown.add(e.getPlayer());
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                        cooldown.remove(e.getPlayer());
+                    }, 5);
+                } else {
+                    freeze();
+                    cooldown.add(e.getPlayer());
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                        cooldown.remove(e.getPlayer());
+                    }, 5);
+                }
             }
         }
     }

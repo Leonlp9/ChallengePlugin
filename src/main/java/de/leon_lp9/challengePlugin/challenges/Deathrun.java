@@ -207,7 +207,7 @@ public class Deathrun extends Challenge{
     }
 
     public ArrayList<Player> getSortedPlayers(){
-        ArrayList<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+        ArrayList<Player> players = new ArrayList<>(getAllSurvivalPlayers());
 
         //order by x
         players.sort((o1, o2) -> {
@@ -219,95 +219,99 @@ public class Deathrun extends Challenge{
             return 0;
         });
 
+        players.removeIf(player -> deadPlayers.contains(player));
+
         return players;
     }
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-        if (event.getTo().getX() < -50) {
-            if (event.getFrom().getX() < -50) {
-                Location location = event.getPlayer().getLocation().clone();
-                location.setX(-49);
-                event.getPlayer().teleport(location);
-            }
-        }
-        if (event.getTo().getX() < -45) {
-            for (int i = -8; i < 8; i++) {
-                for (int j = -8; j < 8; j++) {
-                    Location location = event.getTo().clone();
-                    location.setX(-50);
-                    location.add(0, j, i);
-                    location.add(0.5, 0.5, 0.5);
-
-                    if (location.distance(event.getTo()) > 5) {
-                        continue;
-                    }
-
-                    if (location.getBlock().getType().isSolid()) {
-                        continue;
-                    }
-
-                    event.getPlayer().sendBlockChange(location, Material.BARRIER.createBlockData());
-                    event.getPlayer().spawnParticle(Particle.REDSTONE, location, 1, 0, 0, 0, 0, new Particle.DustOptions(org.bukkit.Color.fromRGB(255, 0, 0), 3));
-
+        if (isPlayerInChallenge(event.getPlayer())) {
+            if (event.getTo().getX() < -50) {
+                if (event.getFrom().getX() < -50) {
+                    Location location = event.getPlayer().getLocation().clone();
+                    location.setX(-49);
+                    event.getPlayer().teleport(location);
                 }
             }
-        }
-        if (event.getTo().getZ() < -50) {
-            if (event.getFrom().getZ() < -50) {
-                Location location = event.getPlayer().getLocation().clone();
-                location.setZ(-49);
-                event.getPlayer().teleport(location);
-            }
-        }
-        if (event.getTo().getZ() < -45) {
-            for (int i = -8; i < 8; i++) {
-                for (int j = -8; j < 8; j++) {
-                    Location location = event.getTo().clone();
-                    location.setZ(-50);
-                    location.add(j, i, 0);
-                    location.add(0.5, 0.5, 0.5);
+            if (event.getTo().getX() < -45) {
+                for (int i = -8; i < 8; i++) {
+                    for (int j = -8; j < 8; j++) {
+                        Location location = event.getTo().clone();
+                        location.setX(-50);
+                        location.add(0, j, i);
+                        location.add(0.5, 0.5, 0.5);
 
-                    if (location.distance(event.getTo()) > 5) {
-                        continue;
+                        if (location.distance(event.getTo()) > 5) {
+                            continue;
+                        }
+
+                        if (location.getBlock().getType().isSolid()) {
+                            continue;
+                        }
+
+                        event.getPlayer().sendBlockChange(location, Material.BARRIER.createBlockData());
+                        event.getPlayer().spawnParticle(Particle.REDSTONE, location, 1, 0, 0, 0, 0, new Particle.DustOptions(org.bukkit.Color.fromRGB(255, 0, 0), 3));
+
                     }
-
-                    if (location.getBlock().getType().isSolid()) {
-                        continue;
-                    }
-
-                    event.getPlayer().sendBlockChange(location, Material.BARRIER.createBlockData());
-                    event.getPlayer().spawnParticle(Particle.REDSTONE, location, 1, 0, 0, 0, 0, new Particle.DustOptions(org.bukkit.Color.fromRGB(255, 0, 0), 3));
-
                 }
             }
-        }
-        if (event.getTo().getZ() > 50) {
-            if (event.getFrom().getZ() > 50) {
-                Location location = event.getPlayer().getLocation().clone();
-                location.setZ(49);
-                event.getPlayer().teleport(location);
+            if (event.getTo().getZ() < -50) {
+                if (event.getFrom().getZ() < -50) {
+                    Location location = event.getPlayer().getLocation().clone();
+                    location.setZ(-49);
+                    event.getPlayer().teleport(location);
+                }
             }
-        }
-        if (event.getTo().getZ() > 45) {
-            for (int i = -8; i < 8; i++) {
-                for (int j = -8; j < 8; j++) {
-                    Location location = event.getTo().clone();
-                    location.setZ(50);
-                    location.add(j, i, 0);
-                    location.add(0.5, 0.5, 0.5);
+            if (event.getTo().getZ() < -45) {
+                for (int i = -8; i < 8; i++) {
+                    for (int j = -8; j < 8; j++) {
+                        Location location = event.getTo().clone();
+                        location.setZ(-50);
+                        location.add(j, i, 0);
+                        location.add(0.5, 0.5, 0.5);
 
-                    if (location.distance(event.getTo()) > 5) {
-                        continue;
+                        if (location.distance(event.getTo()) > 5) {
+                            continue;
+                        }
+
+                        if (location.getBlock().getType().isSolid()) {
+                            continue;
+                        }
+
+                        event.getPlayer().sendBlockChange(location, Material.BARRIER.createBlockData());
+                        event.getPlayer().spawnParticle(Particle.REDSTONE, location, 1, 0, 0, 0, 0, new Particle.DustOptions(org.bukkit.Color.fromRGB(255, 0, 0), 3));
+
                     }
+                }
+            }
+            if (event.getTo().getZ() > 50) {
+                if (event.getFrom().getZ() > 50) {
+                    Location location = event.getPlayer().getLocation().clone();
+                    location.setZ(49);
+                    event.getPlayer().teleport(location);
+                }
+            }
+            if (event.getTo().getZ() > 45) {
+                for (int i = -8; i < 8; i++) {
+                    for (int j = -8; j < 8; j++) {
+                        Location location = event.getTo().clone();
+                        location.setZ(50);
+                        location.add(j, i, 0);
+                        location.add(0.5, 0.5, 0.5);
 
-                    if (location.getBlock().getType().isSolid()) {
-                        continue;
+                        if (location.distance(event.getTo()) > 5) {
+                            continue;
+                        }
+
+                        if (location.getBlock().getType().isSolid()) {
+                            continue;
+                        }
+
+                        event.getPlayer().sendBlockChange(location, Material.BARRIER.createBlockData());
+                        event.getPlayer().spawnParticle(Particle.REDSTONE, location, 1, 0, 0, 0, 0, new Particle.DustOptions(org.bukkit.Color.fromRGB(255, 0, 0), 3));
+
                     }
-
-                    event.getPlayer().sendBlockChange(location, Material.BARRIER.createBlockData());
-                    event.getPlayer().spawnParticle(Particle.REDSTONE, location, 1, 0, 0, 0, 0, new Particle.DustOptions(org.bukkit.Color.fromRGB(255, 0, 0), 3));
-
                 }
             }
         }

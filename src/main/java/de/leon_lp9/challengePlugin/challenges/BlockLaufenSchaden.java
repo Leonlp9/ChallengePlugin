@@ -13,15 +13,16 @@ public class BlockLaufenSchaden extends Challenge {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-        if (!isRunning()) {
-            return;
-        }
-        if (event.getFrom().getBlock().getLocation().equals(event.getTo().getBlock().getLocation())) {
-            return;
-        }
+        if (isPlayerInChallenge(event.getPlayer())) {
+            if (!isRunning()) {
+                return;
+            }
+            if (event.getFrom().getBlock().getLocation().equals(event.getTo().getBlock().getLocation())) {
+                return;
+            }
 
-        event.getPlayer().damage(1.0);
-
+            event.getPlayer().damage(1.0);
+        }
     }
 
 }

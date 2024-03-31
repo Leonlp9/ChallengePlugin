@@ -33,30 +33,32 @@ public class RandomBlockDrops extends Challenge{
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event){
-        if (!isRunning()){
-            return;
-        }
-        if (!saveDrops){
-            ItemStack itemStack = new ItemStack(Material.values()[new Random().nextInt(Material.values().length)]);
-            while (itemStack.getType().isAir() || itemStack.getType().isLegacy() || itemStack.getType().name().contains("_WALL_")){
-                itemStack = new ItemStack(Material.values()[new Random().nextInt(Material.values().length)]);
+        if (isPlayerInChallenge(event.getPlayer())) {
+            if (!isRunning()) {
+                return;
             }
-            itemStack.setAmount(event.getBlock().getDrops().size());
-            event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), itemStack);
-            event.setDropItems(false);
-        }else{
-            if (savedDropsOrdinal.containsKey(event.getBlock().getType().ordinal())){
-                event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), new ItemStack(Material.values()[savedDropsOrdinal.get(event.getBlock().getType().ordinal())]));
-            }else{
+            if (!saveDrops) {
                 ItemStack itemStack = new ItemStack(Material.values()[new Random().nextInt(Material.values().length)]);
-                while (itemStack.getType().isAir() || itemStack.getType().isLegacy()){
+                while (itemStack.getType().isAir() || itemStack.getType().isLegacy() || itemStack.getType().name().contains("_WALL_")) {
                     itemStack = new ItemStack(Material.values()[new Random().nextInt(Material.values().length)]);
                 }
-                savedDropsOrdinal.put(event.getBlock().getType().ordinal(), itemStack.getType().ordinal());
                 itemStack.setAmount(event.getBlock().getDrops().size());
                 event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), itemStack);
+                event.setDropItems(false);
+            } else {
+                if (savedDropsOrdinal.containsKey(event.getBlock().getType().ordinal())) {
+                    event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), new ItemStack(Material.values()[savedDropsOrdinal.get(event.getBlock().getType().ordinal())]));
+                } else {
+                    ItemStack itemStack = new ItemStack(Material.values()[new Random().nextInt(Material.values().length)]);
+                    while (itemStack.getType().isAir() || itemStack.getType().isLegacy()) {
+                        itemStack = new ItemStack(Material.values()[new Random().nextInt(Material.values().length)]);
+                    }
+                    savedDropsOrdinal.put(event.getBlock().getType().ordinal(), itemStack.getType().ordinal());
+                    itemStack.setAmount(event.getBlock().getDrops().size());
+                    event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), itemStack);
+                }
+                event.setDropItems(false);
             }
-            event.setDropItems(false);
         }
     }
 

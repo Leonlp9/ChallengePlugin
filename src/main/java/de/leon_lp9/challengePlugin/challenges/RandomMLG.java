@@ -96,7 +96,7 @@ public class RandomMLG extends Challenge {
 
 
     public Player getRandomPlayer() {
-        return Bukkit.getOnlinePlayers().stream().findAny().orElse(null);
+        return getAllSurvivalPlayers().stream().findAny().orElse(null);
     }
 
     @Override
@@ -157,39 +157,47 @@ public class RandomMLG extends Challenge {
     //Wassereimer
     @EventHandler
     public void onPlayerInteract(PlayerBucketEmptyEvent event) {
-        if (event.getPlayer().getWorld().getName().equals("MLG_World")) {
-            Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                event.getBlock().setType(Material.AIR);
-            }, 20);
+        if (isPlayerInChallenge(event.getPlayer())) {
+            if (event.getPlayer().getWorld().getName().equals("MLG_World")) {
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    event.getBlock().setType(Material.AIR);
+                }, 20);
+            }
         }
     }
 
     //Slimeblock
     @EventHandler
     public void onPlayerInteract(BlockPlaceEvent event) {
-        if (event.getPlayer().getWorld().getName().equals("MLG_World")) {
-            Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                event.getBlock().setType(Material.AIR);
-            }, 20);
+        if (isPlayerInChallenge(event.getPlayer())) {
+            if (event.getPlayer().getWorld().getName().equals("MLG_World")) {
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    event.getBlock().setType(Material.AIR);
+                }, 20);
+            }
         }
     }
 
     //Boat
     @EventHandler
     public void onPlayerInteract(EntityPlaceEvent event) {
-        if (event.getEntity().getWorld().getName().equals("MLG_World")) {
-            if (event.getEntity().getType().equals(EntityType.BOAT)) {
-                Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                    event.getEntity().remove();
-                }, 20);
+        if (isPlayerInChallenge(event.getPlayer())) {
+            if (event.getEntity().getWorld().getName().equals("MLG_World")) {
+                if (event.getEntity().getType().equals(EntityType.BOAT)) {
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                        event.getEntity().remove();
+                    }, 20);
+                }
             }
         }
     }
 
     @EventHandler
     public void onPlayerInteract(BlockBreakEvent event) {
-        if (event.getPlayer().getWorld().getName().equals("MLG_World")) {
-            event.setCancelled(true);
+        if (isPlayerInChallenge(event.getPlayer())) {
+            if (event.getPlayer().getWorld().getName().equals("MLG_World")) {
+                event.setCancelled(true);
+            }
         }
     }
 

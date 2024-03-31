@@ -24,9 +24,11 @@ public class AdvancementDamageChallenge extends Challenge{
             ignoreCancelled = true
     )
     public void onPlayerAdvancementDone(@Nonnull PlayerAdvancementDoneEvent event) {
-        if (!event.getAdvancement().getKey().toString().contains(":recipes/")) {
-            event.getPlayer().setNoDamageTicks(0);
-            event.getPlayer().damage(value);
+        if (isPlayerInChallenge(event.getPlayer())) {
+            if (!event.getAdvancement().getKey().toString().contains(":recipes/")) {
+                event.getPlayer().setNoDamageTicks(0);
+                event.getPlayer().damage(value);
+            }
         }
     }
 }

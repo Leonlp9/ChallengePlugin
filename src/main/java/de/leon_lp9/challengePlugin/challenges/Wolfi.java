@@ -57,7 +57,7 @@ public class Wolfi extends Challenge{
     public void register() {
         super.register();
 
-        Bukkit.getOnlinePlayers().forEach(this::spawnWolfi);
+        getAllSurvivalPlayers().forEach(this::spawnWolfi);
     }
 
     @Override

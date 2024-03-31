@@ -111,9 +111,11 @@ public class AllItems extends Challenge {
 
     @EventHandler
     public void onPickUpItemEvent(PlayerPickupItemEvent event){
-        if (!isRunning()) return;
-        if (event.getItem().getItemStack().getType().equals(allMaterialsRandomized.get(0))) {
-            nextItem();
+        if (isPlayerInChallenge(event.getPlayer())) {
+            if (!isRunning()) return;
+            if (event.getItem().getItemStack().getType().equals(allMaterialsRandomized.get(0))) {
+                nextItem();
+            }
         }
     }
 

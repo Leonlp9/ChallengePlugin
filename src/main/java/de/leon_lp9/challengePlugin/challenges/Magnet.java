@@ -25,7 +25,7 @@ public class Magnet extends Challenge {
 
         //new sync Thread because of the method is called async
         Bukkit.getScheduler().runTask(plugin, () -> {
-            Bukkit.getOnlinePlayers().forEach(player -> {
+            getAllSurvivalPlayers().forEach(player -> {
                 player.getNearbyEntities(magnetRange, magnetRange, magnetRange).forEach(entity -> {
                     if (entity instanceof Player) return;
                     entity.setVelocity(entity.getLocation().toVector().subtract(player.getLocation().toVector()).normalize().multiply(-0.3));

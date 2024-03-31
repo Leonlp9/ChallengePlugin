@@ -24,15 +24,17 @@ public class YCoordinateOnlyInOneDirection extends Challenge{
 
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
-        if (!isRunning()) {
-            return;
-        }
-        if (event.getTo().getY() > event.getFrom().getY() && direction == Direction.DOWN) {
-            event.getPlayer().setHealth(0);
-            getTimer().setResumed(false);
-        } else if (event.getTo().getY() < event.getFrom().getY() && direction == Direction.UP) {
-            event.getPlayer().setHealth(0);
-            getTimer().setResumed(false);
+        if (isPlayerInChallenge(event.getPlayer())) {
+            if (!isRunning()) {
+                return;
+            }
+            if (event.getTo().getY() > event.getFrom().getY() && direction == Direction.DOWN) {
+                event.getPlayer().setHealth(0);
+                getTimer().setResumed(false);
+            } else if (event.getTo().getY() < event.getFrom().getY() && direction == Direction.UP) {
+                event.getPlayer().setHealth(0);
+                getTimer().setResumed(false);
+            }
         }
     }
 }

@@ -116,8 +116,10 @@ public class InAllenChunksPassiertDasGleiche extends Challenge {
             ignoreCancelled = true
     )
     public void onPlace(BlockPlaceEvent event) {
-        Block block = event.getBlock();
-        this.changeBlockInEveryChunk(event.getBlock().getWorld(), this.getRelativeChunkCoordinate(block.getX()), block.getY(), this.getRelativeChunkCoordinate(block.getZ()), block.getBlockData(), event.getBlock());
+        if (isPlayerInChallenge(event.getPlayer())) {
+            Block block = event.getBlock();
+            this.changeBlockInEveryChunk(event.getBlock().getWorld(), this.getRelativeChunkCoordinate(block.getX()), block.getY(), this.getRelativeChunkCoordinate(block.getZ()), block.getBlockData(), event.getBlock());
+        }
     }
 
     @EventHandler(
@@ -125,8 +127,10 @@ public class InAllenChunksPassiertDasGleiche extends Challenge {
             ignoreCancelled = true
     )
     public void onBreak(BlockBreakEvent event) {
-        Block block = event.getBlock();
-        this.changeBlockInEveryChunk(event.getBlock().getWorld(), this.getRelativeChunkCoordinate(block.getX()), block.getY(), this.getRelativeChunkCoordinate(block.getZ()), Bukkit.createBlockData(Material.AIR), event.getBlock());
+        if (isPlayerInChallenge(event.getPlayer())) {
+            Block block = event.getBlock();
+            this.changeBlockInEveryChunk(event.getBlock().getWorld(), this.getRelativeChunkCoordinate(block.getX()), block.getY(), this.getRelativeChunkCoordinate(block.getZ()), Bukkit.createBlockData(Material.AIR), event.getBlock());
+        }
     }
 
     @EventHandler(
@@ -134,9 +138,11 @@ public class InAllenChunksPassiertDasGleiche extends Challenge {
             ignoreCancelled = true
     )
     public void onMove(PlayerMoveEvent event) {
-        if (event.getTo() != null) {
-            if (event.getTo().getChunk() != event.getFrom().getChunk()) {
-                this.updateSurroundingChunks(event.getTo().getChunk(), true);
+        if (isPlayerInChallenge(event.getPlayer())) {
+            if (event.getTo() != null) {
+                if (event.getTo().getChunk() != event.getFrom().getChunk()) {
+                    this.updateSurroundingChunks(event.getTo().getChunk(), true);
+                }
             }
         }
     }
@@ -149,8 +155,8 @@ public class InAllenChunksPassiertDasGleiche extends Challenge {
         boolean anyMatch = false;
         Iterator var3 = event.getVehicle().getPassengers().iterator();
 
-        while(var3.hasNext()) {
-            Entity passenger = (Entity)var3.next();
+        while (var3.hasNext()) {
+            Entity passenger = (Entity) var3.next();
             if (passenger instanceof Player) {
                 anyMatch = true;
                 break;
@@ -162,6 +168,7 @@ public class InAllenChunksPassiertDasGleiche extends Challenge {
                 this.updateSurroundingChunks(event.getTo().getChunk(), true);
             }
         }
+
     }
 
     @EventHandler(
@@ -169,9 +176,11 @@ public class InAllenChunksPassiertDasGleiche extends Challenge {
             ignoreCancelled = true
     )
     public void onTeleport(PlayerTeleportEvent event) {
-        if (event.getTo() != null) {
-            if (event.getTo().getChunk() != event.getFrom().getChunk()) {
-                this.updateSurroundingChunks(event.getTo().getChunk(), false);
+        if (isPlayerInChallenge(event.getPlayer())) {
+            if (event.getTo() != null) {
+                if (event.getTo().getChunk() != event.getFrom().getChunk()) {
+                    this.updateSurroundingChunks(event.getTo().getChunk(), false);
+                }
             }
         }
     }
