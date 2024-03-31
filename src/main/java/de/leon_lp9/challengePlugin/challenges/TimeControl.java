@@ -3,10 +3,7 @@ package de.leon_lp9.challengePlugin.challenges;
 import de.leon_lp9.challengePlugin.Main;
 import de.leon_lp9.challengePlugin.builder.ItemBuilder;
 import de.leon_lp9.challengePlugin.challenges.config.LoadChallenge;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.ServerTickManager;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -75,6 +72,7 @@ public class TimeControl extends Challenge{
 
         //Items Tauschen von Pause zu Resume
         Bukkit.getOnlinePlayers().forEach(player -> {
+            player.playSound(player.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 1, 1);
             for (ItemStack itemStack : player.getInventory()) {
                 if (itemStack != null && itemStack.hasItemMeta() && itemStack.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "timeControl"), PersistentDataType.STRING)){
                     if (itemStack.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "timeControl"), PersistentDataType.STRING).equals("timeControlPause")){
@@ -91,6 +89,7 @@ public class TimeControl extends Challenge{
 
         //Items Tauschen von Resume zu Pause
         Bukkit.getOnlinePlayers().forEach(player -> {
+            player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1, 1);
             for (ItemStack itemStack : player.getInventory()) {
                 if (itemStack != null && itemStack.hasItemMeta() && itemStack.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "timeControl"), PersistentDataType.STRING)){
                     if (itemStack.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "timeControl"), PersistentDataType.STRING).equals("timeControlResume")){

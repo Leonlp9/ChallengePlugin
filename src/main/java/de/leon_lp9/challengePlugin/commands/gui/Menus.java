@@ -15,6 +15,7 @@ public class Menus {
     private WorldGeneratorsMenu worldGeneratorsMenu;
     private WorldPopulatorsMenu worldPopulatorsMenu;
     private WorldBiomProviderMenu worldBiomProviderMenu;
+    private SetColorMenu setColorMenu;
 
     public Menus() {
         this.challengeMenu = new ChallengeMenu();
@@ -26,6 +27,7 @@ public class Menus {
         this.worldGeneratorsMenu = new WorldGeneratorsMenu();
         this.worldPopulatorsMenu = new WorldPopulatorsMenu();
         this.worldBiomProviderMenu = new WorldBiomProviderMenu();
+        this.setColorMenu = new SetColorMenu();
         Main.getInstance().getServer().getPluginManager().registerEvents(challengeMenu, Main.getInstance());
         Main.getInstance().getServer().getPluginManager().registerEvents(challengeKategorieMenu, Main.getInstance());
         Main.getInstance().getServer().getPluginManager().registerEvents(hubMenu, Main.getInstance());
@@ -35,6 +37,7 @@ public class Menus {
         Main.getInstance().getServer().getPluginManager().registerEvents(worldGeneratorsMenu, Main.getInstance());
         Main.getInstance().getServer().getPluginManager().registerEvents(worldPopulatorsMenu, Main.getInstance());
         Main.getInstance().getServer().getPluginManager().registerEvents(worldBiomProviderMenu, Main.getInstance());
+        Main.getInstance().getServer().getPluginManager().registerEvents(setColorMenu, Main.getInstance());
     }
 }
 

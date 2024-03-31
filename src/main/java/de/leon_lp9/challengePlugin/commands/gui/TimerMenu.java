@@ -14,8 +14,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 public class TimerMenu implements Listener {
@@ -60,6 +62,18 @@ public class TimerMenu implements Listener {
                     .build());
         }
 
+        ItemStack firstColor = new ItemStack(Material.LEATHER_CHESTPLATE);
+        LeatherArmorMeta meta = (LeatherArmorMeta) firstColor.getItemMeta();
+        meta.setColor(org.bukkit.Color.fromRGB(Main.getInstance().getChallengeManager().getTimer().getFirstColor().getRed(), Main.getInstance().getChallengeManager().getTimer().getFirstColor().getGreen(), Main.getInstance().getChallengeManager().getTimer().getFirstColor().getBlue()));
+        firstColor.setItemMeta(meta);
+
+        inventory.setItem(20, new ItemBuilder(firstColor)
+                .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "firstColor"))
+                .setLore("§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "firstColorDescription"))
+                .addPersistentDataContainer("id", PersistentDataType.STRING, "firstColor")
+                .addFlag(ItemFlag.HIDE_ATTRIBUTES)
+                .build());
+
         if (Main.getInstance().getChallengeManager().getTimer().isBold()) {
             inventory.setItem(21, new ItemBuilder(Material.IRON_NUGGET)
                     .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "toggleBoldOff"))
@@ -98,6 +112,18 @@ public class TimerMenu implements Listener {
                 .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "resetTimer"))
                 .setLore("§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "resetTimerDescription"))
                 .addPersistentDataContainer("id", PersistentDataType.STRING, "reset")
+                .build());
+
+        ItemStack secondColor = new ItemStack(Material.LEATHER_CHESTPLATE);
+        LeatherArmorMeta meta2 = (LeatherArmorMeta) secondColor.getItemMeta();
+        meta2.setColor(org.bukkit.Color.fromRGB(Main.getInstance().getChallengeManager().getTimer().getSecondColor().getRed(), Main.getInstance().getChallengeManager().getTimer().getSecondColor().getGreen(), Main.getInstance().getChallengeManager().getTimer().getSecondColor().getBlue()));
+        secondColor.setItemMeta(meta2);
+
+        inventory.setItem(24, new ItemBuilder(secondColor)
+                .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "secondColor"))
+                .setLore("§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "secondColorDescription"))
+                .addPersistentDataContainer("id", PersistentDataType.STRING, "secondColor")
+                        .addFlag(ItemFlag.HIDE_ATTRIBUTES)
                 .build());
 
         if (Main.getInstance().getChallengeManager().getTimer().getState().equals(Timer.TimerState.Countdown)) {
@@ -180,6 +206,12 @@ public class TimerMenu implements Listener {
                         case "setdisplayactionbar":
                             Main.getInstance().getChallengeManager().getTimer().setDisplayType(Timer.DisplayType.ActionBar, ePlayer);
                             openInventory(ePlayer);
+                            break;
+                        case "firstColor":
+                            Main.getInstance().getMenus().getSetColorMenu().openInventory(ePlayer, "firstColor");
+                            break;
+                        case "secondColor":
+                            Main.getInstance().getMenus().getSetColorMenu().openInventory(ePlayer, "secondColor");
                             break;
                     }
                 }

@@ -174,7 +174,7 @@ public class AnvilRainChallenge extends Challenge{
             int blocks = this.getCount() < 16 ? 0 : 1;
 
             while(true) {
-                if (blocks < 2 && origin.getBlockY() > 1) {
+                if (blocks < 2 && origin.getBlockY() > -63) {
                     if (origin.getBlock().getType() != Material.WATER && origin.getBlock().getType() != Material.LAVA) {
                         origin.subtract(0.0, 1.0, 0.0);
                         if (origin.getBlock().isPassable()) {

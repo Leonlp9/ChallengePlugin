@@ -9,15 +9,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 
 @LoadGamerule
-public class MaxHealt extends GameRule{
+public class MaxHealth extends GameRule{
 
-    @ConfigurationValue(title = "MaxHealt", min = 1, max = 100, icon = Material.HEART_OF_THE_SEA)
+    @ConfigurationValue(title = "MaxHealth", min = 1, max = 100, icon = Material.HEART_OF_THE_SEA)
     private int maxHealt = 20;
 
     @ConfigurationValue(title = "Regeneration", icon = Material.ALLIUM)
     private boolean regeneration = true;
 
-    public MaxHealt() {
+    public MaxHealth() {
         super(Material.HEART_OF_THE_SEA);
     }
 

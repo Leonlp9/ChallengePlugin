@@ -3,6 +3,7 @@ package de.leon_lp9.challengePlugin;
 import de.leon_lp9.challengePlugin.worldgeneration.biomeProvider.SingleBiomeProvider;
 import de.leon_lp9.challengePlugin.worldgeneration.populators.*;
 import de.leon_lp9.challengePlugin.worldgeneration.worldGenerators.CustomChunkGenerator;
+import de.leon_lp9.challengePlugin.worldgeneration.worldGenerators.TestGenerator;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -28,7 +29,8 @@ public class WorldGenerationManager implements Listener {
     public enum WorldGenerators{
         DEFAULT(null, Material.GRASS_BLOCK),
         FLAT(null, Material.BEDROCK),
-        DEBUG(CustomChunkGenerator.class, Material.COMMAND_BLOCK);
+        DEBUG(CustomChunkGenerator.class, Material.COMMAND_BLOCK),
+        TEST(TestGenerator.class, Material.COMMAND_BLOCK);
 
         private final Class<? extends ChunkGenerator> generatorClass;
         private final Material icon;
@@ -156,11 +158,35 @@ public class WorldGenerationManager implements Listener {
         WorldCreator netherCreator = new WorldCreator("ChallengeWorld_nether");
         netherCreator.environment(World.Environment.NETHER);
         netherCreator.seed(overworldCreator.seed());
+
+        if (singleBiome != null) {
+            SingleBiomeProvider singleBiomeProvider = new SingleBiomeProvider(singleBiome);
+            netherCreator.biomeProvider(singleBiomeProvider);
+        }
+
+        if (getActiveWorldGenerator().getGeneratorClass() != null) {
+            netherCreator.generator(activeWorldGenerator.getGeneratorClass().newInstance());
+        }else if (getActiveWorldGenerator() == WorldGenerators.FLAT){
+            netherCreator.type(WorldType.FLAT);
+        }
+
         netherCreator.createWorld();
 
         WorldCreator theEndCreator = new WorldCreator("ChallengeWorld_the_end");
         theEndCreator.environment(World.Environment.THE_END);
         theEndCreator.seed(overworldCreator.seed());
+
+        if (singleBiome != null) {
+            SingleBiomeProvider singleBiomeProvider = new SingleBiomeProvider(singleBiome);
+            theEndCreator.biomeProvider(singleBiomeProvider);
+        }
+
+        if (getActiveWorldGenerator().getGeneratorClass() != null) {
+            theEndCreator.generator(activeWorldGenerator.getGeneratorClass().newInstance());
+        }else if (getActiveWorldGenerator() == WorldGenerators.FLAT){
+            theEndCreator.type(WorldType.FLAT);
+        }
+
         theEndCreator.createWorld();
 
         //Spieler teleportieren

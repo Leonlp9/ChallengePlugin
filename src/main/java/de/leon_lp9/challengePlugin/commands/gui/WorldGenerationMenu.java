@@ -50,6 +50,7 @@ public class WorldGenerationMenu implements Listener {
                 .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "regenerateWorlds"))
                 .setLore("§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "regenerateWorldsDescription"))
                 .addPersistentDataContainer("id", PersistentDataType.STRING, "regenerateWorlds")
+                        .setCustomModelData(1)
                 .build());
 
         inventory.setItem(22, new ItemBuilder(Material.BARRIER)

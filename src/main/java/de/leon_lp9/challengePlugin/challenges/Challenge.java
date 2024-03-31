@@ -98,6 +98,16 @@ public class Challenge implements Listener {
     public void timerFirstTimeResume(){}
     public void skipIfIsPossible(){}
 
+    public ArrayList<Player> getAllSurvivalPlayers() {
+        ArrayList<Player> players = new ArrayList<>();
+        for (Player player : plugin.getServer().getOnlinePlayers()) {
+            if (!player.getGameMode().equals(org.bukkit.GameMode.SPECTATOR)) {
+                players.add(player);
+            }
+        }
+        return players;
+    }
+
     public String getTranslationName(Player player) {
         return Main.getInstance().getTranslationManager().getTranslation(player, name);
     }
