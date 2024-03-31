@@ -43,20 +43,6 @@ public class MaceChallenge extends Challenge{
         recipe.setIngredient('S', Material.STICK);
         Bukkit.addRecipe(recipe);
 
-        boolean registered = true;
-        try {
-            Field byKeyField = Enchantment.class.getDeclaredField("acceptingNew");
-            byKeyField.setAccessible(true);
-            byKeyField.set(null, true);
-            //noinspection unchecked
-            ((Map<NamespacedKey, Enchantment>) byKeyField.get(null)).put(new org.bukkit.NamespacedKey(Main.getInstance(), "wind_burst"), WIND_BURST);
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            registered = false;
-        }
-
     }
 
     @Override
