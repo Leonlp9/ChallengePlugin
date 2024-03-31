@@ -3,16 +3,19 @@ package de.leon_lp9.challengePlugin.challenges;
 import de.leon_lp9.challengePlugin.Main;
 import de.leon_lp9.challengePlugin.builder.ItemBuilder;
 import de.leon_lp9.challengePlugin.challenges.config.LoadChallenge;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import de.leon_lp9.challengePlugin.enchantments.EnchantmentWrapper;
+import org.bukkit.*;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
+
+import java.lang.reflect.Field;
+import java.util.Map;
 
 @LoadChallenge
 public class MaceChallenge extends Challenge{
@@ -32,10 +35,36 @@ public class MaceChallenge extends Challenge{
     public void register() {
         super.register();
 
-        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            onlinePlayer.getInventory().addItem(MACE);
+        //register new crafting recipe
+
+        ShapedRecipe recipe = new ShapedRecipe(new org.bukkit.NamespacedKey(Main.getInstance(), "mace"), MACE);
+        recipe.shape("III", "ISI", " S ");
+        recipe.setIngredient('I', Material.IRON_BLOCK);
+        recipe.setIngredient('S', Material.STICK);
+        Bukkit.addRecipe(recipe);
+
+        boolean registered = true;
+        try {
+            Field byKeyField = Enchantment.class.getDeclaredField("acceptingNew");
+            byKeyField.setAccessible(true);
+            byKeyField.set(null, true);
+            //noinspection unchecked
+            ((Map<NamespacedKey, Enchantment>) byKeyField.get(null)).put(new org.bukkit.NamespacedKey(Main.getInstance(), "wind_burst"), WIND_BURST);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            registered = false;
         }
 
+    }
+
+    @Override
+    public void unregister() {
+        super.unregister();
+
+        //unregister crafting recipe
+        Bukkit.removeRecipe(new org.bukkit.NamespacedKey(Main.getInstance(), "mace"));
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
@@ -44,7 +73,8 @@ public class MaceChallenge extends Challenge{
             if (player.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().has(new org.bukkit.NamespacedKey(Main.getInstance(), "mace"), PersistentDataType.STRING)) {
 
                 //spieler vector y umkehren
-                player.setVelocity(new Vector(player.getVelocity().getX(), -player.getVelocity().getY() * 1.25 + 0.75, player.getVelocity().getZ()));
+                player.setVelocity(new Vector(player.getVelocity().getX(), -player.getVelocity().getY() + 0.75, player.getVelocity().getZ()));
+                player.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, player.getLocation(), 50, 0.5, 0.5, 0.5, 0.0001);
 
                 event.setDamage(10.5 + 5.25 * player.getFallDistance());
 
@@ -64,7 +94,7 @@ public class MaceChallenge extends Challenge{
                             double y = entity.getLocation().getY() - event.getEntity().getLocation().getY();
                             double z = entity.getLocation().getZ() - event.getEntity().getLocation().getZ();
 
-                            Vector vector = new Vector(x, y, z).normalize().multiply(1.5);
+                            Vector vector = new Vector(x, y, z).normalize().multiply(1.2);
                             vector.setY(0.5);
                             entity.setVelocity(vector);
 
