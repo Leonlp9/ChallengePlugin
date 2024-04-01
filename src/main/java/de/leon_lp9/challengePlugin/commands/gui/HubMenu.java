@@ -21,14 +21,7 @@ public class HubMenu implements Listener {
     public void openInventory(Player player) {
         String lang = Main.getInstance().getTranslationManager().getLanguageOfPlayer(player);
 
-        Inventory inventory = Bukkit.createInventory(null, 9+9+9, "§6" + Main.getInstance().getTranslationManager().getTranslation(lang, "hubmenu"));
-
-        for (int i = 0; i < inventory.getSize(); i++) {
-            inventory.setItem(i, new ItemBuilder(Material.PAPER)
-                    .setCustomModelData(1)
-                    .setDisplayName(" ")
-                    .build());
-        }
+        Inventory inventory = new MenuBuilder("§6" + Main.getInstance().getTranslationManager().getTranslation(lang, "hubmenu"), 4, lang).build();
 
         int anzahlDerChallenges = Main.getInstance().getChallengeManager().getAllChallenges().values().stream().mapToInt(challenge -> 1).sum();
         int anzahlDerAktivenChallenges = Main.getInstance().getChallengeManager().getAllChallenges().values().stream().filter(challenge -> Main.getInstance().getChallengeManager().isChallengeActive(challenge.getClass())).mapToInt(challenge -> 1).sum();

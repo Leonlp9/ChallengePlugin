@@ -25,9 +25,7 @@ public class GameRuleMenu implements Listener {
     public void openInventory(Player player) {
         String lang = Main.getInstance().getTranslationManager().getLanguageOfPlayer(player);
 
-        int size = (int) Math.max(1, (Math.ceil(((long) Main.getInstance().getGameruleManager().getGameRules().size() / 9f)) + 1) * 9);
-
-        Inventory inventory = Bukkit.createInventory(null, size, "§6" + Main.getInstance().getTranslationManager().getTranslation(lang, "gamerules"));
+        Inventory inventory = new MenuBuilder("§6" + Main.getInstance().getTranslationManager().getTranslation(lang, "gamerules"), Main.getInstance().getGameruleManager().getGameRules().size(), lang).setBackButton(true).setClearCenter(true).build();
 
         Main.getInstance().getGameruleManager().getGameRules().stream().sorted(Comparator.comparing(GameRule::getName)).forEach(gameRule -> {
             inventory.addItem(new ItemBuilder(gameRule.getIcon())
@@ -43,21 +41,6 @@ public class GameRuleMenu implements Listener {
                     .addPersistentDataContainer("id", PersistentDataType.STRING, gameRule.getClass().getName())
                     .build());
         });
-
-        //fill the rest of the inventory with paper
-        for (int i = 1; i < 10; i++) {
-            inventory.setItem(inventory.getSize() - i, new ItemBuilder(Material.PAPER)
-                    .setCustomModelData(1)
-                    .setDisplayName(" ")
-                    .build());
-
-        }
-
-        inventory.setItem(size - 5, new ItemBuilder(Material.BARRIER)
-                .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "back"))
-                .addPersistentDataContainer("id", PersistentDataType.STRING, "back")
-                .setCustomModelData(1)
-                .build());
 
         player.openInventory(inventory);
     }

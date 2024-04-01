@@ -26,11 +26,14 @@ public class ChallengeMenu implements Listener {
     public void openInventory(Player player, Challenge.ChallengeType type) {
         String lang = Main.getInstance().getTranslationManager().getLanguageOfPlayer(player);
 
-        int size = (int) Math.max(1, (Math.ceil((Main.getInstance().getChallengeManager().getAllChallenges().values().stream()
+        Inventory inventory = new MenuBuilder("§6" + Main.getInstance().getTranslationManager().getTranslation(lang, "challenges"), Math.toIntExact(Main.getInstance().getChallengeManager().getAllChallenges().values().stream()
                 .filter(challenge -> challenge.getType().equals(type))
-                .count() / 9f)) + 1) * 9);
+                .count()), lang).setBackButton(true).setClearCenter(true).build();
 
-        Inventory inventory = Bukkit.createInventory(null, size, "§6" + Main.getInstance().getTranslationManager().getTranslation(lang, "challenges"));
+        inventory.setItem(4, new ItemBuilder(type.getIcon())
+                .setDisplayName("§6§l" + type.getTranslationName(player))
+                .setLore("§7" + type.getTranslationDescription(player))
+                .build());
 
         Main.getInstance().getChallengeManager().getAllChallenges().values().stream()
                 .filter(challenge -> challenge.getType().equals(type))
@@ -52,22 +55,6 @@ public class ChallengeMenu implements Listener {
                     .addPersistentDataContainer("id", PersistentDataType.STRING, challenge.getClass().getName())
                     .build());
         });
-
-        //fill the rest of the inventory with paper
-        for (int i = 1; i < 10; i++) {
-            inventory.setItem(inventory.getSize() - i, new ItemBuilder(Material.PAPER)
-                    .setCustomModelData(1)
-                    .setDisplayName(" ")
-                    .build());
-
-        }
-
-        inventory.setItem(size - 5, new ItemBuilder(Material.BARRIER)
-                .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "back"))
-                .addPersistentDataContainer("id", PersistentDataType.STRING, "back")
-                .addPersistentDataContainer("type", PersistentDataType.STRING, type.name())
-                .setCustomModelData(1)
-                .build());
 
         player.openInventory(inventory);
     }

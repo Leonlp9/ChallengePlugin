@@ -18,14 +18,7 @@ public class WorldGenerationMenu implements Listener {
     public void openInventory(Player player) {
         String lang = Main.getInstance().getTranslationManager().getLanguageOfPlayer(player);
 
-        Inventory inventory = Bukkit.createInventory(null, 9+9+9, "§6" + Main.getInstance().getTranslationManager().getTranslation(lang, "worldGeneration"));
-
-        for (int i = 0; i < inventory.getSize(); i++) {
-            inventory.setItem(i, new ItemBuilder(Material.PAPER)
-                    .setCustomModelData(1)
-                    .setDisplayName(" ")
-                    .build());
-        }
+        Inventory inventory = new MenuBuilder("§6" + Main.getInstance().getTranslationManager().getTranslation(lang, "worldGeneration"), 7, lang).setBackButton(true).build();
 
         inventory.setItem(11, new ItemBuilder(Material.BRICKS)
                 .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "worldGenerators"))
@@ -51,12 +44,6 @@ public class WorldGenerationMenu implements Listener {
                 .setLore("§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "regenerateWorldsDescription"))
                 .addPersistentDataContainer("id", PersistentDataType.STRING, "regenerateWorlds")
                         .setCustomModelData(1)
-                .build());
-
-        inventory.setItem(22, new ItemBuilder(Material.BARRIER)
-                .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "back"))
-                .addPersistentDataContainer("id", PersistentDataType.STRING, "back")
-                .setCustomModelData(1)
                 .build());
 
         player.openInventory(inventory);

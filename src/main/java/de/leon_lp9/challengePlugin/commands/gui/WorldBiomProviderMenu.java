@@ -18,14 +18,7 @@ public class WorldBiomProviderMenu implements Listener{
     public void openInventory(Player player, int startAt) {
         String lang = Main.getInstance().getTranslationManager().getLanguageOfPlayer(player);
 
-        Inventory inventory = Bukkit.createInventory(null, 9 + 9 + 9 + 9 + 9 + 9, "§6" + Main.getInstance().getTranslationManager().getTranslation(lang, "worldBiomeProvider"));
-
-        for (int i = 0; i < inventory.getSize(); i++) {
-            inventory.setItem(i, new ItemBuilder(Material.PAPER)
-                    .setCustomModelData(1)
-                    .setDisplayName(" ")
-                    .build());
-        }
+        Inventory inventory = new MenuBuilder("§6" + Main.getInstance().getTranslationManager().getTranslation(lang, "worldBiomeProvider"), 7*4, lang).setBackButton(true).setClearCenter(true).build();
 
         inventory.setItem(4, new ItemBuilder(Material.BARRIER)
                 .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "selectAllBioms"))
@@ -75,12 +68,6 @@ public class WorldBiomProviderMenu implements Listener{
                     .setCustomModelData(1)
                     .build());
         }
-
-        inventory.setItem(49, new ItemBuilder(Material.BARRIER)
-                .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "back"))
-                .addPersistentDataContainer("id", PersistentDataType.STRING, "back")
-                .setCustomModelData(1)
-                .build());
 
         player.openInventory(inventory);
     }

@@ -20,36 +20,18 @@ public class WorldPopulatorsMenu implements Listener {
     public void openInventory(Player player) {
         String lang = Main.getInstance().getTranslationManager().getLanguageOfPlayer(player);
 
-        Inventory inventory = Bukkit.createInventory(null, 9 + 9 + 9, "§6" + Main.getInstance().getTranslationManager().getTranslation(lang, "worldPopulators"));
+        Inventory inventory = new MenuBuilder("§6" + Main.getInstance().getTranslationManager().getTranslation(lang, "worldPopulators"), WorldGenerationManager.WorldPopulators.values().length, lang).setBackButton(true).setClearCenter(true).build();
 
-        for (int i = 0; i < inventory.getSize(); i++) {
-            inventory.setItem(i, new ItemBuilder(Material.PAPER)
-                    .setCustomModelData(1)
-                    .setDisplayName(" ")
-                    .build());
-        }
-
-        int i = 10;
         for (WorldGenerationManager.WorldPopulators value : WorldGenerationManager.WorldPopulators.values()) {
-            inventory.setItem(i, new ItemBuilder(value.getIcon())
+            inventory.addItem(new ItemBuilder(value.getIcon())
                     .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, value.name() + "Name"))
                     .setLore("§7" + Main.getInstance().getTranslationManager().getTranslation(lang, value.name() + "Description"),
                             "",
                             "§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "leftKlick") + ": " + Main.getInstance().getTranslationManager().getTranslation(lang, "activate"))
                     .addPersistentDataContainer("id", PersistentDataType.STRING, value.name())
                     .build());
-            i++;
-        }
 
-        for (int j = i; j < 17; j++) {
-            inventory.setItem(j, new ItemStack(Material.AIR));
         }
-
-        inventory.setItem(22, new ItemBuilder(Material.BARRIER)
-                .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "back"))
-                .addPersistentDataContainer("id", PersistentDataType.STRING, "back")
-                .setCustomModelData(1)
-                .build());
 
         player.openInventory(inventory);
     }

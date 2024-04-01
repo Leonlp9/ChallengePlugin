@@ -25,14 +25,7 @@ public class TimerMenu implements Listener {
     public void openInventory(Player player){
         String lang = Main.getInstance().getTranslationManager().getLanguageOfPlayer(player);
 
-        Inventory inventory = player.getServer().createInventory(null, 9*5, Main.getInstance().getTranslationManager().getTranslation(lang, "timermenu"));
-
-        for (int i = 0; i < inventory.getSize(); i++) {
-            inventory.setItem(i, new ItemBuilder(Material.PAPER)
-                    .setCustomModelData(1)
-                    .setDisplayName(" ")
-                    .build());
-        }
+        Inventory inventory = new MenuBuilder(Main.getInstance().getTranslationManager().getTranslation(lang, "timermenu"), 7*3, lang).setBackButton(true).build();
 
         if (!Main.getInstance().getChallengeManager().getTimer().isResumed()) {
             inventory.setItem(13, new ItemBuilder(Material.GREEN_DYE)
@@ -139,13 +132,6 @@ public class TimerMenu implements Listener {
                     .addPersistentDataContainer("id", PersistentDataType.STRING, "countdown")
                     .build());
         }
-
-        inventory.setItem(31+9, new ItemBuilder(Material.BARRIER)
-                .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "back"))
-                .setLore("§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "backDescription"))
-                .addPersistentDataContainer("id", PersistentDataType.STRING, "back")
-                .setCustomModelData(1)
-                .build());
 
         player.openInventory(inventory);
     }

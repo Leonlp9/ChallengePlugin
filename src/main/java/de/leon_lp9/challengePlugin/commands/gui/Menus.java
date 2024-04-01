@@ -1,7 +1,13 @@
 package de.leon_lp9.challengePlugin.commands.gui;
 
 import de.leon_lp9.challengePlugin.Main;
+import de.leon_lp9.challengePlugin.builder.ItemBuilder;
+import de.leon_lp9.challengePlugin.challenges.Challenge;
 import lombok.Getter;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.persistence.PersistentDataType;
 
 @Getter
 public class Menus {

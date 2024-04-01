@@ -18,7 +18,7 @@ public class SetColorMenu implements Listener {
     public void openInventory(Player player, String wichValue) {
         String lang = Main.getInstance().getTranslationManager().getLanguageOfPlayer(player);
 
-        Inventory inventory = player.getServer().createInventory(null, 9 * 5, Main.getInstance().getTranslationManager().getTranslation(lang, "colorMenu"));
+        Inventory inventory = new MenuBuilder(Main.getInstance().getTranslationManager().getTranslation(lang, "colorMenu"), 7*3, lang).setBackButton(true).build();
 
         org.bukkit.Color color;
         if (wichValue.equals("secondColor")) {
@@ -28,20 +28,6 @@ public class SetColorMenu implements Listener {
         } else {
             color = org.bukkit.Color.fromRGB(0, 0, 0);
         }
-
-        for (int i = 0; i < inventory.getSize(); i++) {
-            inventory.setItem(i, new ItemBuilder(Material.PAPER)
-                    .setCustomModelData(1)
-                    .setDisplayName(" ")
-                    .build());
-        }
-
-        inventory.setItem(31+9, new ItemBuilder(Material.BARRIER)
-                .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "back"))
-                .setLore("§7" + Main.getInstance().getTranslationManager().getTranslation(lang, "backDescription"))
-                .addPersistentDataContainer("id", PersistentDataType.STRING, "back")
-                .setCustomModelData(1)
-                .build());
 
         inventory.setItem(10, new ItemBuilder(Material.WATER_BUCKET)
                 .setDisplayName("§c§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "addToColor"))
