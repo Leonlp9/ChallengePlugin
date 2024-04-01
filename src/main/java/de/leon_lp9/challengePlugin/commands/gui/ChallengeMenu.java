@@ -33,6 +33,7 @@ public class ChallengeMenu implements Listener {
         inventory.setItem(4, new ItemBuilder(type.getIcon())
                 .setDisplayName("§6§l" + type.getTranslationName(player))
                 .setLore("§7" + type.getTranslationDescription(player))
+                        .addPersistentDataContainer("type", PersistentDataType.STRING, type.name())
                 .build());
 
         Main.getInstance().getChallengeManager().getAllChallenges().values().stream()
@@ -80,8 +81,8 @@ public class ChallengeMenu implements Listener {
                         return;
                     }
 
-                    ItemStack backItem = event.getInventory().getItem(event.getInventory().getSize() - 5);
-                    Challenge.ChallengeType type = Challenge.ChallengeType.valueOf(backItem.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Main.getInstance(), "type"), PersistentDataType.STRING));
+                    ItemStack typeItem = event.getInventory().getItem(4);
+                    Challenge.ChallengeType type = Challenge.ChallengeType.valueOf(typeItem.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Main.getInstance(), "type"), PersistentDataType.STRING));
 
                     Class<? extends Challenge> challengeClass = (Class<? extends Challenge>) Class.forName(id);
 
