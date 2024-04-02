@@ -8,6 +8,7 @@ import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -89,7 +90,14 @@ public class ChallengeMenu implements Listener {
                     if (event.getClick().isLeftClick()) {
                         if (!Main.getInstance().getChallengeManager().isChallengeActive(challengeClass)) {
                             Main.getInstance().getChallengeManager().activateChallenge(challengeClass);
-                            Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "hasBeenActivated").replace("%challenge%", Main.getInstance().getChallengeManager().getLoadedChallengeByClass(challengeClass).getTranslationName(player))));
+                            if (Main.getInstance().getChallengeManager().isChallengeActive(challengeClass)) {
+                                Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "hasBeenActivated").replace("%challenge%", Main.getInstance().getChallengeManager().getLoadedChallengeByClass(challengeClass).getTranslationName(player))));
+                            }else {
+                                Bukkit.getOnlinePlayers().forEach(player -> {
+                                    player.sendMessage("§cAn error occurred while activating the challenge! See console for more information.");
+                                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
+                                });
+                            }
                         } else {
                             Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "hasBeenDeactivated").replace("%challenge%", Main.getInstance().getChallengeManager().getLoadedChallengeByClass(challengeClass).getTranslationName(player))));
                             Main.getInstance().getChallengeManager().deactivateChallenge(challengeClass);

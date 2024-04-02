@@ -19,7 +19,15 @@ public class WorldBiomProviderMenu implements Listener{
     public void openInventory(Player player, int startAt) {
         String lang = Main.getInstance().getTranslationManager().getLanguageOfPlayer(player);
 
-        Inventory inventory = new MenuBuilder("§6" + Main.getInstance().getTranslationManager().getTranslation(lang, "worldBiomeProvider"), 7*4, lang).setBackButton(true).setClearCenter(true).build();
+        MenuBuilder worldBiomeProvider = new MenuBuilder("§6" + Main.getInstance().getTranslationManager().getTranslation(lang, "worldBiomeProvider"), 7 * 4, lang).setBackButton(true).setClearCenter(true);
+
+        if (startAt != 0){
+            worldBiomeProvider.setPreviousPage(startAt - 1);
+        }
+
+
+
+        Inventory inventory = worldBiomeProvider.build();
 
         inventory.setItem(4, new ItemBuilder(Material.BARRIER)
                 .setDisplayName("§6§l" + Main.getInstance().getTranslationManager().getTranslation(lang, "selectAllBioms"))
