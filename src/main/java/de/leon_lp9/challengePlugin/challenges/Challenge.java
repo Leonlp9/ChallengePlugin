@@ -1,11 +1,13 @@
 package de.leon_lp9.challengePlugin.challenges;
 
+import com.fren_gor.ultimateAdvancementAPI.util.AdvancementKey;
 import de.leon_lp9.challengePlugin.Main;
 import de.leon_lp9.challengePlugin.Timer;
 import de.leon_lp9.challengePlugin.challenges.config.ConfigurableField;
 import de.leon_lp9.challengePlugin.management.BossBarInformationTile;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -98,6 +100,13 @@ public class Challenge implements Listener {
     public void unload(){}
     public void timerFirstTimeResume(){}
     public void skipIfIsPossible(){}
+    public void done(){
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            if (plugin.getUltimateAdvancementAPI().isLoaded(player) && !plugin.getChallengeManager().getAdvancements().get(this.getClass()).isGranted(player)) {
+                plugin.getChallengeManager().getAdvancements().get(this.getClass()).grant(player);
+            }
+        });
+    }
 
     public ArrayList<Player> getAllSurvivalPlayers() {
         ArrayList<Player> players = new ArrayList<>();

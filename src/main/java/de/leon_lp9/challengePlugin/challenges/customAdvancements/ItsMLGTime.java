@@ -4,18 +4,19 @@ import com.fren_gor.ultimateAdvancementAPI.advancement.Advancement;
 import com.fren_gor.ultimateAdvancementAPI.advancement.BaseAdvancement;
 import com.fren_gor.ultimateAdvancementAPI.advancement.display.AdvancementDisplay;
 import com.fren_gor.ultimateAdvancementAPI.advancement.display.AdvancementFrameType;
+import com.fren_gor.ultimateAdvancementAPI.visibilities.ParentGrantedVisibility;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.jetbrains.annotations.NotNull;
 
-public class ItsMLGTime extends BaseAdvancement {
+public class ItsMLGTime extends BaseAdvancement implements ParentGrantedVisibility {
     public ItsMLGTime(@NotNull Advancement parent) {
-        super("its_mlg_time", new AdvancementDisplay(Material.WATER_BUCKET, "Its MLG time", AdvancementFrameType.TASK, true, true, 2f, 1f, "Begebe dich auf maximale Bauhöhe"), parent);
+        super("its_mlg_time", new AdvancementDisplay(Material.WATER_BUCKET, "Its MLG time", AdvancementFrameType.TASK, true, true, 2f, 9f, "Begebe dich auf maximale Bauhöhe"), parent);
 
         registerEvent(PlayerMoveEvent.class, e -> {
             Player player = e.getPlayer();
-            if (isVisible(player)) {
+            if (isVisible(player) && getParent().isGranted(player)) {
 
                 if (player.getLocation().getY() >= 320) {
                     grant(player);

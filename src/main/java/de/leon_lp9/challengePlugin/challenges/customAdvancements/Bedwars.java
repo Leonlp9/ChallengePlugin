@@ -3,18 +3,19 @@ package de.leon_lp9.challengePlugin.challenges.customAdvancements;
 import com.fren_gor.ultimateAdvancementAPI.advancement.Advancement;
 import com.fren_gor.ultimateAdvancementAPI.advancement.BaseAdvancement;
 import com.fren_gor.ultimateAdvancementAPI.advancement.display.AdvancementDisplay;
+import com.fren_gor.ultimateAdvancementAPI.visibilities.ParentGrantedVisibility;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.jetbrains.annotations.NotNull;
 
-public class Bedwars extends BaseAdvancement {
+public class Bedwars extends BaseAdvancement implements ParentGrantedVisibility {
     public Bedwars(@NotNull Advancement parent) {
-        super("bedwars", new AdvancementDisplay(Material.BLUE_BED, "Bedwars?", com.fren_gor.ultimateAdvancementAPI.advancement.display.AdvancementFrameType.TASK, true, true, 4f, 4f, "Baue 10 Betten in Dörfern ab"), parent, 10);
+        super("bedwars", new AdvancementDisplay(Material.BLUE_BED, "Bedwars?", com.fren_gor.ultimateAdvancementAPI.advancement.display.AdvancementFrameType.TASK, true, true, 4f, 4f+10f, "Baue 10 Betten in Dörfern ab"), parent, 10);
 
         registerEvent(BlockBreakEvent.class, e -> {
-            if (isVisible(e.getPlayer())) {
+            if (isVisible(e.getPlayer()) && getParent().isGranted(e.getPlayer())) {
                 Player player = e.getPlayer();
 
                 Location loc = player.getWorld().locateNearestStructure(player.getLocation(), org.bukkit.StructureType.VILLAGE, 10, false);

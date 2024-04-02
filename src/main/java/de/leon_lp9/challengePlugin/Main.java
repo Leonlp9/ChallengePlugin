@@ -1,5 +1,7 @@
 package de.leon_lp9.challengePlugin;
 
+import com.fren_gor.ultimateAdvancementAPI.AdvancementMain;
+import com.fren_gor.ultimateAdvancementAPI.UltimateAdvancementAPI;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import de.leon_lp9.challengePlugin.challenges.*;
@@ -15,10 +17,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.WorldCreator;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +55,18 @@ public final class Main extends JavaPlugin {
     private Metrics metrics;
     private HelpCommand helpEvents;
 
+    private AdvancementMain advancementMain;
+    @Getter
+    private UltimateAdvancementAPI ultimateAdvancementAPI;
+
+    @Override
+    public void onLoad() {
+        advancementMain = new AdvancementMain(this);
+        advancementMain.load();
+
+        // Rest of your code
+    }
+
     @Override
     public void onEnable() {
 
@@ -64,6 +78,11 @@ public final class Main extends JavaPlugin {
         configurationReader = new ConfigurationReader();
         translationManager = new TranslationManager(this);
         bossBarInformation = new BossBarInformation();
+
+        advancementMain.enableSQLite(new File("plugins/Challenge/database.db"));
+        ultimateAdvancementAPI = UltimateAdvancementAPI.getInstance(this);
+
+        // Rest of your code
 
         Bukkit.getOnlinePlayers().forEach(player -> {
             bossBarInformation.createPlayerBossBar(player, new StringBuilder(), false);
@@ -112,35 +131,42 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        Map<String, Object> data = new HashMap<>();
-        data.put("timer", challengeManager.getTimer());
+        advancementMain.disable();
+        if (challengeManager != null) {
+            Map<String, Object> data = new HashMap<>();
+            data.put("timer", challengeManager.getTimer());
 
-        Map<String, Object> activeChallenges = new HashMap<>();
+            Map<String, Object> activeChallenges = new HashMap<>();
 
-        for (Challenge aktiveChallenge : challengeManager.getActiveChallenges()) {
-            activeChallenges.put(aktiveChallenge.getClass().getName(), aktiveChallenge);
+            for (Challenge aktiveChallenge : challengeManager.getActiveChallenges()) {
+                activeChallenges.put(aktiveChallenge.getClass().getName(), aktiveChallenge);
+            }
+
+            data.put("activeChallenges", activeChallenges);
+            fileUtils.writeToJsonFile("ChallengeManager", data);
         }
 
-        data.put("activeChallenges", activeChallenges);
-        fileUtils.writeToJsonFile("ChallengeManager", data);
+        if (gameruleManager != null) {
+            Map<String, Object> data2 = new HashMap<>();
 
-        Map<String, Object> data2 = new HashMap<>();
+            Map<String, Object> activeGameRules = new HashMap<>();
 
-        Map<String, Object> activeGameRules = new HashMap<>();
+            for (GameRule activeGamerule : gameruleManager.getGameRules()) {
+                activeGameRules.put(activeGamerule.getClass().getName(), activeGamerule);
+            }
 
-        for (GameRule activeGamerule : gameruleManager.getGameRules()) {
-            activeGameRules.put(activeGamerule.getClass().getName(), activeGamerule);
+            data2.put("activeGameRules", activeGameRules);
+
+            fileUtils.writeToJsonFile("GameRuleManager", data2);
         }
 
-        data2.put("activeGameRules", activeGameRules);
+        if (worldGenerationManager != null) fileUtils.writeToJsonFile("WorldGenerationManager", worldGenerationManager);
 
-        fileUtils.writeToJsonFile("GameRuleManager", data2);
+        if (challengeManager != null) {
+            challengeManager.getActiveChallenges().forEach(Challenge::unload);
+        }
 
-        fileUtils.writeToJsonFile("WorldGenerationManager", worldGenerationManager);
-
-        challengeManager.getActiveChallenges().forEach(Challenge::unload);
-
-        bossBarInformation.removeAll();
+        if (bossBarInformation != null) bossBarInformation.removeAll();
     }
     private void requireSpigot() {
         try {
@@ -244,6 +270,8 @@ public final class Main extends JavaPlugin {
                 e.printStackTrace();
             }
         });
+
+        challengeManager.createRootAdvancements();
 
     }
 

@@ -4,16 +4,17 @@ import com.fren_gor.ultimateAdvancementAPI.advancement.Advancement;
 import com.fren_gor.ultimateAdvancementAPI.advancement.BaseAdvancement;
 import com.fren_gor.ultimateAdvancementAPI.advancement.display.AdvancementDisplay;
 import com.fren_gor.ultimateAdvancementAPI.advancement.display.AdvancementFrameType;
+import com.fren_gor.ultimateAdvancementAPI.visibilities.ParentGrantedVisibility;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 
-public class SchuetzeDieNachberschaft extends BaseAdvancement {
+public class SchuetzeDieNachberschaft extends BaseAdvancement implements ParentGrantedVisibility {
     public SchuetzeDieNachberschaft(@NotNull Advancement parent) {
-        super("schuetze_die_nachbarschaft", new AdvancementDisplay(Material.NETHERITE_CHESTPLATE, "Schütze die Nachbarschaft", AdvancementFrameType.CHALLENGE, true, true, 4f, 1f, "Villager mit Full Netherite ausrüsten"), parent);
+        super("schuetze_die_nachbarschaft", new AdvancementDisplay(Material.NETHERITE_CHESTPLATE, "Schütze die Nachbarschaft", AdvancementFrameType.CHALLENGE, true, true, 4f, 1f+10f, "Villager mit Full Netherite ausrüsten"), parent);
 
         registerEvent(org.bukkit.event.player.PlayerInteractEntityEvent.class, e -> {
             org.bukkit.entity.Player player = e.getPlayer();
-            if (isVisible(player)) {
+            if (isVisible(player) && getParent().isGranted(player)) {
                 if (e.getRightClicked() instanceof org.bukkit.entity.Villager villager) {
                     if (villager.getEquipment().getChestplate() != null && villager.getEquipment().getChestplate().getType() == org.bukkit.Material.NETHERITE_CHESTPLATE
                             && villager.getEquipment().getLeggings() != null && villager.getEquipment().getLeggings().getType() == org.bukkit.Material.NETHERITE_LEGGINGS

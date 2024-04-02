@@ -253,6 +253,8 @@
   "timerStopped": "%prefix%Der §6Timer §7wurde pausiert!",
   "timerStoppedBy": "%prefix%Der §6Timer §7wurde von §6%player% §7pausiert!",
   "timermenu": "Timer Menü",
+  "timerStartedTitle": "§a§lTimer gestartet",
+    "timerStoppedTitle": "§c§lTimer gestoppt",
   "toggleBackgroundDescriptionOff": "Entfernt den Hintergrund",
   "toggleBackgroundDescriptionOn": "Fügt den Hintergrund hinzu",
   "toggleBackgroundOff": "Hintergrund entfernen",
