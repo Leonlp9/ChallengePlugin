@@ -130,16 +130,12 @@ main::-webkit-scrollbar-track {
     margin: 0;
 }
 
-.showcase{
-    margin-top: 20px;
-}
-
 .showcase h4{
-    padding-top: 30px;
+    padding-top: 20px;
 }
 
 .showcase h2{
-    padding-top: 20px;
+    margin-top: 60px;
 }
 
 /*linie unter dem text und noch bis 20px daneben weiter*/
@@ -149,4 +145,10 @@ main::-webkit-scrollbar-track {
     border-bottom: 2px solid #d0d0d0;
     width: 100%;
     margin-top: 10px;
+}
+
+.showcase img{
+    width: 100%;
+    border-radius: 15px;
+    max-width: 1000px;
 }
