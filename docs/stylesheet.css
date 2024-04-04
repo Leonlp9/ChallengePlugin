@@ -129,3 +129,24 @@ main::-webkit-scrollbar-track {
 .challenges > li > div:last-child > p{
     margin: 0;
 }
+
+.showcase{
+    margin-top: 20px;
+}
+
+.showcase h4{
+    padding-top: 30px;
+}
+
+.showcase h2{
+    padding-top: 20px;
+}
+
+/*linie unter dem text und noch bis 20px daneben weiter*/
+.showcase h2:after{
+    content: "";
+    display: block;
+    border-bottom: 2px solid #d0d0d0;
+    width: 100%;
+    margin-top: 10px;
+}
