@@ -49,9 +49,6 @@ nav{
     padding: 0 10px;
     width: 350px;
     height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 }
 
 nav ul{
@@ -82,9 +79,19 @@ nav a:hover{
     color: var(--kategorie-color);
 }
 
+.navbar{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+}
+
 .buttonMenu{
     display: flex;
     justify-content: space-between;
+    width: 100%;
 }
 
 .buttonMenu button{
@@ -140,6 +147,12 @@ main::-webkit-scrollbar-track {
     content: "";
     flex: 1 1;
     margin: auto 10px;
+}
+
+.navbar-closes{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .challenges{
@@ -208,4 +221,8 @@ main::-webkit-scrollbar-track {
     width: 100%;
     border-radius: 15px;
     max-width: 1000px;
+}
+
+.hide{
+    display: none;
 }
