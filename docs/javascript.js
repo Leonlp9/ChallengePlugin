@@ -24,7 +24,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 </div>
             </div>
             <div class="navbar-closes hide">
-            <img src="https://www.spigotmc.org/data/resource_icons/115/115834.jpg?1711400978" style="width: 50px; border-radius: 50%; margin-top: 10px;">
                 <div class="buttonMenu">
                     <button onclick="toggleNavbar()"><i class="fa-solid fa-angles-right"></i></button>
                 </div>
@@ -76,10 +75,12 @@ function toggleNavbar() {
 
     if (enabled){
         nav.style.width = "350px";
+        nav.style.padding = "0 10px";
         enabled = false;
     }
     else {
-        nav.style.width = "80px";
+        nav.style.width = "0";
+        nav.style.padding = "0";
         enabled = true;
     }
 
