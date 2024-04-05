@@ -18,9 +18,37 @@ document.addEventListener("DOMContentLoaded", function() {
                 </ul>
             </div>
             <div class="buttonMenu">
-                <button><i class="fa-solid fa-sun"></i></button>
+                <button onclick="switchTheme()"><i class="fa-solid fa-sun"></i></button>
                 <button><i class="fa-solid fa-angles-left"></i></button>
             </div>
         `;
     }
 });
+
+const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : null;
+let darkMode = true;
+
+if (currentTheme) {
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    if (currentTheme === 'dark') {
+        darkMode = false;
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }
+}else {
+    localStorage.setItem('theme', 'dark');
+    document.documentElement.setAttribute('data-theme', 'dark');
+    darkMode = false;
+}
+
+function switchTheme() {
+    if (darkMode) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark'); //add this
+        darkMode = false;
+    }
+    else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light'); //add this
+        darkMode = true;
+    }
+}

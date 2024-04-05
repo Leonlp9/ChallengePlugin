@@ -1,19 +1,33 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-:root.dark{
-    --primary-color: #7ce87e;
-    --background-color: #19191c;
-    --secondary-color: #2f2f2f;
-}
-
-:root.light{
+:root{
     --primary-color: #7ce87e;
     --background-color: #f0f0f0;
+    --border-color: #c5c5c5;
     --secondary-color: #e0e0e0;
+    --secondary-darker-color: #cbcbcb;
+    --secondary-darker-dark-color: #b5b5b5;
+    --transition: background 0.3s, color 0.3s, border 0.3s;
+    --color: #2f2f2f;
+    --kategorie-color: #7f7f7f;
+}
+
+[data-theme="dark"]{
+    --primary-color: #7ce87e;
+    --background-color: #19191c;
+    --border-color: #262626;
+    --secondary-color: #2f2f2f;
+    --secondary-darker-color: #3f3f3f;
+    --secondary-darker-dark-color: #4f4f4f;
+    --transition: background 0.3s, color 0.3s, border 0.3s;
+    --color: #e0e0e0;
+    --kategorie-color: #c7c7c7;
 }
 
 body{
-    background-color: #19191c;
+    background-color: var(--background-color);
+    transition: var(--transition);
+    color: var(--color);
     margin: 0;
     padding: 0;
     display: flex;
@@ -22,13 +36,16 @@ body{
 
 a{
     text-decoration: underline;
-    color: #7ce87e;
+    color: var(--primary-color);
+    transition: var(--transition);
     font-weight: 600;
 }
 
 nav{
-    background-color: #2f2f2f;
-    border-right: 1px solid #2a2a2a;
+    background-color: var(--secondary-color);
+    border-right: 1px solid var(--border-color);
+    color: var(--color);
+    transition: var(--transition);
     padding: 0 10px;
     width: 350px;
     height: 100vh;
@@ -47,7 +64,7 @@ nav li{
 }
 
 nav a{
-    color: white;
+    color: var(--color);
     list-style-type: none;
     height: 40px;
     width: 100%;
@@ -56,13 +73,13 @@ nav a{
     padding-left: 20px;
     display: block;
     text-decoration: none;
-    transition: background 0.3s, color 0.3s;
+    transition: var(--transition);
 }
 
 nav a:hover{
-    background-color: #3f3f3f;
+    background-color: var(--secondary-darker-color);
     cursor: pointer;
-    color: #d9d9d9;
+    color: var(--kategorie-color);
 }
 
 .buttonMenu{
@@ -71,25 +88,26 @@ nav a:hover{
 }
 
 .buttonMenu button{
-    background-color: #3f3f3f;
+    background-color: var(--secondary-darker-color);
     border: none;
-    color: white;
+    color: var(--color);
     padding: 10px 20px;
     border-radius: 50px;
     margin: 10px 0;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: var(--transition);
     font-size: 1.2em;
 }
 
 .buttonMenu button:hover{
-    background-color: #4f4f4f;
+    background-color: var(--secondary-darker-dark-color);
 }
 
 main{
     padding: 20px;
     width: 100%;
-    color: white;
+    color: var(--color);
+    transition: var(--transition);
     overflow-y: scroll;
     height: 100vh;
 }
@@ -99,19 +117,22 @@ main::-webkit-scrollbar {
 }
 
 main::-webkit-scrollbar-thumb {
-    background-color: #3f3f3f;
+    background-color: var(--secondary-color);
+    transition: var(--transition);
     border-radius: 10px;
 }
 
 main::-webkit-scrollbar-track {
-    background-color: #19191c;
+    background-color: var(--background-color);
+    transition: var(--transition);
 }
 
 .navbar-label {
-    color: #c7c7c7;
+    color: var(--kategorie-color);
     display: flex;
     flex-direction: row;
     padding: 30px 0 10px 20px;
+    transition: var(--transition);
 }
 
 .navbar-label:after {
@@ -129,32 +150,32 @@ main::-webkit-scrollbar-track {
 
 .challenges li{
     display: flex;
-    background: #2f2f2f;
+    background: var(--secondary-color);
     border-radius: 15px;
     overflow: hidden;
-    transition: background 0.3s;
+    transition: var(--transition);
     margin-bottom: 10px;
 }
 
 .challenges li:hover{
-    background: #3f3f3f;
+    background: var(--secondary-darker-color);
     cursor: pointer;
 }
 
 .challenges div:first-child{
     font-size: 1.5em;
     font-weight: 600;
-    background: #3f3f3f;
+    background: var(--secondary-darker-color);
     padding: 10px 30px 35px 20px;
     width: 70px;
     margin-right: 10px;
-    border-right: 1px solid #2a2a2a;
-    transition: background 0.3s, border-right 0.3s;
+    border-right: 1px solid var(--border-color);
+    transition: var(--transition);
 }
 
 .challenges li:hover div:first-child{
-    background: #4f4f4f;
-    border-right: 1px solid #3a3a3a;
+    background: var(--secondary-darker-dark-color);
+    border-right: 1px solid var(--secondary-darker-dark-color);
 }
 
 .challenges div:last-child{
