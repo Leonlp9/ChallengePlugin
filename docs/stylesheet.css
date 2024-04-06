@@ -245,9 +245,15 @@ main::-webkit-scrollbar-track {
     max-width: 230px;
 }
 
+.switchPage:hover{
+    background: var(--secondary-darker-color);
+    color: var(--lighter-color);
+    cursor: pointer;
+}
+
 .switchPages{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     margin: 10px;
     align-items: center;
     flex-wrap: wrap;
@@ -259,10 +265,19 @@ main::-webkit-scrollbar-track {
 
 .switchPage > div:first-child > div:first-child{
     color: var(--lighter-color);
+    transition: var(--transition);
+}
+
+.switchPage:hover > div:first-child > div:first-child{
+    color: var(--kategorie-color);
 }
 
 .switchPageLeft{
     flex-direction: row-reverse;
+}
+
+.switchPageLeft > div:first-child {
+    text-align: right;
 }
 
 .switchPageRight{

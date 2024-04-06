@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
         nav.innerHTML = `
             <div class="navbar">
                 <div>
-                    <img src="images/logo.png" style="width: calc(100% - 20px); margin: 15px 10px 10px;">
+                    <img src="images/logo.png" style="width: calc(100% - 20px); margin: 15px 10px 10px; cursor: pointer" onclick="window.location.href = 'index.html'">
                     <a href="index.html" class="mt-4">Home</a>
                     <div class="navbar-label">Features</div>
                     <ul>
@@ -37,6 +37,10 @@ document.addEventListener("DOMContentLoaded", function() {
         let i = 0;
         switchPage.forEach(function(element) {
             let innerHTML = element.innerHTML;
+
+            if (element.classList.contains('forceRight')) {
+                i++;
+            }
 
             element.innerHTML = `
                 <div>
