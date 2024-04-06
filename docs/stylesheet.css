@@ -9,6 +9,7 @@
     --secondary-darker-dark-color: #b5b5b5;
     --transition: background 0.3s, color 0.3s, border 0.3s;
     --color: #2f2f2f;
+    --lighter-color: #4f4f4f;
     --kategorie-color: #7f7f7f;
 }
 
@@ -21,6 +22,7 @@
     --secondary-darker-dark-color: #4f4f4f;
     --transition: background 0.3s, color 0.3s, border 0.3s;
     --color: #e0e0e0;
+    --lighter-color: #c7c7c7;
     --kategorie-color: #c7c7c7;
 }
 
@@ -225,4 +227,44 @@ main::-webkit-scrollbar-track {
 
 .hide{
     display: none;
+}
+
+.switchPage{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    align-items: center;
+    background: var(--secondary-color);
+    border-radius: 15px;
+    padding: 10px;
+    transition: var(--transition);
+    color: var(--color);
+    border: 2px solid var(--border-color);
+    text-decoration: none;
+    min-width: 230px;
+    max-width: 230px;
+}
+
+.switchPages{
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.switchPage > div:first-child > div:last-child{
+    font-size: 1.5em;
+}
+
+.switchPage > div:first-child > div:first-child{
+    color: var(--lighter-color);
+}
+
+.switchPageLeft{
+    flex-direction: row-reverse;
+}
+
+.switchPageRight{
+    flex-direction: row;
 }

@@ -30,6 +30,38 @@ document.addEventListener("DOMContentLoaded", function() {
             </div>
         `;
     }
+
+    //für alle elemente mit der klasse "switchPage"
+    var switchPage = document.querySelectorAll('.switchPage');
+    if (switchPage) {
+        let i = 0;
+        switchPage.forEach(function(element) {
+            let innerHTML = element.innerHTML;
+
+            element.innerHTML = `
+                <div>
+                    <div>
+                        ${i === 0 ? 'Vorherige Seite' : 'Nächste Seite'}
+                    </div>
+                    <div>
+                        ${innerHTML}
+                    </div>
+                </div>
+                <div>
+                    <i class="fa-solid fa-arrow-${i === 0 ? 'left' : 'right'}"></i>
+                </div>
+            `;
+
+            if (i === 0) {
+                element.classList.add('switchPageLeft');
+            }
+            else {
+                element.classList.add('switchPageRight');
+            }
+
+            i++;
+        });
+    }
 });
 
 const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : null;
