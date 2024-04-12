@@ -14,11 +14,18 @@ public class RandomBlockTypeChunkPopulator extends BlockPopulator {
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk source) {
 
         Material randomMaterial = Material.values()[random.nextInt(Material.values().length)];
+        //solange es kein block ist
+        while (!randomMaterial.isBlock()) {
+            randomMaterial = Material.values()[random.nextInt(Material.values().length)];
+        }
 
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 16; j++) {
                 for (int k = world.getMinHeight(); k < world.getMaxHeight(); k++) {
-                    source.getBlock(i, k, j).setType(randomMaterial);
+                    //wenn nicht luft
+                    if (source.getBlock(i, k, j).getType() != Material.AIR) {
+                        source.getBlock(i, k, j).setBlockData(randomMaterial.createBlockData(), false);
+                    }
                 }
             }
 
