@@ -51,7 +51,8 @@ public class WorldGenerationManager implements Listener {
         DIAGONAL_POPULATOR(DiagonalPopulator.class, Material.BLAZE_ROD),
         PLATTE_POPULATOR(PlattePopulator.class, Material.OAK_PRESSURE_PLATE),
         SPHERE_POPULATOR(SpherePopulator.class, Material.HEART_OF_THE_SEA),
-        STAB_POPULATOR(StabPopulator.class, Material.END_ROD);
+        STAB_POPULATOR(StabPopulator.class, Material.END_ROD),
+        RANDOM_BLOCK_TYPE_POPULATOR(RandomBlockTypeChunkPopulator.class, Material.DIAMOND_BLOCK);
 
         private final Class<? extends BlockPopulator> populatorClass;
         private final Material icon;
