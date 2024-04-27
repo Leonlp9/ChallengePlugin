@@ -51,6 +51,8 @@ public final class Main extends JavaPlugin {
     @Getter
     PlayerHeadManager playerHeadManager;
     @Getter
+    BlockHologramAbovePlayer blockHologramAbovePlayer;
+    @Getter
     private Menus menus;
     private Metrics metrics;
     private HelpCommand helpEvents;
@@ -78,6 +80,7 @@ public final class Main extends JavaPlugin {
         configurationReader = new ConfigurationReader();
         translationManager = new TranslationManager(this);
         bossBarInformation = new BossBarInformation();
+        blockHologramAbovePlayer = new BlockHologramAbovePlayer();
 
         advancementMain.enableSQLite(new File("plugins/Challenge/database.db"));
         ultimateAdvancementAPI = UltimateAdvancementAPI.getInstance(this);
@@ -90,6 +93,7 @@ public final class Main extends JavaPlugin {
 
         playerHeadManager = new PlayerHeadManager();
         getServer().getPluginManager().registerEvents(translationManager, this);
+        getServer().getPluginManager().registerEvents(blockHologramAbovePlayer, this);
         getServer().getPluginManager().registerEvents(new GlobalEvents(), this);
         loadChallengeManagerFromConfig();
         loadGameRuleManagerFromConfig();
@@ -167,6 +171,10 @@ public final class Main extends JavaPlugin {
         }
 
         if (bossBarInformation != null) bossBarInformation.removeAll();
+
+        blockHologramAbovePlayer.playerItems.forEach((player, material) -> {
+            blockHologramAbovePlayer.removeHologram(player);
+        });
     }
     private void requireSpigot() {
         try {

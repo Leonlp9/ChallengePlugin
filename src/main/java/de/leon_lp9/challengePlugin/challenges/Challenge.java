@@ -64,6 +64,9 @@ public class Challenge implements Listener {
     @Getter
     private transient Collection<ConfigurableField> configurableFields;
 
+    @Getter
+    private final transient Random random = new Random();
+
     public Challenge(Material icon, ChallengeType type) {
         this.name = this.getClass().getSimpleName() + "Name";
         this.description = this.getClass().getSimpleName() + "Description";
@@ -100,6 +103,7 @@ public class Challenge implements Listener {
     public void unload(){}
     public void timerFirstTimeResume(){}
     public void skipIfIsPossible(){}
+    public void skipIfIsPossible(Player player){}
     public void done(){
         Bukkit.getOnlinePlayers().forEach(player -> {
             if (plugin.getUltimateAdvancementAPI().isLoaded(player) && !plugin.getChallengeManager().getAdvancements().get(this.getClass()).isGranted(player)) {
@@ -161,6 +165,40 @@ public class Challenge implements Listener {
             return playerBossBarInformationTiles.get(player).stream().filter(tile -> tile.getKey().equals(key)).findFirst().orElse(null);
         }
         return null;
+    }
+
+    public Material randomItem() {
+        List<Material> materials = new ArrayList<>(Arrays.asList(Material.values()));
+
+        materials.remove(Material.AIR);
+        materials.remove(Material.CAVE_AIR);
+        materials.remove(Material.VOID_AIR);
+        materials.remove(Material.MOVING_PISTON);
+        materials.remove(Material.BUBBLE_COLUMN);
+        materials.remove(Material.WATER);
+        materials.remove(Material.LAVA);
+        materials.remove(Material.BEDROCK);
+        materials.remove(Material.BARRIER);
+        materials.remove(Material.COMMAND_BLOCK);
+        materials.remove(Material.CHAIN_COMMAND_BLOCK);
+        materials.remove(Material.REPEATING_COMMAND_BLOCK);
+        materials.remove(Material.STRUCTURE_BLOCK);
+        materials.remove(Material.STRUCTURE_VOID);
+        materials.remove(Material.JIGSAW);
+        materials.remove(Material.COMMAND_BLOCK_MINECART);
+        materials.remove(Material.DEBUG_STICK);
+        materials.remove(Material.KELP_PLANT);
+        materials.remove(Material.CAVE_VINES_PLANT);
+
+        //alle spawn eggs entfernen
+        materials.removeIf(material -> material.name().contains("SPAWN_EGG"));
+        materials.removeIf(material -> material.name().contains("POTTED_"));
+        materials.removeIf(material -> material.name().contains("ATTACHED_"));
+        materials.removeIf(material -> material.name().contains("WALL_"));
+        materials.removeIf(material -> material.name().contains("CANDLE_CAKE"));
+        materials.removeIf(material -> !material.isEnabledByFeature(Bukkit.getWorld("world")));
+
+        return materials.get(random.nextInt(materials.size()));
     }
 
 }

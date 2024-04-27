@@ -54,6 +54,7 @@ public class Skips extends GameRule {
         Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> cooldown.remove(event.getPlayer()), 10);
 
         Main.getInstance().getChallengeManager().getActiveChallenges().forEach(Challenge::skipIfIsPossible);
+        Main.getInstance().getChallengeManager().getActiveChallenges().forEach(challenge -> challenge.skipIfIsPossible(event.getPlayer()));
         Bukkit.getOnlinePlayers().forEach(player -> {
             player.sendMessage(Main.getInstance().getTranslationManager().getTranslation(player, "SkipUsed").replace("%player%", event.getPlayer().getName()));
         });

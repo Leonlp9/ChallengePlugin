@@ -6,6 +6,7 @@ import de.leon_lp9.challengePlugin.crafting.Crafting;
 import de.leon_lp9.challengePlugin.command.MinecraftCommand;
 import de.leon_lp9.challengePlugin.command.Run;
 import de.leon_lp9.challengePlugin.command.TabComplete;
+import de.leon_lp9.challengePlugin.management.BlockHologramAbovePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;

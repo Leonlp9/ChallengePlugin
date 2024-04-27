@@ -19,6 +19,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPortalEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.world.ChunkPopulateEvent;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
